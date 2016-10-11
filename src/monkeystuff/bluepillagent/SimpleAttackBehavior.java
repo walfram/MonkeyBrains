@@ -123,9 +123,11 @@ public class SimpleAttackBehavior extends BluePillBehavior implements GameEntity
     public void handleGameEntitySeenEvent(GameEntitySeenEvent event) {
         if (event.getGameEntitySeen() instanceof Agent) {
             Agent targetAgent = (Agent) event.getGameEntitySeen();
-            if (agent.isSameTeam(targetAgent)) {
+            // Commented out as I removed the team. I might drop this behavior
+            // anyway or replace it with my own factions system
+            /*if (agent.isSameTeam(targetAgent)) {
                 return;
-            }
+            }*/
             if (!agent.getInventory().getActiveWeapon().isInRange(targetAgent)) {
                 return;
             }

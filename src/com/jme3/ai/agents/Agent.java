@@ -55,10 +55,7 @@ public class Agent<T> extends GameEntity {
      * Unique name of Agent.
      */
     private String name;
-    /**
-     * Name of team. Primarily used for enabling friendly fire.
-     */
-    private Team team;
+
     /**
      * Main behaviour of Agent. Behavior that will be active while his alive.
      */
@@ -160,34 +157,6 @@ public class Agent<T> extends GameEntity {
             mainBehavior.update(tpf);
         }
     }
-
-    /**
-     * @return team in which agent belongs
-     */
-    public Team getTeam() {
-        return team;
-    }
-
-    /**
-     * @param team in which agent belongs
-     */
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    /**
-     * Check if this agent is in same team as another agent.
-     *
-     * @param agent
-     * @return true if they are in same team, false otherwise
-     */
-    public boolean isSameTeam(Agent agent) {
-        if (team == null || agent.getTeam() == null) {
-            return false;
-        }
-        return team.equals(agent.getTeam());
-    }
-
 
     /**
      * Check if this agent is considered in the same "neighborhood" in relation

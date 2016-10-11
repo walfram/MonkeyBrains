@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, jMonkeyEngine All rights reserved.
+ * Copyright (c) 2014, 2016 jMonkeyEngine. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,12 +30,10 @@
 package com.jme3.ai.agents.behaviors.npc.steering;
 
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.Team;
 import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.math.Vector3f;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Spatial;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -54,7 +52,8 @@ import java.util.List;
  * the character."
  *
  * @author Jesús Martín Berlanga
- * @version 1.3.2
+ * @author MeFisto94
+ * @version 1.3.3
  */
 public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
 
@@ -143,14 +142,25 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
         this.minDistance = minDistance;
     }
 
+    /**
+     * Sets the list containing all obstacles for this behavior.<br>To remove an 
+     * obstacle, better use <code>getObstacles().remove(Obstacle)</code>.
+     *
+     * @see #getObstacles()
+     * @param obstacles The list of agents
+     */
     public void setObstacles(List<GameEntity> obstacles) {
         this.obstacles = obstacles;
     }
 
-    public void setObstaclesFromTeam(Team team) {
-        obstacles = new LinkedList<GameEntity>();
-        for (Agent teamAgent : team.getMembers()) {
-            obstacles.add(teamAgent);
-        }
+    /**
+     * Returns the list of obstacles influencing this behavior, so you can
+     * modify it.<br>
+     *
+     * @see #setObstacles(java.util.List)
+     * @return The obstacles
+     */
+    public List<GameEntity> getObstacles() {
+        return obstacles;
     }
 }

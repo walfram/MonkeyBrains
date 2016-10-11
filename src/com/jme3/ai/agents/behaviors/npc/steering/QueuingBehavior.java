@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, jMonkeyEngine All rights reserved.
+ * Copyright (c) 2014, 2016 jMonkeyEngine. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,7 +30,6 @@
 package com.jme3.ai.agents.behaviors.npc.steering;
 
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.Team;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import java.util.List;
@@ -47,7 +46,8 @@ import java.util.List;
  * each other."
  *
  * @author Jesús Martín Berlanga
- * @version 1.0.1
+ * @author MeFisto94
+ * @version 1.0.2
  */
 public class QueuingBehavior extends AbstractStrengthSteeringBehavior {
 
@@ -126,11 +126,25 @@ public class QueuingBehavior extends AbstractStrengthSteeringBehavior {
         return new Vector3f();
     }
 
+    /**
+     * Sets the neighbourhood for this behavior, which defines which agents
+     * influence it.
+     * @see #getNeighbours() 
+     * @param neighbours The list of agents
+     */
     public void setNeighbours(List<Agent> neighbours) {
         this.neighbours = neighbours;
     }
 
-    public void setNeighboursFromTeam(Team team) {
-        this.neighbours = team.getMembers();
+    /**
+     * Returns the list of neighbours influencing this behavior, so you can
+     * modify it.<br>
+     * When an Agent dies, for example, you might want to remove
+     * it from the neighbourhood of all other agent's behaviors.
+     * @see #setNeighbours(java.util.List) 
+     * @return The neighbourhood
+     */
+    public List<Agent> getNeighbours() {
+        return neighbours;
     }
 }

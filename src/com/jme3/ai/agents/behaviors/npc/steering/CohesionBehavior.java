@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, jMonkeyEngine All rights reserved.
+ * Copyright (c) 2014, 2016 jMonkeyEngine. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -30,8 +30,6 @@
 package com.jme3.ai.agents.behaviors.npc.steering;
 
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.AgentExceptions;
-import com.jme3.ai.agents.Team;
 import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -42,86 +40,14 @@ import java.util.List;
  * Move toward center of neighbors.
  *
  * @author Jesús Martín Berlanga
- * @version 1.1.3
+ * @author MeFisto94
+ * @version 1.1.4
  */
 public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
 
     private List<GameEntity> neighbours;
     private float maxDistance = Float.POSITIVE_INFINITY;
     private float maxAngle = FastMath.PI / 2;
-
-    /**
-     * maxAngle is setted to PI / 2 by default and maxDistance to infinite.
-     *
-     * @param agent To whom behavior belongs.
-     * @param neighbours Neighbours, this agent is moving toward the center of
-     * this neighbours.
-     */
-    public CohesionBehavior(Agent agent) {
-        super(agent);
-        try {
-            this.neighbours = convertToGameEntities(agent.getTeam().getMembers());
-        } catch (NullPointerException npe) {
-            throw new AgentExceptions.TeamNotFoundException(agent);
-        }
-
-    }
-
-    /**
-     * @param maxDistance In order to consider a neighbour inside the
-     * neighbourhood
-     * @param maxAngle In order to consider a neighbour inside the neighbourhood
-     *
-     * @throws NegativeMaxDistanceException If maxDistance is lower than 0
-     *
-     * @see Agent#inBoidNeighborhoodMaxAngle(com.jme3.ai.agents.Agent, float,
-     * float, float)
-     * @see CohesionBehavior#CohesionBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List)
-     */
-    public CohesionBehavior(Agent agent, float maxDistance, float maxAngle) {
-        super(agent);
-        try {
-            this.validateMaxDistance(maxDistance);
-            this.maxDistance = maxDistance;
-            this.maxAngle = maxAngle;
-            this.neighbours = convertToGameEntities(agent.getTeam().getMembers());
-        } catch (NullPointerException npe) {
-            throw new AgentExceptions.TeamNotFoundException(agent);
-        }
-    }
-
-    /**
-     * @param spatial active spatial during excecution of behavior
-     * @see CohesionBehavior#CohesionBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List)
-     */
-    public CohesionBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
-        try {
-            this.neighbours = convertToGameEntities(agent.getTeam().getMembers());
-        } catch (NullPointerException npe) {
-            throw new AgentExceptions.TeamNotFoundException(agent);
-        }
-    }
-
-    /**
-     * @see CohesionBehavior#CohesionBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List)
-     * @see CohesionBehavior#CohesionBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List, float, float)
-     */
-    public CohesionBehavior(Agent agent, float maxDistance, float maxAngle, Spatial spatial) {
-        super(agent, spatial);
-        try {
-            this.validateMaxDistance(maxDistance);
-            this.maxDistance = maxDistance;
-            this.maxAngle = maxAngle;
-            this.neighbours = convertToGameEntities(agent.getTeam().getMembers());
-        } catch (NullPointerException npe) {
-            throw new AgentExceptions.TeamNotFoundException(agent);
-        }
-    }
 
     /**
      * maxAngle is setted to PI / 2 by default and maxDistance to infinite.
@@ -211,11 +137,27 @@ public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
         return steering;
     }
 
+    /**
+     * Sets the neighbourhood for this behavior, which defines which agents
+     * influence it.
+     *
+     * @see #getNeighbours()
+     * @param neighbours The list of agents
+     */
     public void setNeighbours(List<GameEntity> neighbours) {
         this.neighbours = neighbours;
     }
 
-    public void setNeighboursFromTeam(Team team) {
-        this.neighbours = convertToGameEntities(team.getMembers());
+    /**
+     * Returns the list of neighbours influencing this behavior, so you can
+     * modify it.<br>
+     * When an Agent dies, for example, you might want to remove it from the
+     * neighbourhood of all other agent's behaviors.
+     *
+     * @see #setNeighbours(java.util.List)
+     * @return The neighbourhood
+     */
+    public List<GameEntity> getNeighbours() {
+        return neighbours;
     }
 }
