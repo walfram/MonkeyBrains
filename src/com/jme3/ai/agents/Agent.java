@@ -51,10 +51,6 @@ public class Agent<T> extends GameEntity {
      * Class that enables you to add all variable you need for your agent.
      */
     private T model;
-    /**
-     * Unique name of Agent.
-     */
-    private String name;
 
     /**
      * Main behaviour of Agent. Behavior that will be active while his alive.
@@ -65,25 +61,9 @@ public class Agent<T> extends GameEntity {
     }
 
     /**
-     * @param name name of agent
-     */
-    public Agent(String name) {
-        this.name = name;
-    }
-
-    /**
      * @param spatial spatial that will agent have durring game
      */
     public Agent(Spatial spatial) {
-        this.spatial = spatial;
-    }
-
-    /**
-     * @param name name of agent
-     * @param spatial spatial that will agent have durring game
-     */
-    public Agent(String name, Spatial spatial) {
-        this.name = name;
         this.spatial = spatial;
     }
 
@@ -107,10 +87,10 @@ public class Agent<T> extends GameEntity {
     }
 
     /**
-     * @return unique name/id of agent
+     * @return The spatial's name this agent is assigned to
      */
     public String getName() {
-        return name;
+        return spatial.getName();
     }
 
     /**
@@ -121,7 +101,7 @@ public class Agent<T> extends GameEntity {
     public void start() {
         enabled = true;
         if (mainBehavior == null) {
-            throw new NullBehaviorException("Agent " + name + " does not have set main behavior.");
+            throw new NullBehaviorException("Agent " + getName() + " does not have set main behavior.");
         }
         mainBehavior.setEnabled(true);
     }
@@ -326,6 +306,6 @@ public class Agent<T> extends GameEntity {
 
     @Override
     public String toString() {
-        return "Agent{" + "name=" + name + ", id=" + id + '}';
+        return "Agent{" + "name=" + getName() + ", id=" + id + '}';
     }
 }
