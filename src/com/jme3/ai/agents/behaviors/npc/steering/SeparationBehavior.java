@@ -122,13 +122,13 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
     @Override
     protected Vector3f calculateRawSteering() {
         //Propities whom behaviour belongs.
-        Vector3f agentLocation = super.agent.getLocalTranslation();
+        Vector3f agentLocation = super.agent.getWorldTranslation();
         Vector3f steering = new Vector3f();
 
         for (GameEntity obstacle : this.obstacles) {
             //If the obstacle is not himself
             if (obstacle != this.agent && obstacle.distanceRelativeToGameEntity(this.agent) < this.minDistance) {
-                Vector3f location = obstacle.getLocalTranslation().subtract(agentLocation);
+                Vector3f location = obstacle.getWorldTranslation().subtract(agentLocation);
                 float lengthSquared = location.lengthSquared();
                 location.normalizeLocal();
                 steering.addLocal(location.negate().mult(1f / ((float) FastMath.pow(lengthSquared, 2))));

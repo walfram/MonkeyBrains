@@ -116,7 +116,7 @@ public abstract class GameEntity extends AbstractControl {
      * @return The offset relative to another game entity
      */
     public Vector3f offset(GameEntity gameEntity) {
-        return gameEntity.getLocalTranslation().subtract(getLocalTranslation());
+        return gameEntity.getWorldTranslation().subtract(getWorldTranslation());
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class GameEntity extends AbstractControl {
      * @return The offset relative to an position vector
      */
     public Vector3f offset(Vector3f positionVector) {
-        return positionVector.subtract(getLocalTranslation());
+        return positionVector.subtract(getWorldTranslation());
     }
 
     /**
@@ -242,9 +242,9 @@ public abstract class GameEntity extends AbstractControl {
      *
      * @return local translation of agent
      */
-    public Vector3f getLocalTranslation() {
+    public Vector3f getWorldTranslation() {
         try {
-            return spatial.getLocalTranslation();
+            return spatial.getWorldTranslation();
         } catch (NullPointerException e) {
             throw new GameEntityExceptions.GameEntityAttributeNotFound(this, "spatial");
         }
@@ -254,8 +254,13 @@ public abstract class GameEntity extends AbstractControl {
      *
      * @param position local translation of agent
      */
-    public void setLocalTranslation(Vector3f position) {
-        this.spatial.setLocalTranslation(position);
+    public void setWorldTranslation(Vector3f position) {
+        if (spatial.getParent() == null)
+        {
+            spatial.setLocalTranslation(position);
+        } else {
+            spatial.setLocalTranslation(position.subtract(spatial.getParent().getLocalTranslation()));
+        }
     }
 
     /**
@@ -265,8 +270,8 @@ public abstract class GameEntity extends AbstractControl {
      * @param y y translation
      * @param z z translation
      */
-    public void setLocalTranslation(float x, float y, float z) {
-        this.spatial.setLocalTranslation(x, y, z);
+    public void setWorldTranslation(float x, float y, float z) {
+        setWorldTranslation(new Vector3f(x, y, z));
     }
 
     public float getRotationSpeed() {

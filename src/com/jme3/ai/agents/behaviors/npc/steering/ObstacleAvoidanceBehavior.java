@@ -205,7 +205,7 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
                         if (!collisionDistanceOffset.equals(Vector3f.ZERO)) {
                             collisionDistanceDirection = collisionDistanceOffset.normalize();
                         } else {
-                            collisionDistanceDirection = randomVectInPlane(this.agent.getVelocity(), this.agent.getLocalTranslation()).normalize();
+                            collisionDistanceDirection = randomVectInPlane(this.agent.getVelocity(), this.agent.getWorldTranslation()).normalize();
                         }
 
                         Vector3f steerForce = collisionDistanceDirection.mult((this.agent.getRadius() - collisionDistanceOffset.length())

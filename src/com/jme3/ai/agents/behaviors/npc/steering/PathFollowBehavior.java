@@ -189,7 +189,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
                         this.orderedPointsList.get(this.nextSpineJoint),
                         exitNormal);
 
-                Vector3f posProjection = this.nextExit.getClosestPoint(this.agent.getLocalTranslation());
+                Vector3f posProjection = this.nextExit.getClosestPoint(this.agent.getWorldTranslation());
                 float distanceToCenter = posProjection.subtract(this.orderedPointsList.get(this.nextSpineJoint)).length();
                 //chaeck if the agent is outside the path
                 if (distanceToCenter > this.pathRadius) {
@@ -216,7 +216,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
 
                     steer = moveThroughPathSteer;
 
-                    if (this.nextExit.whichSide(this.agent.getLocalTranslation()) == Side.Positive) {
+                    if (this.nextExit.whichSide(this.agent.getWorldTranslation()) == Side.Positive) {
                         this.nextSpineJoint++;
                     }
                 }

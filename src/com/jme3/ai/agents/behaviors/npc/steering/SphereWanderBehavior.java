@@ -161,7 +161,7 @@ public class SphereWanderBehavior extends AbstractStrengthSteeringBehavior {
         }
 
         //Update sphere position  
-        this.wanderSphere.setCenter(this.agent.getLocalTranslation().add(forward.mult(SphereWanderBehavior.OFFSET_DISTANCE + this.agent.getRadius() + this.sphereRadius)));
+        this.wanderSphere.setCenter(this.agent.getWorldTranslation().add(forward.mult(SphereWanderBehavior.OFFSET_DISTANCE + this.agent.getRadius() + this.sphereRadius)));
 
         if (time <= 0) {
             this.calculateNewRandomDir();
@@ -171,7 +171,7 @@ public class SphereWanderBehavior extends AbstractStrengthSteeringBehavior {
         Vector3f sideVector = forward.cross(Vector3f.UNIT_Y).normalize();
         Vector3f rayDir = (this.agent.offset(wanderSphere.getCenter())).add(sideVector.mult(this.randomDirection.x));//.add(Vector3f.UNIT_Y.mult(this.randomDirection.y));       
 
-        Ray ray = new Ray(this.agent.getLocalTranslation(), rayDir);
+        Ray ray = new Ray(this.agent.getWorldTranslation(), rayDir);
         CollisionResults results = new CollisionResults();
         this.wanderSphere.collideWith(ray, results);
 

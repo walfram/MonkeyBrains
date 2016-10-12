@@ -126,7 +126,7 @@ public class HideBehavior extends AbstractStrengthSteeringBehavior {
 
         if (closestObstacle != null && this.agent.distanceRelativeToGameEntity(closestObstacle) > closestObstacle.getRadius()) {
             Vector3f targetToObstacleOffset = this.target.offset(closestObstacle);
-            Vector3f seekPos = this.target.getLocalTranslation().add(targetToObstacleOffset).add(
+            Vector3f seekPos = this.target.getWorldTranslation().add(targetToObstacleOffset).add(
                     targetToObstacleOffset.normalize().mult(this.separationFromObstacle));
 
             SeekBehavior seek = new SeekBehavior(this.agent, seekPos);

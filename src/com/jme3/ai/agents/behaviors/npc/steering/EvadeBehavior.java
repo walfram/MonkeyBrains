@@ -77,7 +77,7 @@ public class EvadeBehavior extends FleeBehavior {
         Vector3f projectedLocation = this.getTarget().getPredictedPosition();
 
         //Return flee steering force
-        Vector3f desiredVelocity = projectedLocation.subtract(agent.getLocalTranslation());
+        Vector3f desiredVelocity = projectedLocation.subtract(agent.getWorldTranslation());
         return desiredVelocity.subtract(velocity).negate();
     }
 }

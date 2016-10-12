@@ -110,9 +110,9 @@ public class FleeBehavior extends AbstractStrengthSteeringBehavior {
         Vector3f desiredVelocity;
 
         if (this.target != null) {
-            desiredVelocity = target.getLocalTranslation().subtract(agent.getLocalTranslation());
+            desiredVelocity = target.getWorldTranslation().subtract(agent.getWorldTranslation());
         } else if (this.fleePosition != null) {
-            desiredVelocity = this.fleePosition.subtract(agent.getLocalTranslation());
+            desiredVelocity = this.fleePosition.subtract(agent.getWorldTranslation());
         } else {
             return new Vector3f(); //We do not have any target or flee position
         }

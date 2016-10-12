@@ -197,7 +197,7 @@ public class UnalignedCollisionAvoidanceBehavior extends ObstacleAvoidanceBehavi
             this.removeNegativeZeros(agentVNormNeg);
 
             if ((otherVelocity.normalize()).equals(agentVNormNeg)) {
-                steer = randomVectInPlane(this.agent.getVelocity(), this.agent.getLocalTranslation()).normalize();
+                steer = randomVectInPlane(this.agent.getVelocity(), this.agent.getWorldTranslation()).normalize();
             } else //Check for paralleness
             {
                 float parallelness = agentVelocity.normalize().dot(otherVelocity.normalize());
@@ -215,14 +215,14 @@ public class UnalignedCollisionAvoidanceBehavior extends ObstacleAvoidanceBehavi
 
                     //Calculate side vector
                     Plane sidePlane = new Plane();
-                    sidePlane.setOriginNormal(this.agent.getLocalTranslation(), agentFordwardVector);
+                    sidePlane.setOriginNormal(this.agent.getWorldTranslation(), agentFordwardVector);
 
-                    Vector3f sidePoint = sidePlane.getClosestPoint(threat.getLocalTranslation());
+                    Vector3f sidePoint = sidePlane.getClosestPoint(threat.getWorldTranslation());
                     Vector3f sideVector = this.agent.offset(sidePoint).normalize().negate();
 
                     if (sideVector.negate().equals(Vector3f.ZERO)) {
                         //Move in a random direction
-                        sideVector = randomVectInPlane(this.agent.getVelocity(), this.agent.getLocalTranslation()).normalize();
+                        sideVector = randomVectInPlane(this.agent.getVelocity(), this.agent.getWorldTranslation()).normalize();
                     }
 
                     steer = sideVector.mult(this.agent.getMoveSpeed());

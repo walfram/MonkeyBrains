@@ -124,7 +124,7 @@ public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
         for (GameEntity neighbour : this.neighbours) {
             if (this.agent.inBoidNeighborhood(neighbour, this.agent.getRadius() * 3, this.maxDistance, this.maxAngle)) {
                 // accumulate sum of neighbor's positions
-                steering = steering.add(neighbour.getLocalTranslation());
+                steering = steering.add(neighbour.getWorldTranslation());
                 realNeighbors++;
             }
         }

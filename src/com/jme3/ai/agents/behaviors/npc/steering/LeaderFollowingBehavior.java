@@ -161,8 +161,8 @@ public class LeaderFollowingBehavior extends SeekBehavior {
 
         //See how far ahead we need to leed
         Vector3f fullProjectedLocation = this.getTarget().getPredictedPosition();
-        Vector3f predictedPositionDiff = fullProjectedLocation.subtract(this.getTarget().getLocalTranslation());
-        Vector3f projectedLocation = this.getTarget().getLocalTranslation().add(predictedPositionDiff.mult(
+        Vector3f predictedPositionDiff = fullProjectedLocation.subtract(this.getTarget().getWorldTranslation());
+        Vector3f projectedLocation = this.getTarget().getWorldTranslation().add(predictedPositionDiff.mult(
                 this.calculateFocusFactor(distanceBetwen)));
 
         this.arriveBehavior.setSeekingPosition(projectedLocation);

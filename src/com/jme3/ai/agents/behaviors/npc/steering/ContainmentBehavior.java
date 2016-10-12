@@ -111,12 +111,12 @@ public class ContainmentBehavior extends AbstractStrengthSteeringBehavior {
         Vector3f predictedPos = this.agent.getPredictedPosition();
 
         //Check if the agent is outside the area
-        if (!this.containmentArea.getWorldBound().contains(this.agent.getLocalTranslation())) {
+        if (!this.containmentArea.getWorldBound().contains(this.agent.getWorldTranslation())) {
             //If we know where is the point he exited, return to the area
             if (lastExitSurfaceNormal != null) {
                 steer = this.surfaceNormal.mult(this.exitPoint.distance(predictedPos));
             } else {
-                steer = this.containmentArea.getWorldBound().getCenter().subtract(this.agent.getLocalTranslation());
+                steer = this.containmentArea.getWorldBound().getCenter().subtract(this.agent.getWorldTranslation());
             }
         } else {
             //Check if correction is necessary
@@ -148,7 +148,7 @@ public class ContainmentBehavior extends AbstractStrengthSteeringBehavior {
             vel = new Vector3f();
         }
 
-        Ray ray = new Ray(this.agent.getLocalTranslation(), vel);
+        Ray ray = new Ray(this.agent.getWorldTranslation(), vel);
         this.containmentArea.collideWith(ray, results);
 
         CollisionResult closestCollision = results.getClosestCollision();

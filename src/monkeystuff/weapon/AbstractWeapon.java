@@ -77,10 +77,10 @@ public abstract class AbstractWeapon extends GameEntity {
      * @return
      */
     public boolean isInRange(Vector3f targetPosition) {
-        if (agent.getLocalTranslation().distance(targetPosition) > maxAttackRange) {
+        if (agent.getWorldTranslation().distance(targetPosition) > maxAttackRange) {
             return false;
         }
-        if (agent.getLocalTranslation().distance(targetPosition) < minAttackRange) {
+        if (agent.getWorldTranslation().distance(targetPosition) < minAttackRange) {
             return false;
         }
         return true;
@@ -94,7 +94,7 @@ public abstract class AbstractWeapon extends GameEntity {
      * @return
      */
     public boolean isInRange(GameEntity target) {
-        return isInRange(target.getLocalTranslation());
+        return isInRange(target.getWorldTranslation());
     }
 
     @Override
@@ -144,7 +144,7 @@ public abstract class AbstractWeapon extends GameEntity {
      * @param tpf time per frame
      */
     public void attack(GameEntity target, float tpf) {
-        attack(target.getLocalTranslation(), tpf);
+        attack(target.getWorldTranslation(), tpf);
     }
 
     /**

@@ -78,13 +78,13 @@ public class SimpleMoveBehavior extends Behavior {
     protected void controlUpdate(float tpf) {
         //if there is target position where agent should move
         if (targetPosition != null) {
-            if (agent.getLocalTranslation().distance(targetPosition) <= distanceError) {
+            if (agent.getWorldTranslation().distance(targetPosition) <= distanceError) {
                 targetPosition = null;
                 moveDirection = null;
                 enabled = false;
                 return;
             }
-            moveDirection = targetPosition.subtract(agent.getLocalTranslation()).normalize();
+            moveDirection = targetPosition.subtract(agent.getWorldTranslation()).normalize();
         }
         //if there is movement direction in which agent should move
         if (moveDirection != null) {

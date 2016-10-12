@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, jMonkeyEngine All rights reserved.
+ * Copyright (c) 2014, 2016, jMonkeyEngine. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -48,7 +48,8 @@ import java.util.List;
  *
  * @author Tihomir Radosavljević
  * @author Jesús Martín Berlanga
- * @version 1.5.2
+ * @author MeFisto94
+ * @version 1.5.3
  */
 public abstract class AbstractSteeringBehavior extends Behavior {
 
@@ -180,7 +181,7 @@ public abstract class AbstractSteeringBehavior extends Behavior {
         //calculate new velocity
         Vector3f vel = calculateNewVelocity().mult(tpf).mult(this.brakingFactor);
         //translate agent
-        agent.setLocalTranslation(agent.getLocalTranslation().add(vel));
+        agent.setWorldTranslation(agent.getWorldTranslation().add(vel));
         //rotate agent
         rotateAgent(tpf);
     }

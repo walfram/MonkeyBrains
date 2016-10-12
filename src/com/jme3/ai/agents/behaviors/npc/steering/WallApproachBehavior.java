@@ -241,7 +241,7 @@ public class WallApproachBehavior extends AbstractStrengthSteeringBehavior {
         Vector3f surfaceLocation = null;
 
         CollisionResults results = new CollisionResults();
-        Ray ray = new Ray(this.agent.getLocalTranslation(), direction);
+        Ray ray = new Ray(this.agent.getWorldTranslation(), direction);
         this.wall.collideWith(ray, results);
 
         CollisionResult collisionResult = results.getClosestCollision();

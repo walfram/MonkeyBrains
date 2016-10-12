@@ -113,9 +113,9 @@ public class SeekBehavior extends AbstractStrengthSteeringBehavior {
         Vector3f desiredVelocity;
 
         if (this.target != null) {
-            desiredVelocity = target.getLocalTranslation().subtract(agent.getLocalTranslation());
+            desiredVelocity = target.getWorldTranslation().subtract(agent.getWorldTranslation());
         } else if (this.seekingPosition != null) {
-            desiredVelocity = this.seekingPosition.subtract(agent.getLocalTranslation()).normalize();
+            desiredVelocity = this.seekingPosition.subtract(agent.getWorldTranslation()).normalize();
         } else {
             return new Vector3f(); //We do not have a target or position to seek
         }

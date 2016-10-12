@@ -185,12 +185,12 @@ public class SimpleLookBehavior extends Behavior {
      */
     public boolean lookable(Agent observer, GameEntity gameEntity) {
         //if agent is not in visible range
-        if (observer.getLocalTranslation().distance(gameEntity.getLocalTranslation())
+        if (observer.getWorldTranslation().distance(gameEntity.getWorldTranslation())
                 > visibilityRange) {
             return false;
         }
         Vector3f direction = observer.getLocalRotation().mult(new Vector3f(0, 0, -1));
-        Vector3f direction2 = observer.getLocalTranslation().subtract(gameEntity.getLocalTranslation()).normalizeLocal();
+        Vector3f direction2 = observer.getWorldTranslation().subtract(gameEntity.getWorldTranslation()).normalizeLocal();
         float angle = direction.angleBetween(direction2);
         if (angle > viewAngle) {
             return false;

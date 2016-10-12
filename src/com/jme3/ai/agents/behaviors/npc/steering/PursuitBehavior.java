@@ -79,7 +79,7 @@ public class PursuitBehavior extends SeekBehavior {
         Vector3f projectedLocation = this.getTarget().getPredictedPosition();
 
         //Seek behaviour
-        Vector3f desierdVel = projectedLocation.subtract(this.agent.getLocalTranslation());
+        Vector3f desierdVel = projectedLocation.subtract(this.agent.getWorldTranslation());
 
         Vector3f aVelocity = this.agent.getVelocity();
 

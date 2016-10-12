@@ -85,7 +85,7 @@ public class ArriveBehavior extends SeekBehavior {
      */
     public ArriveBehavior(Agent agent, Vector3f seekingPosition) {
         super(agent, seekingPosition);
-        this.slowingDistance = agent.getLocalTranslation().subtract(seekingPosition).length() * 0.1f;
+        this.slowingDistance = agent.getWorldTranslation().subtract(seekingPosition).length() * 0.1f;
     }
 
     /**
@@ -96,7 +96,7 @@ public class ArriveBehavior extends SeekBehavior {
      */
     public ArriveBehavior(Agent agent, Vector3f seekingPosition, Spatial spatial) {
         super(agent, seekingPosition, spatial);
-        this.slowingDistance = agent.getLocalTranslation().subtract(seekingPosition).length() * 0.1f;
+        this.slowingDistance = agent.getWorldTranslation().subtract(seekingPosition).length() * 0.1f;
     }
 
     /**
@@ -172,7 +172,7 @@ public class ArriveBehavior extends SeekBehavior {
             distanceToTarget = this.agent.distanceRelativeToGameEntity(this.getTarget());
             radious = this.getTarget().getRadius();
         } else if (this.getSeekingPosition() != null) {
-            distanceToTarget = this.agent.getLocalTranslation().subtract(this.getSeekingPosition()).length();
+            distanceToTarget = this.agent.getWorldTranslation().subtract(this.getSeekingPosition()).length();
         } else {
             return new Vector3f(); //We dont have any target or location to arrive 
         }
