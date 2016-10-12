@@ -12,7 +12,7 @@ For this I will base the fork on the Version `1.0.0` so before the changes made 
 **Why??**
 This is really simple: For a FPS project I essentially have my own definitions of `Weapons`, `Inventory` and more important:  
 I don't want to have some AppState changing the Translations of my objects (which wouldn't work anyway because of the Physics Engine fighting this).  
-What I noticed as I wrote this, essentially, I want to extract the Steering Behaviors [jmesteer](jmesteer.bdevel.org) from MonkeyBrains again.
+What I noticed as I wrote this, essentially, I want to extract the Steering Behaviors [jmesteer](http://jmesteer.bdevel.org) from MonkeyBrains again.
 On the other hand I saw, there is no pre-merge version available it seems.
 
 ##Documentation for MonkeyBrains:
