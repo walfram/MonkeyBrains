@@ -29,7 +29,7 @@
  */
 package com.jme3.ai.agents;
 
-import com.jme3.ai.agents.util.GameEntityExceptions;
+import com.jme3.ai.agents.util.AIControlExceptions;
 
 /**
  *
@@ -55,7 +55,7 @@ public class AgentExceptions {
     /**
      * Agent does not have initiliazed attribute.
      */
-    public static class AgentAttributeNotFound extends GameEntityExceptions.GameEntityAttributeNotFound {
+    public static class AgentAttributeNotFound extends AIControlExceptions.AIControlAttributeNotFound {
 
         public AgentAttributeNotFound(Agent agent, String message) {
             super(agent, message);

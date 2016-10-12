@@ -233,7 +233,7 @@ public abstract class GameEntity extends AbstractControl {
         try {
             spatial.setLocalRotation(rotation);
         } catch (NullPointerException e) {
-            throw new GameEntityExceptions.GameEntityAttributeNotFound(this, "spatial");
+            throw new AIControlExceptions.AIControlAttributeNotFound(this, "spatial");
         }
 
     }
@@ -246,7 +246,7 @@ public abstract class GameEntity extends AbstractControl {
         try {
             return spatial.getWorldTranslation();
         } catch (NullPointerException e) {
-            throw new GameEntityExceptions.GameEntityAttributeNotFound(this, "spatial");
+            throw new AIControlExceptions.AIControlAttributeNotFound(this, "spatial");
         }
     }
 
@@ -317,7 +317,7 @@ public abstract class GameEntity extends AbstractControl {
 
     protected void validateRadius(float radius) {
         if (radius < 0) {
-            throw new GameEntityExceptions.NegativeRadiusException("A GameObject can't have a negative radius. You tried to construct the agent with a " + radius + " radius.");
+            throw new AIControlExceptions.NegativeRadiusException("A GameObject can't have a negative radius. You tried to construct the agent with a " + radius + " radius.");
         }
     }
 

@@ -29,6 +29,8 @@
  */
 package com.jme3.ai.agents.util;
 
+import com.jme3.ai.agents.AIControl;
+
 /**
  * Class container for exceptions related to game entities.
  *
@@ -36,14 +38,14 @@ package com.jme3.ai.agents.util;
  * @author Jesús Martín Berlanga
  * @version 1.1.0
  */
-public class GameEntityExceptions {
+public class AIControlExceptions {
 
     /**
-     * Main exception for all Game entity related exceptions.
+     * Main exception for all AIControl related exceptions.
      */
-    public static class GameEntityException extends RuntimeException {
+    public static class AIControlException extends RuntimeException {
 
-        public GameEntityException(String message) {
+        public AIControlException(String message) {
             super(message);
         }
     }
@@ -51,27 +53,27 @@ public class GameEntityExceptions {
     /**
      * Attribute is not initialized in game entity.
      */
-    public static class GameEntityAttributeNotFound extends GameEntityException {
+    public static class AIControlAttributeNotFound extends AIControlException {
 
-        public GameEntityAttributeNotFound(GameEntity gameEntity, String message) {
-            super(gameEntity + " doesn't have " + message + '.');
+        public AIControlAttributeNotFound(AIControl aiControl, String message) {
+            super(aiControl + " doesn't have " + message + '.');
         }
     }
 
     /**
      * Game entity has negative radius.
      */
-    public static class NegativeRadiusException extends GameEntityException {
+    public static class NegativeRadiusException extends AIControlException {
 
         public NegativeRadiusException(String message) {
             super(message);
         }
     }
     
-    public static class MaxGameEntitiesException extends RuntimeException {
+    public static class MaxAIControlsException extends RuntimeException {
 
-        public MaxGameEntitiesException() {
-            super("There are more game entities than the framework supports.");
+        public MaxAIControlsException() {
+            super("There are more AIControls than the framework supports.");
         } 
     }
 }
