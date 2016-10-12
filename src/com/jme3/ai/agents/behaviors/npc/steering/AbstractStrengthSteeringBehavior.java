@@ -48,7 +48,7 @@ import com.jme3.scene.Spatial;
  * <br><br>
  *
  * You need to call setupStrengthControl( ... ), otherwhise this class will work
- * the same as AstractSteeringBehavior.
+ * the same as AbstractSteeringBehavior.
  *
  * @see SteerStrengthType
  * @see AbstractSteeringBehavior
