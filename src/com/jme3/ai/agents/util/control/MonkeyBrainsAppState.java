@@ -32,7 +32,7 @@ package com.jme3.ai.agents.util.control;
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.AgentExceptions;
 import com.jme3.ai.agents.util.GameEntity;
-import com.jme3.ai.agents.util.GameEntityExceptions;
+import com.jme3.ai.agents.util.AIControlExceptions;
 import monkeystuff.weapon.AbstractWeapon;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
@@ -105,7 +105,7 @@ public class MonkeyBrainsAppState extends AbstractAppState {
      */
     private int setIdCouterToGameEntity() {
         if (gameEntities.size() >= Integer.MAX_VALUE - MAX_NUMBER_OF_AGENTS - 1) {
-            throw new GameEntityExceptions.MaxGameEntitiesException();
+            throw new AIControlExceptions.MaxAIControlsException();
         }
         while (!isAvailable(gameEntities, idCounter)) {
             if (idCounter < Integer.MAX_VALUE) {
