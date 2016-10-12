@@ -9,3 +9,4 @@ We now use the world rotation and translation everywhere. Is that good? I'm not 
 On the other hand, when you have an agent standing on a car, you might want his rotation to be influenced by the car (and thus adding him as subnode of the car).  
 
 Renamed the GameEntityException to AIControlException. This is part of a larger refactoring.  
+Also renamed the GameEntitySeenEvent/Listener to AIControlSeenEvent/Listener.  

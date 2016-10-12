@@ -29,7 +29,7 @@
  */
 package com.jme3.ai.agents.events;
 
-import com.jme3.ai.agents.util.GameEntity;
+import com.jme3.ai.agents.AIControl;
 
 /**
  * Event for seen GameEntities.
@@ -37,36 +37,36 @@ import com.jme3.ai.agents.util.GameEntity;
  * @author Tihomir Radosavljević
  * @version 1.0.0
  */
-public class GameEntitySeenEvent extends GameEntityEvent {
+public class AIControlSeenEvent extends AIControlEvent {
 
     /**
      * GameEntity that have been seen.
      */
-    private GameEntity gameEntitySeen;
+    private AIControl aiControlSeen;
 
     /**
      *
      * @param source object that produce this event (it is usually agent)
-     * @param gameEntity GameEntity that have been seen
+     * @param aiControl GameEntity that have been seen
      */
-    public GameEntitySeenEvent(Object source, GameEntity gameEntity) {
+    public AIControlSeenEvent(Object source, AIControl aiControl) {
         super(source);
-        this.gameEntitySeen = gameEntity;
+        this.aiControlSeen = aiControl;
     }
 
     /**
      *
-     * @return seen GameEntity
+     * @return seen AIControl
      */
-    public GameEntity getGameEntitySeen() {
-        return gameEntitySeen;
+    public AIControl getAIControlSeen() {
+        return aiControlSeen;
     }
 
     /**
      *
-     * @param gameEntitySeen seen GameEntity
+     * @param aiControlSeen seen GameEntity
      */
-    public void setGameEntitySeen(GameEntity gameEntitySeen) {
-        this.gameEntitySeen = gameEntitySeen;
+    public void setAIControlSeen(AIControl aiControlSeen) {
+        this.aiControlSeen = aiControlSeen;
     }
 }

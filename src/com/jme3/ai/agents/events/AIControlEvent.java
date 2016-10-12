@@ -32,19 +32,19 @@ package com.jme3.ai.agents.events;
 import java.util.EventObject;
 
 /**
- * Base event for all GameEntityEvents.
+ * Base event for all AIControlEvents.
  *
  * @author Tihomir Radosavljević
  * @version 1.0.0
  */
-public class GameEntityEvent extends EventObject {
+public class AIControlEvent extends EventObject {
 
     /**
-     * Constructor for GameEntityEvent
+     * Constructor for AIControlEvent
      *
      * @param source GameEntity that have produced this Event
      */
-    public GameEntityEvent(Object source) {
+    public AIControlEvent(Object source) {
         super(source);
     }
 }
