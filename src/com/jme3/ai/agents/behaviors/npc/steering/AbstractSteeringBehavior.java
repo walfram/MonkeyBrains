@@ -97,7 +97,7 @@ public abstract class AbstractSteeringBehavior extends Behavior {
      * @return The new velocity for this agent based on steering vector
      */
     protected Vector3f calculateNewVelocity() {
-        agent.setAcceleration(calculateSteering().mult(1 / agentTotalMass()));
+        agent.setAcceleration(calculateSteering().mult(1 / agent.getMass()));
         velocity = velocity.add(agent.getAcceleration());
         agent.setVelocity(velocity);
 
@@ -116,22 +116,6 @@ public abstract class AbstractSteeringBehavior extends Behavior {
         Quaternion q = new Quaternion();
         q.lookAt(velocity, new Vector3f(0, 1, 0));
         agent.getLocalRotation().slerp(q, agent.getRotationSpeed() * tpf);
-    }
-
-    /**
-     * Method for calculating agent total mass. It contains agent mass and mass
-     * of inventory that agent is carrying.
-     *
-     * @return total mass of agents
-     */
-    protected float agentTotalMass() {
-        float mass = 0;
-        mass += agent.getMass();
-        // Inventory mass must be implemented somewhere else :(
-        //if (agent.getInventory() != null) {
-        //    mass += agent.getInventory().getInventoryMass();
-        //}
-        return mass;
     }
 
     /**
