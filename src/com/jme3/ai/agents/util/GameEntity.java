@@ -95,17 +95,7 @@ public abstract class GameEntity extends AbstractControl {
      */
     protected int id;
 
-    /**
-     * @return The predicted position for this 'frame', taking into account
-     * current position and velocity.
-     */
-    public Vector3f getPredictedPosition() {
-        Vector3f predictedPos = new Vector3f();
-        if (velocity != null) {
-            predictedPos = getLocalTranslation().add(velocity);
-        }
-        return predictedPos;
-    }
+    
 
     /**
      * @param gameEntity Other game entitys
