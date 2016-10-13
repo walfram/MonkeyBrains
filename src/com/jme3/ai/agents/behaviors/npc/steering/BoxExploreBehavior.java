@@ -130,7 +130,7 @@ public class BoxExploreBehavior extends AbstractStrengthSteeringBehavior {
 
             for (int i = 0; i < this.targets.size(); i++) {
                 Vector3f target = this.targets.get(i);
-                float distanceFromTarget = this.agent.offset(target).length();
+                float distanceFromTarget = agent.vectorTo(target).length();
 
                 if (distanceFromTarget < this.subdivisionDistance / 2) {
                     this.targets.remove(i);

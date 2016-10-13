@@ -29,10 +29,9 @@
  */
 package com.jme3.ai.agents.util;
 
-import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.npc.steering.ObstacleAvoidanceBehavior;
 import com.jme3.ai.agents.util.control.MonkeyBrainsAppState;
-import monkeystuff.systems.HitPoints;
+//import monkeystuff.systems.HitPoints;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -78,10 +77,7 @@ public abstract class GameEntity extends AbstractControl {
      * Maximum force that can be applied to this GameEntity.
      */
     protected float maxForce;
-    /**
-     * HitPoint System that will agent use.
-     */
-    protected HitPoints hitPoints;
+
     /**
      * Rotation speed of GameEntity.
      */
@@ -233,7 +229,7 @@ public abstract class GameEntity extends AbstractControl {
         try {
             spatial.setLocalRotation(rotation);
         } catch (NullPointerException e) {
-            throw new AIControlExceptions.AIControlAttributeNotFound(this, "spatial");
+            throw new AIControlExceptions.AIControlAttributeNotFound(null, "spatial");
         }
 
     }
@@ -246,7 +242,7 @@ public abstract class GameEntity extends AbstractControl {
         try {
             return spatial.getWorldTranslation();
         } catch (NullPointerException e) {
-            throw new AIControlExceptions.AIControlAttributeNotFound(this, "spatial");
+            throw new AIControlExceptions.AIControlAttributeNotFound(null, "spatial");
         }
     }
 
@@ -305,14 +301,6 @@ public abstract class GameEntity extends AbstractControl {
 
     public float getRadius() {
         return this.radius;
-    }
-
-    public HitPoints getHitPoints() {
-        return hitPoints;
-    }
-
-    public void setHitPoints(HitPoints hitPoints) {
-        this.hitPoints = hitPoints;
     }
 
     protected void validateRadius(float radius) {

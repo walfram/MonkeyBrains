@@ -75,7 +75,7 @@ public class SimpleRotateBehavior extends Behavior {
         if (spatial == null) {
             //if there is rotation target
             if (rotationTarget != null) {
-                rotationDirection = agent.getLocalRotation().clone();
+                rotationDirection = agent.getSpatial().getLocalRotation().clone();
                 rotationDirection.slerp(rotationTarget, agent.getRotationSpeed() * tpf);
                 agent.getSpatial().rotate(rotationDirection);
             } else {

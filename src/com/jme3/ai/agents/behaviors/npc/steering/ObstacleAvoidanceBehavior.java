@@ -29,8 +29,8 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
+import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.math.Vector3f;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Spatial;
@@ -61,7 +61,7 @@ import java.util.Random;
  * It is needed that the obstacles (Agents) have the "radius" atribute correctly
  * setted up.
  *
- * @see GameEntity#setRadius(float)
+ * @see AIControl#setRadius(float)
  *
  * @author Jesús Martín Berlanga
  * @version 1.1.1
@@ -70,7 +70,7 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
 
     private float minDistance;
     private float minTimeToCollision;
-    private List<GameEntity> obstacles;
+    private List<AIControl> obstacles;
 
     /**
      * @param obstacles A list with the obstacles (Agents)
@@ -83,7 +83,7 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
      * @see
      * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent)
      */
-    public ObstacleAvoidanceBehavior(Agent agent, List<GameEntity> obstacles, float minTimeToCollision) {
+    public ObstacleAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision) {
         super(agent);
         this.validateMinTimeToCollision(minTimeToCollision);
         this.minTimeToCollision = minTimeToCollision;
@@ -99,7 +99,7 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
      * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
      * com.jme3.scene.Spatial)
      */
-    public ObstacleAvoidanceBehavior(Agent agent, List<GameEntity> obstacles, float minTimeToCollision, Spatial spatial) {
+    public ObstacleAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, Spatial spatial) {
         super(agent, spatial);
         this.validateMinTimeToCollision(minTimeToCollision);
         this.minTimeToCollision = minTimeToCollision;
@@ -118,7 +118,7 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
      * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
      * java.util.List, float)
      */
-    public ObstacleAvoidanceBehavior(Agent agent, List<GameEntity> obstacles, float minTimeToCollision, float minDistance) {
+    public ObstacleAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, float minDistance) {
         super(agent);
         this.validateMinTimeToCollision(minTimeToCollision);
         this.validateMinDistance(minDistance);
@@ -135,7 +135,7 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
      * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
      * com.jme3.scene.Spatial)
      */
-    public ObstacleAvoidanceBehavior(Agent agent, List<GameEntity> obstacles, float minTimeToCollision, float minDistance, Spatial spatial) {
+    public ObstacleAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, float minDistance, Spatial spatial) {
         super(agent, spatial);
         this.validateMinTimeToCollision(minTimeToCollision);
         this.validateMinDistance(minDistance);
@@ -169,8 +169,8 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
 
             // test all obstacles for intersection with my forward axis,
             // select the one whose intersection is nearest
-            for (GameEntity obstacle : this.obstacles) {
-                float distanceFromCenterToCenter = this.agent.distanceRelativeToGameEntity(obstacle);
+            for (AIControl obstacle : this.obstacles) {
+                float distanceFromCenterToCenter = this.agent.distanceTo(obstacle);
                 if (distanceFromCenterToCenter > this.minDistance) {
                     break;
                 }
@@ -194,7 +194,7 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
                         + (this.agent.getRadius() * this.agent.getRadius())) //Pythagoras Theorem
                         ) {
                     Vector3f velocityNormalized = this.agent.getVelocity().normalize();
-                    Vector3f distanceVec = this.agent.offset(obstacle).normalize().mult(distanceFromCenterToObstacleSuperf);
+                    Vector3f distanceVec = this.agent.vectorTo(obstacle).normalize().mult(distanceFromCenterToObstacleSuperf);
                     Vector3f projectedVector = velocityNormalized.mult(velocityNormalized.dot(distanceVec));
 
                     Vector3f collisionDistanceOffset = projectedVector.subtract(distanceVec);
@@ -265,11 +265,11 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
         return randPoint.subtract(planePoint);
     }
 
-    protected List<GameEntity> getObstacles() {
+    protected List<AIControl> getObstacles() {
         return this.obstacles;
     }
 
-    public void setObstacles(List<GameEntity> obstacles) {
+    public void setObstacles(List<AIControl> obstacles) {
         this.obstacles = obstacles;
     }
 

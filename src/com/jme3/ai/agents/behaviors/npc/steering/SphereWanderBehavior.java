@@ -138,7 +138,7 @@ public class SphereWanderBehavior extends AbstractStrengthSteeringBehavior {
     @Override
     protected Vector3f calculateRawSteering() {
         changeTargetPosition(timePerFrame);
-        return this.agent.offset(this.targetPosition).mult((0.5f / this.sphereRadius) * this.agent.getMoveSpeed());
+        return this.agent.vectorTo(this.targetPosition).mult((0.5f / this.sphereRadius) * this.agent.getSpeed());
     }
 
     /**
@@ -153,7 +153,7 @@ public class SphereWanderBehavior extends AbstractStrengthSteeringBehavior {
         if (this.agent.getVelocity() != null) {
             forward = this.agent.getVelocity().normalize();
         } else {
-            forward = this.agent.fordwardVector();
+            forward = this.agent.getForwardVector();
         }
 
         if (forward.equals(Vector3f.UNIT_Y)) {
@@ -169,7 +169,7 @@ public class SphereWanderBehavior extends AbstractStrengthSteeringBehavior {
         }
 
         Vector3f sideVector = forward.cross(Vector3f.UNIT_Y).normalize();
-        Vector3f rayDir = (this.agent.offset(wanderSphere.getCenter())).add(sideVector.mult(this.randomDirection.x));//.add(Vector3f.UNIT_Y.mult(this.randomDirection.y));       
+        Vector3f rayDir = (this.agent.vectorTo(wanderSphere.getCenter())).add(sideVector.mult(this.randomDirection.x));//.add(Vector3f.UNIT_Y.mult(this.randomDirection.y));       
 
         Ray ray = new Ray(this.agent.getWorldTranslation(), rayDir);
         CollisionResults results = new CollisionResults();

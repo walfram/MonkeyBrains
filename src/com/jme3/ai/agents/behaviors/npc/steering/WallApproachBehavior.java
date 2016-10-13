@@ -164,7 +164,7 @@ public class WallApproachBehavior extends AbstractStrengthSteeringBehavior {
             Vector3f surfaceLocation = this.surfaceLocation(aproximatedSurfaceLocationDir);
 
             if (surfaceLocation != null) {
-                Vector3f extraOffset = this.agent.offset(surfaceLocation).negate().normalize().mult(this.offsetToMaintain);
+                Vector3f extraOffset = this.agent.vectorTo(surfaceLocation).negate().normalize().mult(this.offsetToMaintain);
 
                 SeekBehavior seek = new SeekBehavior(this.agent, surfaceLocation.add(extraOffset));
                 steer = seek.calculateRawSteering();
@@ -230,7 +230,7 @@ public class WallApproachBehavior extends AbstractStrengthSteeringBehavior {
             Vector3f rayTestSurfaceLocation = this.surfaceLocation(rayTest.getDirection());
 
             if (rayTestSurfaceLocation != null) {
-                distances.addDistance(agent.offset(rayTestSurfaceLocation));
+                distances.addDistance(agent.vectorTo(rayTestSurfaceLocation));
             }
         }
 

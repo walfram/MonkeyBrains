@@ -29,10 +29,10 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
+import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions.IllegalIntervalException;
-import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -118,7 +118,7 @@ public abstract class AbstractSteeringBehavior extends Behavior {
     protected void rotateAgent(float tpf) {
         Quaternion q = new Quaternion();
         q.lookAt(velocity, new Vector3f(0, 1, 0));
-        agent.getLocalRotation().slerp(q, agent.getRotationSpeed() * tpf);
+        agent.getSpatial().getLocalRotation().slerp(q, agent.getRotationSpeed() * tpf);
     }
 
     /**
@@ -187,8 +187,8 @@ public abstract class AbstractSteeringBehavior extends Behavior {
      * @param agents
      * @return
      */
-    protected List<GameEntity> convertToGameEntities(List<Agent> agents) {
-        List<GameEntity> entities = new LinkedList<GameEntity>();
+    protected List<AIControl> convertToGameEntities(List<Agent> agents) {
+        List<AIControl> entities = new LinkedList<AIControl>();
         for (Agent tempAgent : agents) {
             entities.add(tempAgent);
         }

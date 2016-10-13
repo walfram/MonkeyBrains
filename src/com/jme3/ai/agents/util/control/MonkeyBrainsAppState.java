@@ -29,15 +29,11 @@
  */
 package com.jme3.ai.agents.util.control;
 
+import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.AgentExceptions;
-import com.jme3.ai.agents.util.GameEntity;
-import com.jme3.ai.agents.util.AIControlExceptions;
-import monkeystuff.weapon.AbstractWeapon;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,25 +64,14 @@ public class MonkeyBrainsAppState extends AbstractAppState {
      */
     protected GameControl gameControl;
     /**
-     * Hit point controls for game.
-     */
-    protected HitPointsControl hitPointsControl;
-    /**
      * List of all agents that are active in game.
      */
     protected List<Agent> agents;
     /**
      * List of all GameEntities in game except for agents.
      */
-    protected List<GameEntity> gameEntities;
-    /**
-     * Used internaly for difference between game entities.
-     */
-    private int idCounter;
-    /**
-     * Used internaly for difference between agents.
-     */
-    private int idCounterAgent;
+    protected List<AIControl> aiControls;
+
     /**
      * Maximum number of agents supported by framework.
      */
@@ -94,62 +79,7 @@ public class MonkeyBrainsAppState extends AbstractAppState {
 
     protected MonkeyBrainsAppState() {
         agents = new LinkedList<Agent>();
-        gameEntities = new LinkedList<GameEntity>();
-        idCounter = MAX_NUMBER_OF_AGENTS + 1;
-    }
-
-    /**
-     * Method for getting new available id for game entities.
-     *
-     * @return unique id
-     */
-    private int setIdCouterToGameEntity() {
-        if (gameEntities.size() >= Integer.MAX_VALUE - MAX_NUMBER_OF_AGENTS - 1) {
-            throw new AIControlExceptions.MaxAIControlsException();
-        }
-        while (!isAvailable(gameEntities, idCounter)) {
-            if (idCounter < Integer.MAX_VALUE) {
-                idCounter++;
-            } else {
-                idCounter = MAX_NUMBER_OF_AGENTS;
-            }
-        }
-        return idCounter;
-    }
-
-    /**
-     * Method for getting new available id for agents.
-     *
-     * @return unique id
-     */
-    private int setIdCounterToAgent() {
-        if (agents.size() >= MAX_NUMBER_OF_AGENTS - 1) {
-            throw new AgentExceptions.MaxAgentsException();
-        }
-        while (!isAvailable(agents, idCounterAgent)) {
-            if (idCounterAgent < MAX_NUMBER_OF_AGENTS - 1) {
-                idCounterAgent++;
-            } else {
-                idCounterAgent = 0;
-            }
-        }
-        return idCounterAgent;
-    }
-
-    /**
-     * Helper function for checking if some specific id is available.
-     *
-     * @param list
-     * @param id
-     * @return
-     */
-    private boolean isAvailable(List list, int id) {
-        for (int i = 0; i < list.size(); i++) {
-            if (((GameEntity) list.get(i)).getId() == id) {
-                return false;
-            }
-        }
-        return true;
+        aiControls = new LinkedList<AIControl>();
     }
 
     /**
@@ -160,7 +90,7 @@ public class MonkeyBrainsAppState extends AbstractAppState {
      */
     public void addAgent(Agent agent) {
         agents.add(agent);
-        agent.setId(setIdCounterToAgent());
+        //agent.setId(setIdCounterToAgent());
         if (inProgress) {
             agent.start();
         }
@@ -175,9 +105,9 @@ public class MonkeyBrainsAppState extends AbstractAppState {
      * @param position position where spatial should be added
      */
     public void addAgent(Agent agent, Vector3f position) {
-        agent.setLocalTranslation(position);
+        agent.setWorldTranslation(position);
         agents.add(agent);
-        agent.setId(setIdCounterToAgent());
+        //agent.setId(setIdCounterToAgent());
         if (inProgress) {
             agent.start();
         }
@@ -194,9 +124,9 @@ public class MonkeyBrainsAppState extends AbstractAppState {
      * @param z Z coordinate where spatial should be added
      */
     public void addAgent(Agent agent, float x, float y, float z) {
-        agent.setLocalTranslation(x, y, z);
+        agent.setWorldTranslation(new Vector3f(x, y, z));
         agents.add(agent);
-        agent.setId(setIdCounterToAgent());
+        //agent.setId(setIdCounterToAgent());
         if (inProgress) {
             agent.start();
         }
@@ -245,8 +175,8 @@ public class MonkeyBrainsAppState extends AbstractAppState {
         for (int i = 0; i < agents.size(); i++) {
             agents.get(i).update(tpf);
         }
-        for (int i = 0; i < gameEntities.size(); i++) {
-            gameEntities.get(i).update(tpf);
+        for (int i = 0; i < aiControls.size(); i++) {
+            aiControls.get(i).update(tpf);
         }
     }
 
@@ -254,8 +184,8 @@ public class MonkeyBrainsAppState extends AbstractAppState {
         return agents;
     }
 
-    public List<GameEntity> getGameEntities() {
-        return gameEntities;
+    public List<AIControl> getAIControls() {
+        return aiControls;
     }
 
     public boolean isFriendlyFire() {
@@ -266,42 +196,14 @@ public class MonkeyBrainsAppState extends AbstractAppState {
         this.friendlyFire = friendlyFire;
     }
 
-    /**
-     * Decrease hit points of target.
-     *
-     * @see
-     * HitPointsControl#decreaseHitPoints(com.jme3.ai.agents.util.GameEntity,
-     * float)
-     * @param target game entity who is being attacked
-     * @param weapon weapon with which is target being attacked
-     */
-    public void decreaseHitPoints(GameEntity target, AbstractWeapon weapon) {
-        decreaseHitPoints(target, weapon.getAttackDamage());
+
+    public void addAIControl(AIControl aiControl) {
+        aiControls.add(aiControl);
     }
 
-    /**
-     * Game entities can be boulders, bulets etc. This method enables destroying
-     * one bullet with another...
-     *
-     * @param target
-     * @param damage
-     */
-    public void decreaseHitPoints(GameEntity target, float damage) {
-        try {
-            hitPointsControl.decreaseHitPoints(target, damage);
-        } catch (NullPointerException e) {
-            throw new NullPointerException("HitPointsControl is not set.");
-        }
-    }
-
-    public void addGameEntity(GameEntity gameEntity) {
-        gameEntities.add(gameEntity);
-        gameEntity.setId(setIdCouterToGameEntity());
-    }
-
-    public void removeGameEntity(GameEntity gameEntity) {
-        gameEntity.getSpatial().removeFromParent();
-        gameEntities.remove(gameEntity);
+    public void removeAIControl(AIControl aiControl) {
+        aiControl.getSpatial().removeFromParent();
+        aiControls.remove(aiControl);
     }
 
     public static MonkeyBrainsAppState getInstance() {
@@ -347,11 +249,4 @@ public class MonkeyBrainsAppState extends AbstractAppState {
         this.app = app;
     }
 
-    public HitPointsControl getHitPointsControl() {
-        return hitPointsControl;
-    }
-
-    public void setHitPointsControl(HitPointsControl hitPointsControl) {
-        this.hitPointsControl = hitPointsControl;
-    }
 }

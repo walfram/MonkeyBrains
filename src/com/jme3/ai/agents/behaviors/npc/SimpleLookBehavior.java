@@ -29,26 +29,26 @@
  */
 package com.jme3.ai.agents.behaviors.npc;
 
+import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.math.FastMath;
-import com.jme3.ai.agents.events.GameEntitySeenEvent;
-import com.jme3.ai.agents.events.GameEntitySeenListener;
+import com.jme3.ai.agents.events.AIControlSeenEvent;
 import java.util.ArrayList;
 import java.util.List;
 import com.jme3.ai.agents.util.control.MonkeyBrainsAppState;
-import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.math.Vector3f;
 import java.util.LinkedList;
+import com.jme3.ai.agents.events.AIControlSeenListener;
 
 /**
  * Simple look behaviour for NPC. It calls for all behavior that are added in
- * listeners. That behaviors must implement GameEntitySeenListener.
+ listeners. That behaviors must implement AIControlSeenListener.
  *
- * @see GameEntitySeenListener
+ * @see AIControlSeenListener
  *
- * This behavior can only see GameEntity if it is added to game.
- * @see MonkeyBrainsAppState#addGameEntity(com.jme3.ai.agents.util.GameEntity)
+ * This behavior can only see AIControl if it is added to game.
+ * @see MonkeyBrainsAppState#addAIControl(com.jme3.ai.agents.util.AIControl)
  * <br>or for agents
  * @see MonkeyBrainsAppState#addAgent(com.jme3.ai.agents.Agent)
  * <br><br>
@@ -64,9 +64,9 @@ public class SimpleLookBehavior extends Behavior {
      */
     protected float visibilityRange;
     /**
-     * List of listeners to which behaviors GameEntitySeen should forward to.
+     * List of listeners to which behaviors AIControolSeen should forward to.
      */
-    protected List<GameEntitySeenListener> listeners;
+    protected List<AIControlSeenListener> listeners;
     /**
      * Angle in which GameEntities will be seen.
      */
@@ -97,7 +97,7 @@ public class SimpleLookBehavior extends Behavior {
      */
     public SimpleLookBehavior(Agent agent) {
         super(agent);
-        listeners = new ArrayList<GameEntitySeenListener>();
+        listeners = new ArrayList<AIControlSeenListener>();
         //default value
         viewAngle = FastMath.QUARTER_PI;
         typeOfWatching = TypeOfWatching.WATCH_EVERYTHING;
@@ -105,11 +105,11 @@ public class SimpleLookBehavior extends Behavior {
 
     /**
      * @param agent to whom behavior belongs
-     * @param viewAngle angle in which GameEntity will be seen
+     * @param viewAngle angle in which AIControl will be seen
      */
     public SimpleLookBehavior(Agent agent, float viewAngle) {
         super(agent);
-        listeners = new ArrayList<GameEntitySeenListener>();
+        listeners = new ArrayList<AIControlSeenListener>();
         this.viewAngle = viewAngle;
         typeOfWatching = TypeOfWatching.WATCH_EVERYTHING;
     }
@@ -118,26 +118,26 @@ public class SimpleLookBehavior extends Behavior {
      * Method for calling all behaviors that are affected by what agent is
      * seeing.
      *
-     * @param gameEntitySeen Agent that have been seen
+     * @param aiControlSeen Agent that have been seen
      */
-    protected void triggerListeners(GameEntity gameEntitySeen) {
-        //create GameEntitySeenEvent
-        GameEntitySeenEvent event = new GameEntitySeenEvent(agent, gameEntitySeen);
+    protected void triggerListeners(AIControl aiControlSeen) {
+        //create AIControlSeenEvent
+        AIControlSeenEvent event = new AIControlSeenEvent(agent, aiControlSeen);
         //forward it to all listeners
-        for (GameEntitySeenListener listener : listeners) {
-            listener.handleGameEntitySeenEvent(event);
+        for (AIControlSeenListener listener : listeners) {
+            listener.handleAIControlSeenEvent(event);
         }
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        List<GameEntity> gameEntities = look(agent, viewAngle);
-        for (int i = 0; i < gameEntities.size(); i++) {
-            triggerListeners(gameEntities.get(i));
+        List<AIControl> aiControl = look(agent, viewAngle);
+        for (int i = 0; i < aiControl.size(); i++) {
+            triggerListeners(aiControl.get(i));
         }
         //if nothing is seen
         //used for deactivating all behaviours activated with this behaviour
-        if (gameEntities.isEmpty()) {
+        if (aiControl.isEmpty()) {
             triggerListeners(null);
         }
     }
@@ -150,8 +150,8 @@ public class SimpleLookBehavior extends Behavior {
      * @param viewAngle - viewing angle
      * @return list of all game entities that can be seen by agent
      */
-    protected List<GameEntity> look(Agent agent, float viewAngle) {
-        List<GameEntity> temp = new LinkedList<GameEntity>();
+    protected List<AIControl> look(Agent agent, float viewAngle) {
+        List<AIControl> temp = new LinkedList<AIControl>();
         //are there seen agents
         if (typeOfWatching == TypeOfWatching.AGENT_WATCHING || typeOfWatching == TypeOfWatching.WATCH_EVERYTHING) {
             List<Agent> agents = MonkeyBrainsAppState.getInstance().getAgents();
@@ -164,10 +164,10 @@ public class SimpleLookBehavior extends Behavior {
             }
         }
         if (typeOfWatching == TypeOfWatching.GAME_ENTITY_WATCHING || typeOfWatching == TypeOfWatching.WATCH_EVERYTHING) {
-            List<GameEntity> gameEntities = MonkeyBrainsAppState.getInstance().getGameEntities();
-            for (GameEntity gameEntity : gameEntities) {
-                if (gameEntity.isEnabled() && lookable(agent, gameEntity)) {
-                    temp.add(gameEntity);
+            List<AIControl> aiControls = MonkeyBrainsAppState.getInstance().getAIControls();
+            for (AIControl aiControl : aiControls) {
+                if (aiControl.isEnabled() && lookable(agent, aiControl)) {
+                    temp.add(aiControl);
                 }
             }
         }
@@ -183,14 +183,15 @@ public class SimpleLookBehavior extends Behavior {
      * @param widthAngle
      * @return
      */
-    public boolean lookable(Agent observer, GameEntity gameEntity) {
+    public boolean lookable(Agent observer, AIControl aiControl) {
         //if agent is not in visible range
-        if (observer.getWorldTranslation().distance(gameEntity.getWorldTranslation())
+        if (observer.getWorldTranslation().distance(aiControl.getWorldTranslation())
                 > visibilityRange) {
             return false;
         }
-        Vector3f direction = observer.getLocalRotation().mult(new Vector3f(0, 0, -1));
-        Vector3f direction2 = observer.getWorldTranslation().subtract(gameEntity.getWorldTranslation()).normalizeLocal();
+        //Vector3f direction = observer.getSpatial().getLocalRotation().mult(new Vector3f(0, 0, -1));
+        Vector3f direction = observer.getForwardVector().mult(-1f);
+        Vector3f direction2 = observer.getWorldTranslation().subtract(aiControl.getWorldTranslation()).normalizeLocal();
         float angle = direction.angleBetween(direction2);
         if (angle > viewAngle) {
             return false;
@@ -199,11 +200,11 @@ public class SimpleLookBehavior extends Behavior {
     }
 
     /**
-     * Adding listener that will trigger when GameEntity is seen.
+     * Adding listener that will trigger when AIControl is seen.
      *
      * @param listener
      */
-    public void addListener(GameEntitySeenListener listener) {
+    public void addListener(AIControlSeenListener listener) {
         listeners.add(listener);
     }
 
@@ -212,7 +213,7 @@ public class SimpleLookBehavior extends Behavior {
      *
      * @param listener
      */
-    public void removeListener(GameEntitySeenListener listener) {
+    public void removeListener(AIControlSeenListener listener) {
         listeners.remove(listener);
     }
 
@@ -224,14 +225,14 @@ public class SimpleLookBehavior extends Behavior {
     }
 
     /**
-     * @return angle in which GameEntity will be seen
+     * @return angle in which AIControl will be seen
      */
     public float getViewAngle() {
         return viewAngle;
     }
 
     /**
-     * @param viewAngle angle in which GameEntity will be seen
+     * @param viewAngle angle in which AIControl will be seen
      */
     public void setViewAngle(float viewAngle) {
         this.viewAngle = viewAngle;

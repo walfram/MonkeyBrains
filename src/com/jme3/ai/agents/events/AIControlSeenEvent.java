@@ -40,14 +40,14 @@ import com.jme3.ai.agents.AIControl;
 public class AIControlSeenEvent extends AIControlEvent {
 
     /**
-     * GameEntity that have been seen.
+     * AIControl that have been seen.
      */
     private AIControl aiControlSeen;
 
     /**
      *
      * @param source object that produce this event (it is usually agent)
-     * @param aiControl GameEntity that have been seen
+     * @param aiControl AIControl that has been seen
      */
     public AIControlSeenEvent(Object source, AIControl aiControl) {
         super(source);
@@ -64,7 +64,7 @@ public class AIControlSeenEvent extends AIControlEvent {
 
     /**
      *
-     * @param aiControlSeen seen GameEntity
+     * @param aiControlSeen seen AIControl
      */
     public void setAIControlSeen(AIControl aiControlSeen) {
         this.aiControlSeen = aiControlSeen;

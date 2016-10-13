@@ -111,12 +111,12 @@ public class QueuingBehavior extends AbstractStrengthSteeringBehavior {
                 float distance;
 
                 if (neighbour != this.agent
-                        && (distance = this.agent.distanceRelativeToGameEntity(neighbour)) < this.minDistance
+                        && (distance = this.agent.distanceTo(neighbour)) < this.minDistance
                         && fordwardness > 0
                         && neighVel != null
                         && (velDiff = neighVel.length() - agentVelocity.length()) < 0) {
                     distanceFactor *= distance / this.minDistance;
-                    velocityFactor *= -velDiff / this.agent.getMoveSpeed();
+                    velocityFactor *= -velDiff / agent.getSpeed();
                     numberObstaclesFactor++;
                 }
             }

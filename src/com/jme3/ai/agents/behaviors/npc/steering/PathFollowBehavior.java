@@ -194,7 +194,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
                 //chaeck if the agent is outside the path
                 if (distanceToCenter > this.pathRadius) {
                     //Move to the next spine and inside the path
-                    Vector3f moveToSpine = this.agent.offset(this.orderedPointsList.get(this.nextSpineJoint)).normalize();
+                    Vector3f moveToSpine = this.agent.vectorTo(this.orderedPointsList.get(this.nextSpineJoint)).normalize();
                     Vector3f moveToCenter = this.orderedPointsList.get(this.nextSpineJoint).subtract(posProjection).normalize();
                     steer = moveToSpine.add(moveToCenter);
                 } else {

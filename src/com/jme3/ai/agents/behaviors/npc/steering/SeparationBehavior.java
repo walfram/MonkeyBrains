@@ -29,8 +29,8 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
+import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.math.Vector3f;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Spatial;
@@ -40,12 +40,12 @@ import java.util.List;
  * Separation steering behavior gives a character the ability to maintain a
  * certain separation distance from others nearby. This can be used to prevent
  * characters from crowding together. <br><br>
- *
- * For each nearby character, a repulsive force is computed by subtracting the
- * positions of our character and the nearby character, normalizing, and then
- * applying a 1/r weighting. (That is, the position offset vector is scaled by
- * 1/r^2.)". "These repulsive forces for each nearby character are summed
- * together to produce the overall steering force. <br><br>
+
+ For each nearby character, a repulsive force is computed by subtracting the
+ positions of our character and the nearby character, normalizing, and then
+ applying a 1/r weighting. (That is, the position vectorTo vector is scaled by
+ 1/r^2.)". "These repulsive forces for each nearby character are summed
+ together to produce the overall steering force. <br><br>
  *
  * The supplied neighbours should only be the nearby neighbours in the field of
  * view of the character that is steering. It is good to ignore anything behind
@@ -61,14 +61,14 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
     /*
      * List of the obstacles that we want to be separated
      */
-    private List<GameEntity> obstacles;
+    private List<AIControl> obstacles;
 
     /**
      * @param agent To whom behavior belongs.
      * @param initialObstacles Initializes a list with the obstacles from the
      * agent want to be separated
      */
-    public SeparationBehavior(Agent agent, List<GameEntity> initialObstacles) {
+    public SeparationBehavior(Agent agent, List<AIControl> initialObstacles) {
         super(agent);
         this.obstacles = initialObstacles;
         this.minDistance = Float.POSITIVE_INFINITY;
@@ -79,7 +79,7 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
      * @see SeparationBehavior#SeparationBehavior(com.jme3.ai.agents.Agent,
      * java.util.List)
      */
-    public SeparationBehavior(Agent agent, List<GameEntity> initialObstacles, Spatial spatial) {
+    public SeparationBehavior(Agent agent, List<AIControl> initialObstacles, Spatial spatial) {
         super(agent, spatial);
         this.obstacles = initialObstacles;
         this.minDistance = Float.POSITIVE_INFINITY;
@@ -91,7 +91,7 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
      * @see SeparationBehavior#SeparationBehavior(com.jme3.ai.agents.Agent,
      * java.util.List)
      */
-    public SeparationBehavior(Agent agent, List<GameEntity> initialObstacles, float minDistance) {
+    public SeparationBehavior(Agent agent, List<AIControl> initialObstacles, float minDistance) {
         super(agent);
         this.validateMinDistance(minDistance);
         this.obstacles = initialObstacles;
@@ -103,7 +103,7 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
      * @see SeparationBehavior#SeparationBehavior(com.jme3.ai.agents.Agent,
      * java.util.List, float)
      */
-    public SeparationBehavior(Agent agent, List<GameEntity> initialObstacles, float minDistance, Spatial spatial) {
+    public SeparationBehavior(Agent agent, List<AIControl> initialObstacles, float minDistance, Spatial spatial) {
         super(agent, spatial);
         this.validateMinDistance(minDistance);
         this.obstacles = initialObstacles;
@@ -125,9 +125,9 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
         Vector3f agentLocation = super.agent.getWorldTranslation();
         Vector3f steering = new Vector3f();
 
-        for (GameEntity obstacle : this.obstacles) {
+        for (AIControl obstacle : this.obstacles) {
             //If the obstacle is not himself
-            if (obstacle != this.agent && obstacle.distanceRelativeToGameEntity(this.agent) < this.minDistance) {
+            if (obstacle != this.agent && obstacle.distanceTo(this.agent) < this.minDistance) {
                 Vector3f location = obstacle.getWorldTranslation().subtract(agentLocation);
                 float lengthSquared = location.lengthSquared();
                 location.normalizeLocal();
@@ -149,7 +149,7 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
      * @see #getObstacles()
      * @param obstacles The list of agents
      */
-    public void setObstacles(List<GameEntity> obstacles) {
+    public void setObstacles(List<AIControl> obstacles) {
         this.obstacles = obstacles;
     }
 
@@ -160,7 +160,7 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
      * @see #setObstacles(java.util.List)
      * @return The obstacles
      */
-    public List<GameEntity> getObstacles() {
+    public List<AIControl> getObstacles() {
         return obstacles;
     }
 }

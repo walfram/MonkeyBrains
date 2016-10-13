@@ -157,23 +157,22 @@ public class LeaderFollowingBehavior extends SeekBehavior {
     @Override
     protected Vector3f calculateRawSteering() {
         Vector3f steer;
-        float distanceBetwen = this.agent.distanceRelativeToGameEntity(this.getTarget());
+        float distanceBetween = this.agent.distanceTo(this.getTarget());
 
         //See how far ahead we need to leed
         Vector3f fullProjectedLocation = this.getTarget().getPredictedPosition();
         Vector3f predictedPositionDiff = fullProjectedLocation.subtract(this.getTarget().getWorldTranslation());
-        Vector3f projectedLocation = this.getTarget().getWorldTranslation().add(predictedPositionDiff.mult(
-                this.calculateFocusFactor(distanceBetwen)));
+        Vector3f projectedLocation = this.getTarget().getWorldTranslation().add(predictedPositionDiff.mult(this.calculateFocusFactor(distanceBetween)));
 
         this.arriveBehavior.setSeekingPosition(projectedLocation);
 
         steer = this.arriveBehavior.calculateRawSteering();
 
-        if (!(distanceBetwen > this.distanceToEvade) && !(this.getTarget().forwardness(this.agent) < FastMath.cos(this.minimumAngle))) { //Incorrect angle and Is in the proper distance to evade -> Evade the leader
+        if (!(distanceBetween > this.distanceToEvade) && !(this.getTarget().forwardness(this.agent) < FastMath.cos(this.minimumAngle))) { //Incorrect angle and Is in the proper distance to evade -> Evade the leader
 
-            Vector3f arriveSteer = steer.mult(distanceBetwen / this.distanceToEvade);
+            Vector3f arriveSteer = steer.mult(distanceBetween / this.distanceToEvade);
             Vector3f evadeSteer = this.evadeBehavior.calculateRawSteering();
-            evadeSteer.mult(this.distanceToEvade / (1 + distanceBetwen));
+            evadeSteer.mult(this.distanceToEvade / (1 + distanceBetween));
             steer = (new Vector3f()).add(arriveSteer).add(evadeSteer);
         }
 

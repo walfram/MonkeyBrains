@@ -29,8 +29,8 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
+import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -55,7 +55,7 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
     /**
      * List of game entities that should align.
      */
-    private List<GameEntity> neighbours;
+    private List<AIControl> neighbours;
     /**
      * Maximum distance between two agents.
      */
@@ -69,7 +69,7 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
      * @param neighbours Neighbours, this agent is moving toward the center of
      * this neighbours.
      */
-    public AlignmentBehavior(Agent agent, List<GameEntity> neighbours) {
+    public AlignmentBehavior(Agent agent, List<AIControl> neighbours) {
         super(agent);
         this.neighbours = neighbours;
     }
@@ -86,7 +86,7 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
      * @see AlignmentBehavior#AlignmentBehavior(com.jme3.ai.agents.Agent,
      * java.util.List)
      */
-    public AlignmentBehavior(Agent agent, List<GameEntity> neighbours, float maxDistance, float maxAngle) {
+    public AlignmentBehavior(Agent agent, List<AIControl> neighbours, float maxDistance, float maxAngle) {
         super(agent);
         this.validateMaxDistance(maxDistance);
         this.neighbours = neighbours;
@@ -99,7 +99,7 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
      * @see AlignmentBehavior#AlignmentBehavior(com.jme3.ai.agents.Agent,
      * java.util.List)
      */
-    public AlignmentBehavior(Agent agent, List<GameEntity> neighbours, Spatial spatial) {
+    public AlignmentBehavior(Agent agent, List<AIControl> neighbours, Spatial spatial) {
         super(agent, spatial);
         this.neighbours = neighbours;
     }
@@ -110,7 +110,7 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
      * @see AlignmentBehavior#AlignmentBehavior(com.jme3.ai.agents.Agent,
      * java.util.List, float, float)
      */
-    public AlignmentBehavior(Agent agent, List<GameEntity> neighbours, float maxDistance, float maxAngle, Spatial spatial) {
+    public AlignmentBehavior(Agent agent, List<AIControl> neighbours, float maxDistance, float maxAngle, Spatial spatial) {
         super(agent, spatial);
         this.validateMaxDistance(maxDistance);
         this.neighbours = neighbours;
@@ -133,17 +133,17 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
         Vector3f steering = new Vector3f();
         int realNeighbors = 0;
         // for each of the other vehicles...
-        for (GameEntity gameEntity : neighbours) {
-            if (this.agent.inBoidNeighborhood(gameEntity, this.agent.getRadius() * 3, this.maxDistance, this.maxAngle)) {
+        for (AIControl aiControl : neighbours) {
+            if (this.agent.inBoidNeighborhood(aiControl, this.agent.getRadius() * 3, this.maxDistance, this.maxAngle)) {
                 // accumulate sum of neighbor's positions
-                steering = steering.add(gameEntity.fordwardVector());
+                steering = steering.add(aiControl.getForwardVector());
                 realNeighbors++;
             }
         }
         // divide by neighbors, subtract off current position to get error-correcting direction
         if (realNeighbors > 0) {
             steering = steering.divide(realNeighbors);
-            steering = this.agent.offset(steering);
+            steering.subtractLocal(agent.getWorldTranslation());
         }
         return steering;
     }
@@ -154,7 +154,7 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
      * @see #getNeighbours() 
      * @param neighbours The list of agents
      */
-    public void setNeighbours(List<GameEntity> neighbours) {
+    public void setNeighbours(List<AIControl> neighbours) {
         this.neighbours = neighbours;
     }
 
@@ -166,7 +166,7 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
      * @see #setNeighbours(java.util.List) 
      * @return The neighbourhood
      */
-    public List<GameEntity> getNeighbours() {
+    public List<AIControl> getNeighbours() {
         return neighbours;
     }
 }

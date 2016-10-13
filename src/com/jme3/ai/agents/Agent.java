@@ -33,7 +33,6 @@ import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.ai.agents.behaviors.BehaviorExceptions.NullBehaviorException;
 import com.jme3.ai.agents.behaviors.npc.SimpleMainBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions;
-import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.scene.Spatial;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -45,7 +44,7 @@ import com.jme3.math.Vector3f;
  * @author Tihomir Radosavljević
  * @version 1.7.4
  */
-public class Agent<T> extends GameEntity {
+public class Agent<T> extends AIControl {
 
     /**
      * Class that enables you to add all variable you need for your agent.
@@ -57,16 +56,40 @@ public class Agent<T> extends GameEntity {
      */
     private Behavior mainBehavior;
 
+    
+    /**
+     * The speed with which the Agent will turn around corners
+     */
+    float rotationSpeed;
+    
+    /**
+     * Instantiate an Agent without any parameters.
+     * @deprecated Use the constructors specifing a radius or some behaviors
+     * might not work
+     */
+    @Deprecated
     public Agent() {
+        super(0.0f);
     }
 
     /**
-     * @param spatial spatial that will agent have durring game
+     * @param spatial spatial that will agent have during game
+     * @deprecated Use the constructors specifing a radius or some behaviors
+     * might not work.<br>
+     * <b>Deprecated.</b> Use the constructors not specifing a spatial attribute but 
+     * add the Agent manually to a spatial (addControl)
      */
+    @Deprecated
     public Agent(Spatial spatial) {
+        super(0.0f);
         this.spatial = spatial;
     }
-
+    
+    public Agent(float radius)
+    {
+        super(radius);
+    }
+    
     /**
      * @return main behavior of agent
      */
@@ -93,6 +116,28 @@ public class Agent<T> extends GameEntity {
         return spatial.getName();
     }
 
+    /**
+     * Returns the RotationSpeed (how fast the Agent will turn itself == looking
+     * into the movement direction). This is essentially the "yaw" velocity.<br>
+     * <br>
+     * @see #setRotationSpeed(float) 
+     * @return The Rotational Yaw Speed
+     */
+    public float getRotationSpeed() {
+        return rotationSpeed;
+    }
+
+    /**
+     * Sets the RotationSpeed (how fast the agent will turn around).<br>
+     * This is essentially the "yaw" velocity<br>
+     * <br>
+     * @param rotationSpeed The Rotational Speed in "turns per second"
+     */
+    public void setRotationSpeed(float rotationSpeed) {
+        this.rotationSpeed = rotationSpeed;
+    }
+
+    
     /**
      * Method for starting agent.
      *
@@ -132,7 +177,7 @@ public class Agent<T> extends GameEntity {
     }
 
     @Override
-    protected void controlUpdate(float tpf) {
+    public void updateAI(float tpf) {
         if (mainBehavior != null) {
             mainBehavior.update(tpf);
         }
@@ -152,7 +197,7 @@ public class Agent<T> extends GameEntity {
      * the same neighborhood if the forwardness is higher than "1 -
      * sinMaxAngle".
      *
-     * @param GameEntity The other agent
+     * @param neighbour The other agent
      * @param minDistance Min. distance to be in the same "neighborhood"
      * @param maxDistance Max. distance to be in the same "neighborhood"
      * @param maxAngle Max angle in radians
@@ -163,7 +208,7 @@ public class Agent<T> extends GameEntity {
      * @return If this agent is in the same "neighborhood" in relation with
      * another agent.
      */
-    public boolean inBoidNeighborhood(GameEntity neighbour, float minDistance, float maxDistance, float maxAngle) {
+    public boolean inBoidNeighborhood(AIControl neighbour, float minDistance, float maxDistance, float maxAngle) {
         if (minDistance < 0) {
             throw new SteeringExceptions.NegativeValueException("The min distance can not be negative.", minDistance);
         } else if (maxDistance < 0) {
@@ -173,17 +218,17 @@ public class Agent<T> extends GameEntity {
         if (this == neighbour) {
             isInBoidNeighborhood = false;
         } else {
-            float distanceSquared = distanceSquaredRelativeToGameEntity(neighbour);
+            float distanceSquared = vectorTo(neighbour).lengthSquared();
             // definitely in neighborhood if inside minDistance sphere
             if (distanceSquared < (minDistance * minDistance)) {
                 isInBoidNeighborhood = true;
             } // definitely not in neighborhood if outside maxDistance sphere
             else if (distanceSquared > maxDistance * maxDistance) {
                 isInBoidNeighborhood = false;
-            } // otherwise, test angular offset from forward axis.
+            } // otherwise, test angular vectorTo from forward axis.
             else {
                 if (this.getAcceleration() != null) {
-                    Vector3f unitOffset = this.offset(neighbour).divide(distanceSquared);
+                    Vector3f unitOffset = this.vectorTo(neighbour).divide(distanceSquared);
                     float forwardness = this.forwardness(unitOffset);
                     isInBoidNeighborhood = forwardness > FastMath.cos(maxAngle);
                 } else {
@@ -199,12 +244,12 @@ public class Agent<T> extends GameEntity {
      * Given two vehicles, based on their current positions and velocities,
      * determine the time until nearest approach.
      *
-     * @param gameEntity Other gameEntity
+     * @param aiControl Other aiControl
      * @return The time until nearest approach
      */
-    public float predictNearestApproachTime(GameEntity gameEntity) {
+    public float predictNearestApproachTime(AIControl aiControl) {
         Vector3f agentVelocity = velocity;
-        Vector3f otherVelocity = gameEntity.getVelocity();
+        Vector3f otherVelocity = aiControl.getVelocity();
 
         if (agentVelocity == null) {
             agentVelocity = new Vector3f();
@@ -227,9 +272,9 @@ public class Agent<T> extends GameEntity {
         // "Take the unit tangent along the other vehicle's path"
         Vector3f relTangent = relVel.divide(relSpeed);
 
-        /* "find distance from its path to origin (compute offset from
+        /* "find distance from its path to origin (compute vectorTo from
          other to us, find length of projection onto path)" */
-        Vector3f offset = gameEntity.offset(this);
+        Vector3f offset = aiControl.vectorTo(this);
         float projection = relTangent.dot(offset);
 
         return projection / relSpeed;
@@ -271,7 +316,7 @@ public class Agent<T> extends GameEntity {
      *
      * Anotates the positions at nearest approach in the given vectors.
      *
-     * @param gameEntity Other gameEntity
+     * @param aiControl Other aiControl
      * @param time The time until nearest approach
      * @param ourPositionAtNearestApproach Pointer to a vector, This bector will
      * be changed to our position at nearest approach
@@ -282,9 +327,9 @@ public class Agent<T> extends GameEntity {
      *
      * @see Agent#predictNearestApproachTime(com.jme3.ai.agents.Agent)
      */
-    public float computeNearestApproachPositions(GameEntity gameEntity, float time, Vector3f ourPositionAtNearestApproach, Vector3f hisPositionAtNearestApproach) {
+    public float computeNearestApproachPositions(AIControl aiControl, float time, Vector3f ourPositionAtNearestApproach, Vector3f hisPositionAtNearestApproach) {
         Vector3f agentVelocity = this.getVelocity();
-        Vector3f otherVelocity = gameEntity.getVelocity();
+        Vector3f otherVelocity = aiControl.getVelocity();
 
         if (agentVelocity == null) {
             agentVelocity = new Vector3f();
@@ -306,6 +351,6 @@ public class Agent<T> extends GameEntity {
 
     @Override
     public String toString() {
-        return "Agent{" + "name=" + getName() + ", id=" + id + '}';
+        return "Agent{" + "name=" + getName() + '}';
     }
 }

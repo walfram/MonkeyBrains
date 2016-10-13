@@ -63,7 +63,7 @@ public class ArriveBehavior extends SeekBehavior {
      */
     public ArriveBehavior(Agent agent, Agent target) {
         super(agent, target);
-        this.slowingDistance = agent.distanceRelativeToGameEntity(target) * 0.25f;
+        this.slowingDistance = agent.distanceTo(target) * 0.25f;
     }
 
     /**
@@ -74,7 +74,7 @@ public class ArriveBehavior extends SeekBehavior {
      */
     public ArriveBehavior(Agent agent, Agent target, Spatial spatial) {
         super(agent, target, spatial);
-        this.slowingDistance = agent.distanceRelativeToGameEntity(target) * 0.25f;
+        this.slowingDistance = agent.distanceTo(target) * 0.25f;
     }
 
     /**
@@ -169,7 +169,7 @@ public class ArriveBehavior extends SeekBehavior {
         float radious = 0;
 
         if (this.getTarget() != null) {
-            distanceToTarget = this.agent.distanceRelativeToGameEntity(this.getTarget());
+            distanceToTarget = this.agent.distanceTo(this.getTarget());
             radious = this.getTarget().getRadius();
         } else if (this.getSeekingPosition() != null) {
             distanceToTarget = this.agent.getWorldTranslation().subtract(this.getSeekingPosition()).length();

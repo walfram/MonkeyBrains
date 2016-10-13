@@ -42,7 +42,7 @@ public class AIControlEvent extends EventObject {
     /**
      * Constructor for AIControlEvent
      *
-     * @param source GameEntity that have produced this Event
+     * @param source AIControl that has produced this Event
      */
     public AIControlEvent(Object source) {
         super(source);

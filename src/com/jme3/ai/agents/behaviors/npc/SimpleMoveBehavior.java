@@ -88,7 +88,7 @@ public class SimpleMoveBehavior extends Behavior {
         }
         //if there is movement direction in which agent should move
         if (moveDirection != null) {
-            agent.getSpatial().move(moveDirection.mult(agent.getMoveSpeed() * tpf));
+            agent.getSpatial().move(moveDirection.mult(agent.getSpeed() * tpf));
             rotateAgent(tpf);
         }
     }
@@ -147,6 +147,6 @@ public class SimpleMoveBehavior extends Behavior {
     public void rotateAgent(float tpf) {
         Quaternion q = new Quaternion();
         q.lookAt(moveDirection, new Vector3f(0, 1, 0));
-        agent.getLocalRotation().slerp(q, agent.getRotationSpeed() * tpf);
+        agent.getSpatial().getLocalRotation().slerp(q, agent.getRotationSpeed() * tpf);
     }
 }
