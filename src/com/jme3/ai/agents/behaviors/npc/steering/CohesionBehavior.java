@@ -52,12 +52,11 @@ public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
     /**
      * maxAngle is setted to PI / 2 by default and maxDistance to infinite.
      *
-     * @param agent To whom behavior belongs.
      * @param neighbours Neighbours, this agent is moving toward the center of
      * this neighbours.
      */
-    public CohesionBehavior(Agent agent, List<AIControl> neighbours) {
-        super(agent);
+    public CohesionBehavior(List<AIControl> neighbours) {
+        super();
         this.neighbours = neighbours;
     }
 
@@ -73,32 +72,8 @@ public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
      * @see CohesionBehavior#CohesionBehavior(com.jme3.ai.agents.Agent,
      * java.util.List)
      */
-    public CohesionBehavior(Agent agent, List<AIControl> neighbours, float maxDistance, float maxAngle) {
-        super(agent);
-        this.validateMaxDistance(maxDistance);
-        this.neighbours = neighbours;
-        this.maxDistance = maxDistance;
-        this.maxAngle = maxAngle;
-    }
-
-    /**
-     * @param spatial active spatial during excecution of behavior
-     * @see CohesionBehavior#CohesionBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List)
-     */
-    public CohesionBehavior(Agent agent, List<AIControl> neighbours, Spatial spatial) {
-        super(agent, spatial);
-        this.neighbours = neighbours;
-    }
-
-    /**
-     * @see CohesionBehavior#CohesionBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List)
-     * @see CohesionBehavior#CohesionBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List, float, float)
-     */
-    public CohesionBehavior(Agent agent, List<AIControl> neighbours, float maxDistance, float maxAngle, Spatial spatial) {
-        super(agent, spatial);
+    public CohesionBehavior(List<AIControl> neighbours, float maxDistance, float maxAngle) {
+        super();
         this.validateMaxDistance(maxDistance);
         this.neighbours = neighbours;
         this.maxDistance = maxDistance;

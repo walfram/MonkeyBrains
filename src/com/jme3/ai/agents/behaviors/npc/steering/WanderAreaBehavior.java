@@ -83,22 +83,9 @@ public class WanderAreaBehavior extends AbstractWanderBehavior {
     /**
      * Constructor for wander behavior.
      *
-     * @param agent to whom behavior belongs
      */
-    public WanderAreaBehavior(Agent agent) {
-        super(agent);
-        velocity = new Vector3f();
-        timeInterval = 2f;
-    }
-
-    /**
-     * Constructor for wander behavior.
-     *
-     * @param agent to whom behavior belongs
-     * @param spatial active spatial during excecution of behavior
-     */
-    public WanderAreaBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
+    public WanderAreaBehavior() {
+        super();
         velocity = new Vector3f();
         timeInterval = 2f;
     }

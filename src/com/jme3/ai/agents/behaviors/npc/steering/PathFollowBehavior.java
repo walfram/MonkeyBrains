@@ -93,25 +93,8 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
      * @see
      * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent)
      */
-    public PathFollowBehavior(Agent agent, ArrayList<Vector3f> orderedPointsList, float pathRadius) {
-        super(agent);
-        PathFollowBehavior.validateConstruction(orderedPointsList, pathRadius, this.cohesionStrength);
-        this.orderedPointsList = orderedPointsList;
-        this.pathRadius = pathRadius;
-    }
-
-    /**
-     * @see PathFollowBehavior#PathFollowBehavior(com.jme3.ai.agents.Agent,
-     * java.util.ArrayList, float)
-     * @see
-     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public PathFollowBehavior(Agent agent, ArrayList<Vector3f> orderedPointsList, float pathRadius, Spatial spatial) {
-        super(agent, spatial);
-        PathFollowBehavior.validateConstruction(orderedPointsList, pathRadius, this.cohesionStrength);
-        this.orderedPointsList = orderedPointsList;
-        this.pathRadius = pathRadius;
+    public PathFollowBehavior(ArrayList<Vector3f> orderedPointsList, float pathRadius) {
+        this(orderedPointsList, pathRadius, 1f);
     }
 
     /**
@@ -121,28 +104,15 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
      * @see PathFollowBehavior#PathFollowBehavior(com.jme3.ai.agents.Agent,
      * java.util.ArrayList, float)
      */
-    public PathFollowBehavior(Agent agent, ArrayList<Vector3f> orderedPointsList, float pathRadius, float cohesionStrength) {
-        super(agent);
+    public PathFollowBehavior(ArrayList<Vector3f> orderedPointsList, float pathRadius, float cohesionStrength) {
+        super();
         PathFollowBehavior.validateConstruction(orderedPointsList, pathRadius, cohesionStrength);
         this.orderedPointsList = orderedPointsList;
         this.pathRadius = pathRadius;
         this.cohesionStrength = cohesionStrength;
     }
 
-    /**
-     * @param cohesionStrength Cohesion multiplier
-     * @see PathFollowBehavior#PathFollowBehavior(com.jme3.ai.agents.Agent,
-     * java.util.ArrayList, float, com.jme3.scene.Spatial)
-     */
-    public PathFollowBehavior(Agent agent, ArrayList<Vector3f> orderedPointsList, float pathRadius, float cohesionStrength, Spatial spatial) {
-        super(agent, spatial);
-        validateConstruction(orderedPointsList, pathRadius, cohesionStrength);
-        this.orderedPointsList = orderedPointsList;
-        this.pathRadius = pathRadius;
-        this.cohesionStrength = cohesionStrength;
-    }
-
-    private static void validateConstruction(ArrayList<Vector3f> orderedPointsList, float pathRadius, float cohesionStrength) {
+     private static void validateConstruction(ArrayList<Vector3f> orderedPointsList, float pathRadius, float cohesionStrength) {
         if (orderedPointsList.size() < 2) {
             throw new PathFollowInsufficientPointsException("To create the path it is needed at least two points.", orderedPointsList.size());
         } else if (pathRadius < 0) {

@@ -62,17 +62,8 @@ public class UnalignedCollisionAvoidanceBehavior extends ObstacleAvoidanceBehavi
      * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
      * java.util.List, float)
      */
-    public UnalignedCollisionAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision) {
-        super(agent, obstacles, minTimeToCollision);
-    }
-
-    /**
-     * @see
-     * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial, java.util.List, float)
-     */
-    public UnalignedCollisionAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, Spatial spatial) {
-        super(agent, obstacles, minTimeToCollision, spatial);
+    public UnalignedCollisionAvoidanceBehavior(List<AIControl> obstacles, float minTimeToCollision) {
+        super(obstacles, minTimeToCollision);
     }
 
     /**
@@ -80,19 +71,9 @@ public class UnalignedCollisionAvoidanceBehavior extends ObstacleAvoidanceBehavi
      * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
      * java.util.List, float, float)
      */
-    public UnalignedCollisionAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, float minDistance) {
-        super(agent, obstacles, minTimeToCollision, minDistance);
+    public UnalignedCollisionAvoidanceBehavior(List<AIControl> obstacles, float minTimeToCollision, float minDistance) {
+        super(obstacles, minTimeToCollision, minDistance);
     }
-
-    /**
-     * @see
-     * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial, java.util.List, float, float)
-     */
-    public UnalignedCollisionAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, float minDistance, Spatial spatial) {
-        super(agent, obstacles, minTimeToCollision, minDistance, spatial);
-    }
-
     /**
      * @param distanceMultiplier Multiplies the distance required to evade an
      * obstacle, A higher value means that will evade far obstacles
@@ -100,21 +81,8 @@ public class UnalignedCollisionAvoidanceBehavior extends ObstacleAvoidanceBehavi
      * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
      * java.util.List, float, float)
      */
-    public UnalignedCollisionAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, float minDistance, float distanceMultiplier) {
-        super(agent, obstacles, minTimeToCollision, minDistance);
-        this.validateDistanceMultiplier(distanceMultiplier);
-        this.distanceMultiplier = distanceMultiplier;
-    }
-
-    /**
-     * @param distanceMultiplier Multiplies the distance required to evade an
-     * obstacle, A higher value means that will evade far obstacles
-     * @see
-     * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial, java.util.List, float, float)
-     */
-    public UnalignedCollisionAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, float minDistance, float distanceMultiplier, Spatial spatial) {
-        super(agent, obstacles, minTimeToCollision, minDistance, spatial);
+    public UnalignedCollisionAvoidanceBehavior(List<AIControl> obstacles, float minTimeToCollision, float minDistance, float distanceMultiplier) {
+        this(obstacles, minTimeToCollision, minDistance);
         this.validateDistanceMultiplier(distanceMultiplier);
         this.distanceMultiplier = distanceMultiplier;
     }

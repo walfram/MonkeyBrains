@@ -30,11 +30,6 @@
 package com.jme3.ai.agents.behaviors;
 
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.behaviors.BehaviorExceptions.AgentNotIncludedException;
-import com.jme3.renderer.RenderManager;
-import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.control.AbstractControl;
 
 /**
  * Base class for agent behaviors.
@@ -43,7 +38,7 @@ import com.jme3.scene.control.AbstractControl;
  * @author Jesús Martín Berlanga
  * @version 1.2.1
  */
-public abstract class Behavior extends AbstractControl {
+public abstract class Behavior {
 
     /**
      * Agent to whom behavior belongs.
@@ -51,37 +46,29 @@ public abstract class Behavior extends AbstractControl {
     protected Agent agent;
 
     /**
-     * Constructor for behavior that doesn't have any special spatial during
-     * execution.
-     *
-     * @param agent to whom behavior belongs
-     * @throws AgentNotIncludedException if agent is null
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
      */
-    public Behavior(Agent agent) {
-        if (agent == null) {
-            throw new BehaviorExceptions.AgentNotIncludedException();
-        }
-        this.agent = agent;
-        this.spatial = agent.getSpatial();
+    public Behavior() {
     }
 
     /**
-     * Constructor for behavior that has spatial during execution.
-     *
-     * @param agent to whom behavior belongs
-     * @param spatial which is active during execution
-     * @see Behavior#Behavior(com.jme3.ai.agents.Agent)
-     * @throws AgentNotIncludedException if agent is null
+     * Sets this Behavior's Agent.<br>This is called internally when you set
+     * an agent's behavior field.<br>
+     * That way you don't have to specify the agent for a behavior and it's 
+     * agent field is never null.
+     * @param agent 
      */
-    public Behavior(Agent agent, Spatial spatial) {
-        if (agent == null) {
-            throw new BehaviorExceptions.AgentNotIncludedException();
-        }
+    public void setAgent(Agent agent) {
         this.agent = agent;
-        this.spatial = spatial;
     }
-
-    @Override
-    protected void controlRender(RenderManager rm, ViewPort vp) {
-    }
+    
+    /**
+     * Triggers a behavior iteration/calculation for this frame.<br>
+     * After a call to updateAI the velocity and all have to be updated.<br>
+     * <br>
+     * @param tpf Time per Frame
+     * (how many seconds it took after the last update call)
+     */
+    public abstract void updateAI(float tpf);
 }

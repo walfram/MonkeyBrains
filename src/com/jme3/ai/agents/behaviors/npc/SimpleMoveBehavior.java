@@ -64,24 +64,32 @@ public class SimpleMoveBehavior extends Behavior {
      */
     protected float distanceError;
 
-    public SimpleMoveBehavior(Agent agent) {
-        super(agent);
-        distanceError = 0;
+    /**
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
+     */
+    public SimpleMoveBehavior() {        
+        this(0f);
     }
-
-    public SimpleMoveBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
-        distanceError = 0;
+    
+    /**
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
+     * @param distanceError The maximum distance to the target which is 
+     * acceptable.
+     */
+    public SimpleMoveBehavior(float distanceError)
+    {
+        this.distanceError = distanceError;
     }
 
     @Override
-    protected void controlUpdate(float tpf) {
+    public void updateAI(float tpf) {
         //if there is target position where agent should move
         if (targetPosition != null) {
             if (agent.getWorldTranslation().distance(targetPosition) <= distanceError) {
                 targetPosition = null;
                 moveDirection = null;
-                enabled = false;
                 return;
             }
             moveDirection = targetPosition.subtract(agent.getWorldTranslation()).normalize();

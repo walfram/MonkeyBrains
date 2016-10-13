@@ -94,7 +94,7 @@ public class WallApproachBehavior extends AbstractStrengthSteeringBehavior {
     /**
      * @param wall Surface or path where the agent will maintain a certain
      * offset
-     * @paaram offsetToMaintain Offset from the surface that the agent will have
+     * @param offsetToMaintain Offset from the surface that the agent will have
      * to maintain
      *
      * @throws WallApproachWithoutWallException If the wall is a null pointer
@@ -104,32 +104,12 @@ public class WallApproachBehavior extends AbstractStrengthSteeringBehavior {
      * @see
      * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent)
      */
-    public WallApproachBehavior(Agent agent, Node wall, float offsetToMaintain) {
-        super(agent);
+    public WallApproachBehavior(Node wall, float offsetToMaintain) {
+        super();
         WallApproachBehavior.validateConstruction(wall, offsetToMaintain);
         this.wall = wall;
         this.offsetToMaintain = offsetToMaintain;
 
-        if (offsetToMaintain != 0) {
-            this.rayTestOffset = (offsetToMaintain + agent.getRadius()) * 4;
-        } else {
-            this.rayTestOffset = WallApproachBehavior.MIN_RAY_TEST_OFFSET;
-        }
-    }
-
-    /**
-     * @see WallApproach#WallApproach(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Node, float)
-     * @see
-     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public WallApproachBehavior(Agent agent, Node wall, float offsetToMaintain, Spatial spatial) {
-        super(agent, spatial);
-        WallApproachBehavior.validateConstruction(wall, offsetToMaintain);
-        this.wall = wall;
-        this.offsetToMaintain = offsetToMaintain;
-        
         if (offsetToMaintain != 0) {
             this.rayTestOffset = (offsetToMaintain + agent.getRadius()) * 4;
         } else {
@@ -166,7 +146,8 @@ public class WallApproachBehavior extends AbstractStrengthSteeringBehavior {
             if (surfaceLocation != null) {
                 Vector3f extraOffset = this.agent.vectorTo(surfaceLocation).negate().normalize().mult(this.offsetToMaintain);
 
-                SeekBehavior seek = new SeekBehavior(this.agent, surfaceLocation.add(extraOffset));
+                SeekBehavior seek = new SeekBehavior(surfaceLocation.add(extraOffset));
+                seek.setAgent(agent);
                 steer = seek.calculateRawSteering();
             }
         }

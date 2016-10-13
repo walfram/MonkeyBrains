@@ -81,33 +81,15 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
      * is lower or equals to 0
      *
      * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent)
+     * AbstractSteeringBehavior#AbstractSteeringBehavior()
      */
-    public ObstacleAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision) {
-        super(agent);
-        this.validateMinTimeToCollision(minTimeToCollision);
-        this.minTimeToCollision = minTimeToCollision;
-        this.obstacles = obstacles;
-        this.minDistance = Float.POSITIVE_INFINITY;
+    public ObstacleAvoidanceBehavior(List<AIControl> obstacles, float minTimeToCollision) {
+        this(obstacles, minTimeToCollision, Float.POSITIVE_INFINITY);
     }
 
     /**
-     * @see
-     * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List, float)
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public ObstacleAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, Spatial spatial) {
-        super(agent, spatial);
-        this.validateMinTimeToCollision(minTimeToCollision);
-        this.minTimeToCollision = minTimeToCollision;
-        this.obstacles = obstacles;
-        this.minDistance = Float.POSITIVE_INFINITY;
-    }
-
-    /**
+     * @param obstacles A list with the obstacles (Agents)
+     * @param minTimeToCollision When the time to collision is lower than this
      * @param minDistance Min. distance from center to center to consider an
      * obstacle
      *
@@ -115,28 +97,10 @@ public class ObstacleAvoidanceBehavior extends AbstractStrengthSteeringBehavior 
      * is lower than 0
      *
      * @see
-     * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List, float)
+     * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(java.util.List, float)
      */
-    public ObstacleAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, float minDistance) {
-        super(agent);
-        this.validateMinTimeToCollision(minTimeToCollision);
-        this.validateMinDistance(minDistance);
-        this.minTimeToCollision = minTimeToCollision;
-        this.obstacles = obstacles;
-        this.minDistance = minDistance;
-    }
-
-    /**
-     * @see
-     * ObstacleAvoidanceBehavior#ObstacleAvoidanceBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial, java.util.List, float)
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public ObstacleAvoidanceBehavior(Agent agent, List<AIControl> obstacles, float minTimeToCollision, float minDistance, Spatial spatial) {
-        super(agent, spatial);
+    public ObstacleAvoidanceBehavior(List<AIControl> obstacles, float minTimeToCollision, float minDistance) {
+        super();
         this.validateMinTimeToCollision(minTimeToCollision);
         this.validateMinDistance(minDistance);
         this.minTimeToCollision = minTimeToCollision;

@@ -29,15 +29,13 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
-import com.jme3.ai.agents.Agent;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 /**
- * Slows down the velocity produced by a behavior container (g.e.
+ * Slows down the velocity produced by a behavior container (e.g.
  * CompoundSteeringBehavior)
  *
  * @see CompoundSteeringBehavior
@@ -76,19 +74,8 @@ public class SlowBehavior extends AbstractSteeringBehavior {
      * @see
      * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent)
      */
-    public SlowBehavior(Agent agent, int timeInterval, float slowPercentage) {
-        super(agent);
-        this.construct(timeInterval, slowPercentage);
-    }
-
-    /**
-     * @see SlowBehavior#SlowBehavior(com.jme3.ai.agents.Agent, int, float)
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public SlowBehavior(Agent agent, int timeInterval, float slowPercentage, Spatial spatial) {
-        super(agent, spatial);
+    public SlowBehavior(int timeInterval, float slowPercentage) {
+        super();
         this.construct(timeInterval, slowPercentage);
     }
 

@@ -51,53 +51,31 @@ public class SeekBehavior extends AbstractStrengthSteeringBehavior {
     private Agent target;
     private Vector3f seekingPosition;
 
-    public SeekBehavior(Agent agent) {
-        super(agent);
+    /**
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
+     */
+    public SeekBehavior() {
+        super();
     }
 
     /**
      * Constructor for seek behaviour.
      *
-     * @param agent to whom behavior belongs
      * @param target agent whom we seek
      */
-    public SeekBehavior(Agent agent, Agent target) {
-        super(agent);
+    public SeekBehavior(Agent target) {
+        this();
         this.target = target;
     }
 
     /**
      * Constructor for seek behavior.
      *
-     * @param agent to whom behavior belongs
-     * @param seekingPos position that we seek
-     * @param spatial active spatial during excecution of behavior
-     */
-    public SeekBehavior(Agent agent, Agent target, Spatial spatial) {
-        super(agent, spatial);
-        this.target = target;
-    }
-
-    /**
-     * Constructor for seek behavior.
-     *
-     * @param agent to whom behavior belongs
      * @param seekingPosition position that we seek
      */
-    public SeekBehavior(Agent agent, Vector3f seekingPosition) {
-        super(agent);
-        this.seekingPosition = seekingPosition;
-    }
-
-    /**
-     * Constructor for seek behavior.
-     *
-     * @param agent to whom behavior belongs
-     * @param target agent from we seek
-     * @param spatial active spatial during excecution of behavior
-     */
-    public SeekBehavior(Agent agent, Vector3f seekingPosition, Spatial spatial) {
-        super(agent, spatial);
+    public SeekBehavior(Vector3f seekingPosition) {
+        this();
         this.seekingPosition = seekingPosition;
     }
 

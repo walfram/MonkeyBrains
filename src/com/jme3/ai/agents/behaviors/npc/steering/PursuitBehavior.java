@@ -45,22 +45,11 @@ import com.jme3.scene.Spatial;
 public class PursuitBehavior extends SeekBehavior {
 
     /**
-     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent)
+     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent)
      * @throws BehaviorExceptions.TargetNotFoundException If target is null
      */
-    public PursuitBehavior(Agent agent, Agent target) {
-        super(agent, target);
-        this.validateTarget(target);
-    }
-
-    /**
-     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, com.jme3.scene.Spatial)
-     * @throws BehaviorExceptions.TargetNotFoundException If target is null
-     */
-    public PursuitBehavior(Agent agent, Agent target, Spatial spatial) {
-        super(agent, target, spatial);
+    public PursuitBehavior(Agent target) {
+        super(target);
         this.validateTarget(target);
     }
 

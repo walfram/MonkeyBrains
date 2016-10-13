@@ -46,20 +46,11 @@ public abstract class AbstractWanderBehavior extends AbstractStrengthSteeringBeh
     protected float timeInterval;
     
     /**
-     * @see
-     * AbstractStrengthSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent)
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
      */
-    public AbstractWanderBehavior(Agent agent) {
-        super(agent);
-    }
-
-    /**
-     * @see
-     * AbstractStrengthSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public AbstractWanderBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
+    public AbstractWanderBehavior() {
+        super();
     }
        
     /**

@@ -186,21 +186,11 @@ public class CompoundSteeringBehavior extends AbstractStrengthSteeringBehavior {
     protected steerBehaviorsLayerList behaviors;
 
     /**
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent)
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
      */
-    public CompoundSteeringBehavior(Agent agent) {
-        super(agent);
-        this.behaviors = new steerBehaviorsLayerList();
-    }
-
-    /**
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public CompoundSteeringBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
+    public CompoundSteeringBehavior() {
+        super();
         this.behaviors = new steerBehaviorsLayerList();
     }
 
@@ -213,7 +203,7 @@ public class CompoundSteeringBehavior extends AbstractStrengthSteeringBehavior {
      * @param behavior Behavior that you want to add
      */
     public void addSteerBehavior(AbstractSteeringBehavior behavior) {
-        this.behaviors.add(behavior, 0, 0);
+        addSteerBehavior(behavior, 0, 0);
     }
 
     /**
@@ -239,6 +229,7 @@ public class CompoundSteeringBehavior extends AbstractStrengthSteeringBehavior {
      */
     public void addSteerBehavior(AbstractSteeringBehavior behavior, int priority, float minLengthToInvalidSteer) {
         this.behaviors.add(behavior, priority, minLengthToInvalidSteer);
+        behavior.setAgent(agent);
     }
 
     /**
@@ -310,12 +301,24 @@ public class CompoundSteeringBehavior extends AbstractStrengthSteeringBehavior {
      * @param tpf
      */
     @Override
-    protected void controlUpdate(float tpf) {
+    public void updateAI(float tpf) {
         this.behaviors.moveAtBeginning();
         while (!this.behaviors.nullPointer()) {
             this.behaviors.getBehavior().setTimePerFrame(tpf);
             this.behaviors.moveNext();
         }
-        super.controlUpdate(tpf);
+        super.updateAI(tpf);
+    }
+
+    @Override
+    public void setAgent(Agent agent) {
+        super.setAgent(agent);
+        
+        // Update Agent for every sub behavior
+        this.behaviors.moveAtBeginning();
+        while (!this.behaviors.nullPointer()) {
+            this.behaviors.getBehavior().setAgent(agent);
+            this.behaviors.moveNext();
+        }
     }
 }

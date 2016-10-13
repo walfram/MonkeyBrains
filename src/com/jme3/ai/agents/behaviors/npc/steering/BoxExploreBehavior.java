@@ -69,20 +69,8 @@ public class BoxExploreBehavior extends AbstractStrengthSteeringBehavior {
      * @see
      * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent)
      */
-    public BoxExploreBehavior(Agent agent, Vector3f boxCenter, float boxWidthX, float boxWidthZ, float boxHeight, float subdivisionDistance) {
-        super(agent);
-        this.construct(boxCenter, boxWidthX, boxWidthZ, boxHeight, subdivisionDistance);
-    }
-
-    /**
-     * @see BoxExploreBehavior#BoxExploreBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.math.Vector3f, float, float, float, float)
-     * @see
-     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public BoxExploreBehavior(Agent agent, Vector3f boxCenter, float boxWidthX, float boxWidthZ, float boxHeight, float subdivisionDistance, Spatial spatial) {
-        super(agent, spatial);
+    public BoxExploreBehavior(Vector3f boxCenter, float boxWidthX, float boxWidthZ, float boxHeight, float subdivisionDistance) {
+        super();
         this.construct(boxCenter, boxWidthX, boxWidthZ, boxHeight, subdivisionDistance);
     }
 
@@ -141,7 +129,8 @@ public class BoxExploreBehavior extends AbstractStrengthSteeringBehavior {
             }
 
             if (closest != null) {
-                SeekBehavior seek = new SeekBehavior(this.agent, closest);
+                SeekBehavior seek = new SeekBehavior(closest);
+                seek.setAgent(agent);
                 steer = seek.calculateRawSteering();
             } else {
                 isFinished = true;

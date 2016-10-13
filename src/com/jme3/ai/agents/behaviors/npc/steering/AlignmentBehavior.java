@@ -65,12 +65,11 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
     /**
      * maxAngle is set to PI / 2 by default and maxDistance to infinite.
      *
-     * @param agent To whom behavior belongs.
      * @param neighbours Neighbours, this agent is moving toward the center of
      * this neighbours.
      */
-    public AlignmentBehavior(Agent agent, List<AIControl> neighbours) {
-        super(agent);
+    public AlignmentBehavior(List<AIControl> neighbours) {
+        super();
         this.neighbours = neighbours;
     }
 
@@ -86,34 +85,9 @@ public class AlignmentBehavior extends AbstractStrengthSteeringBehavior {
      * @see AlignmentBehavior#AlignmentBehavior(com.jme3.ai.agents.Agent,
      * java.util.List)
      */
-    public AlignmentBehavior(Agent agent, List<AIControl> neighbours, float maxDistance, float maxAngle) {
-        super(agent);
+    public AlignmentBehavior(List<AIControl> neighbours, float maxDistance, float maxAngle) {
+        this(neighbours);
         this.validateMaxDistance(maxDistance);
-        this.neighbours = neighbours;
-        this.maxDistance = maxDistance;
-        this.maxAngle = maxAngle;
-    }
-
-    /**
-     * @param spatial active spatial during excecution of behavior
-     * @see AlignmentBehavior#AlignmentBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List)
-     */
-    public AlignmentBehavior(Agent agent, List<AIControl> neighbours, Spatial spatial) {
-        super(agent, spatial);
-        this.neighbours = neighbours;
-    }
-
-    /**
-     * @see AlignmentBehavior#AlignmentBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List)
-     * @see AlignmentBehavior#AlignmentBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List, float, float)
-     */
-    public AlignmentBehavior(Agent agent, List<AIControl> neighbours, float maxDistance, float maxAngle, Spatial spatial) {
-        super(agent, spatial);
-        this.validateMaxDistance(maxDistance);
-        this.neighbours = neighbours;
         this.maxDistance = maxDistance;
         this.maxAngle = maxAngle;
     }

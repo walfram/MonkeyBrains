@@ -58,30 +58,8 @@ public class LeaderFollowingBehavior extends SeekBehavior {
      * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent,
      * com.jme3.ai.agents.Agent)
      */
-    public LeaderFollowingBehavior(Agent agent, Agent target) {
-        super(agent, target);
-        this.evadeBehavior = new EvadeBehavior(agent, target);
-        this.arriveBehavior = new ArriveBehavior(agent, target);
-
-        //Default values
-        this.distanceToEvade = 2;
-        this.distanceToChangeFocus = 5;
-        this.minimumAngle = FastMath.PI / 2.35f;
-    }
-
-    /**
-     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, com.jme3.scene.Spatial)
-     */
-    public LeaderFollowingBehavior(Agent agent, Agent target, Spatial spatial) {
-        super(agent, target, spatial);
-        this.evadeBehavior = new EvadeBehavior(agent, target, spatial);
-        this.arriveBehavior = new ArriveBehavior(agent, target);
-
-        //Default values
-        this.distanceToEvade = 2;
-        this.distanceToChangeFocus = 5;
-        this.minimumAngle = FastMath.PI / 2.35f;
+    public LeaderFollowingBehavior(Agent target) {
+        this(target, 2, 5, FastMath.PI / 2.35f);
     }
 
     /**
@@ -92,7 +70,7 @@ public class LeaderFollowingBehavior extends SeekBehavior {
      * @param distanceToEvade If the agent is in front of the target and the
      * distance to him is lower than distanceToEvade, the agent will evade him
      * in order to stay out of his way.
-     * @param minimunAngle Minimum angle betwen the target velocity and the
+     * @param minimumAngle Minimum angle betwen the target velocity and the
      * vehicle location.
      *
      * @throws BehaviorExceptions.TargetNotFoundException If target (leader) is
@@ -103,36 +81,24 @@ public class LeaderFollowingBehavior extends SeekBehavior {
      * @see LeaderFollowingBehavior#LeaderFollowingBehavior(com.jme3.ai.agents.Agent,
      * com.jme3.ai.agents.Agent)
      */
-    public LeaderFollowingBehavior(Agent agent, Agent target, float distanceToEvade, float distanceToChangeFocus, float minimunAngle) {
-        super(agent, target);
+    public LeaderFollowingBehavior(Agent target, float distanceToEvade, float distanceToChangeFocus, float minimumAngle) {
+        super(target);
+
         this.validateTarget(target);
         this.validateDistanceToEvade(distanceToEvade);
         this.validateDistanceToChangeFocus(distanceToChangeFocus);
-        this.distanceToEvade = distanceToEvade;
-        this.evadeBehavior = new EvadeBehavior(agent, target);
-        this.arriveBehavior = new ArriveBehavior(agent, target);
-        this.distanceToChangeFocus = distanceToChangeFocus;
-        this.minimumAngle = minimunAngle;
-    }
 
-    /**
-     * @see LeaderFollowingBehavior#LeaderFollowingBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, com.jme3.scene.Spatial)
-     * @see LeaderFollowingBehavior#LeaderFollowingBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, float, float, float)
-     */
-    public LeaderFollowingBehavior(Agent agent, Agent target, float distanceToEvade, float distanceToChangeFocus, float minimunAngle, Spatial spatial) {
-        super(agent, target, spatial);
-        this.validateTarget(target);
-        this.validateDistanceToEvade(distanceToEvade);
-        this.validateDistanceToChangeFocus(distanceToChangeFocus);
         this.distanceToEvade = distanceToEvade;
-        this.evadeBehavior = new EvadeBehavior(agent, target, spatial);
-        this.arriveBehavior = new ArriveBehavior(agent, target);
         this.distanceToChangeFocus = distanceToChangeFocus;
-        this.minimumAngle = minimunAngle;
-    }
+        this.minimumAngle = minimumAngle;
+        
+        evadeBehavior = new EvadeBehavior(target);
+        evadeBehavior.setAgent(agent);
+        arriveBehavior = new ArriveBehavior(target);
+        arriveBehavior.setAgent(agent);
 
+    }
+    
     private void validateDistanceToEvade(float distanceToEvade) {
         if (distanceToEvade < 0) {
             throw new SteeringExceptions.NegativeValueException("The distance to evade can not be negative.", distanceToEvade);

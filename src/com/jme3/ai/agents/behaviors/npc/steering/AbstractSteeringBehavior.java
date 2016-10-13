@@ -67,19 +67,11 @@ public abstract class AbstractSteeringBehavior extends Behavior {
     protected float timePerFrame;
 
     /**
-     * @see Behavior#Behavior(com.jme3.ai.agents.Agent)
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
      */
-    public AbstractSteeringBehavior(Agent agent) {
-        super(agent);
-        velocity = new Vector3f();
-    }
-
-    /**
-     * @see Behavior#Behavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public AbstractSteeringBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
+    public AbstractSteeringBehavior() {
+        super();
         velocity = new Vector3f();
     }
 
@@ -163,7 +155,7 @@ public abstract class AbstractSteeringBehavior extends Behavior {
      * @param tpf
      */
     @Override
-    protected void controlUpdate(float tpf) {
+    public void updateAI(float tpf) {
         this.timePerFrame = tpf;
         //calculate new velocity
         Vector3f vel = calculateNewVelocity(tpf).mult(this.brakingFactor);

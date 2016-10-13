@@ -106,7 +106,7 @@ public class Agent<T> extends AIControl {
      */
     public void setMainBehavior(Behavior mainBehavior) {
         this.mainBehavior = mainBehavior;
-        this.mainBehavior.setEnabled(false);
+        mainBehavior.setAgent(this);
     }
 
     /**
@@ -148,7 +148,6 @@ public class Agent<T> extends AIControl {
         if (mainBehavior == null) {
             throw new NullBehaviorException("Agent " + getName() + " does not have set main behavior.");
         }
-        mainBehavior.setEnabled(true);
     }
 
     /**
@@ -159,7 +158,6 @@ public class Agent<T> extends AIControl {
      */
     public void stop() {
         enabled = false;
-        mainBehavior.setEnabled(false);
     }
 
     /**
@@ -178,8 +176,11 @@ public class Agent<T> extends AIControl {
 
     @Override
     public void updateAI(float tpf) {
+        if (!enabled)
+            return;
+        
         if (mainBehavior != null) {
-            mainBehavior.update(tpf);
+            mainBehavior.updateAI(tpf);
         }
     }
 

@@ -53,26 +53,17 @@ public class SimpleRotateBehavior extends Behavior {
     private Quaternion rotationTarget;
 
     /**
-     *
-     * @param agent to whom behavior belongs
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
      */
-    public SimpleRotateBehavior(Agent agent) {
-        super(agent);
-    }
-
-    /**
-     *
-     * @param agent to whom behavior belongs
-     * @param spatial that will rotate
-     */
-    public SimpleRotateBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
+    public SimpleRotateBehavior() {
+        super();
     }
 
     @Override
-    protected void controlUpdate(float tpf) {
+    public void updateAI(float tpf) {
         //if there isn't spatial
-        if (spatial == null) {
+        if (agent.getSpatial() == null) {
             //if there is rotation target
             if (rotationTarget != null) {
                 rotationDirection = agent.getSpatial().getLocalRotation().clone();
@@ -88,13 +79,13 @@ public class SimpleRotateBehavior extends Behavior {
             //if there is spatial
             //if there is rotation target
             if (rotationTarget != null) {
-                rotationDirection = spatial.getLocalRotation().clone();
+                rotationDirection = agent.getSpatial().getLocalRotation().clone();
                 rotationDirection.slerp(rotationTarget, agent.getRotationSpeed() * tpf);
-                spatial.rotate(rotationDirection);
+                agent.getSpatial().rotate(rotationDirection);
             } else {
                 //if there is movement direction in which agent should move
                 if (rotationDirection != null) {
-                    spatial.rotate(rotationDirection.mult(agent.getRotationSpeed() * tpf));
+                    agent.getSpatial().rotate(rotationDirection.mult(agent.getRotationSpeed() * tpf));
                 }
             }
         }

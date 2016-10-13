@@ -76,20 +76,8 @@ public class ContainmentBehavior extends AbstractStrengthSteeringBehavior {
      * @see
      * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent)
      */
-    public ContainmentBehavior(Agent agent, Node containmentArea) {
-        super(agent);
-        this.validateContainmentArea(containmentArea);
-        this.containmentArea = containmentArea;
-    }
-
-    /**
-     * @param containmentArea Area where the agent will be restricted
-     * @see
-     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public ContainmentBehavior(Agent agent, Node containmentArea, Spatial spatial) {
-        super(agent, spatial);
+    public ContainmentBehavior(Node containmentArea) {
+        super();
         this.validateContainmentArea(containmentArea);
         this.containmentArea = containmentArea;
     }

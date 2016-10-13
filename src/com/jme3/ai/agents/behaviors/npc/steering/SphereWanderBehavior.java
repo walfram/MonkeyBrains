@@ -81,7 +81,6 @@ public class SphereWanderBehavior extends AbstractStrengthSteeringBehavior {
     /**
      * Constructor for wander behavior.
      *
-     * @param agent to whom behavior belongs
      * @param timeInterval Sets the time interval for changing target position.
      * @param randomFactor Defines the maximum random value
      * @param rotationFactor Defines the maximum random variaton for each
@@ -93,20 +92,8 @@ public class SphereWanderBehavior extends AbstractStrengthSteeringBehavior {
      * not contained in the [0,1] interval or if rotationFactor is not contained
      * in the [0,1] interval
      */
-    public SphereWanderBehavior(Agent agent, float timeInterval, float randomFactor, float rotationFactor) {
-        super(agent);
-        this.construct(timeInterval, randomFactor, rotationFactor);
-    }
-
-    /**
-     * @see SphereWanderBehavior#SphereWanderBehavior(com.jme3.ai.agents.Agent,
-     * float, float, float)
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public SphereWanderBehavior(Agent agent, float timeInterval, float randomFactor, float rotationFactor, Spatial spatial) {
-        super(agent, spatial);
+    public SphereWanderBehavior(float timeInterval, float randomFactor, float rotationFactor) {
+        super();
         this.construct(timeInterval, randomFactor, rotationFactor);
     }
 

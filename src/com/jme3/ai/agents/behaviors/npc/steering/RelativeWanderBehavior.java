@@ -61,22 +61,8 @@ public class RelativeWanderBehavior extends SimpleWanderBehavior {
      * @throws IllegalIntervalException If relative factor is not contained in 
      * the [0, 1] interval.
      */
-    public RelativeWanderBehavior(Agent agent, float rX, float rY, float rZ, float relativeFactor) {
-        super(agent, rX, rY, rZ);
-        this.validateRelativeFactor(relativeFactor);
-        this.relativeFactor = relativeFactor;
-        this.currentSteer = this.newRandomSteer();
-    }
-
-    /**
-     * @see
-     * RelativeWanderBehavior#RelativeWanderBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.math.Vector3f, com.jme3.math.Vector3f, float)
-     * @see SimpleWanderBehavior#SimpleWanderBehavior(com.jme3.ai.agents.Agent, 
-     * float, float, float, com.jme3.scene.Spatial) 
-     */
-    public RelativeWanderBehavior(Agent agent, float rX, float rY, float rZ, float relativeFactor, Spatial spatial) {
-        super(agent, rX, rY, rZ);
+    public RelativeWanderBehavior(float rX, float rY, float rZ, float relativeFactor) {
+        super(rX, rY, rZ);
         this.validateRelativeFactor(relativeFactor);
         this.relativeFactor = relativeFactor;
         this.currentSteer = this.newRandomSteer();

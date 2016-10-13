@@ -29,11 +29,8 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
-import com.jme3.ai.agents.Agent;
-
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 
 /**
  * This behavior is based on a easy implementation that "generates random
@@ -79,21 +76,8 @@ public class SimpleWanderBehavior extends AbstractWanderBehavior {
      * @param rY max y-random steer
      * @param rZ max z-random steer
      */
-    public SimpleWanderBehavior(Agent agent, float rX, float rY, float rZ) {
-        super(agent);
-        velocity = new Vector3f();
-        timeInterval = 2f;
-        maxRandSteer.x = rX;
-        maxRandSteer.y = rY;
-        maxRandSteer.z = rZ;
-    }
-
-    /**
-     * @param spatial active spatial during excecution of behavior
-     * @see SimpleWanderBehavior#SimpleWanderBehavior(com.jme3.ai.agents.Agent, float, float, float) 
-     */
-    public SimpleWanderBehavior(Agent agent, float rX, float rY, float rZ, Spatial spatial) {
-        super(agent, spatial);
+    public SimpleWanderBehavior(float rX, float rY, float rZ) {
+        super();
         velocity = new Vector3f();
         timeInterval = 2f;
         maxRandSteer.x = rX;

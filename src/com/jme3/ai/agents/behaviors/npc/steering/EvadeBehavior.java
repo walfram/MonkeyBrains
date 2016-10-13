@@ -31,8 +31,8 @@ package com.jme3.ai.agents.behaviors.npc.steering;
 
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.BehaviorExceptions;
+import com.jme3.ai.agents.behaviors.BehaviorExceptions.TargetNotFoundException;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 
 /**
  * Evasion is analogous to pursuit, except that flee is used to steer away from
@@ -45,21 +45,10 @@ public class EvadeBehavior extends FleeBehavior {
 
     /**
      * @throws TargetNotFoundException If target is null
-     * @see FleeBehavior#FleeBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent)
+     * @see FleeBehavior#FleeBehavior(com.jme3.ai.agents.Agent)
      */
-    public EvadeBehavior(Agent agent, Agent target) {
-        super(agent, target);
-        this.validateTarget(target);
-    }
-
-    /**
-     * @throws TargetNotFoundException If target is null
-     * @see FleeBehavior#FleeBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, com.jme3.scene.Spatial)
-     */
-    public EvadeBehavior(Agent agent, Agent target, Spatial spatial) {
-        super(agent, target, spatial);
+    public EvadeBehavior(Agent target) {
+        super(target);
         this.validateTarget(target);
     }
 

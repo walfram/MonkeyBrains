@@ -93,10 +93,11 @@ public class SimpleLookBehavior extends Behavior {
     }
 
     /**
-     * @param agent to whom behavior belongs
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
      */
-    public SimpleLookBehavior(Agent agent) {
-        super(agent);
+    public SimpleLookBehavior() {
+        super();
         listeners = new ArrayList<AIControlSeenListener>();
         //default value
         viewAngle = FastMath.QUARTER_PI;
@@ -104,11 +105,12 @@ public class SimpleLookBehavior extends Behavior {
     }
 
     /**
-     * @param agent to whom behavior belongs
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
      * @param viewAngle angle in which AIControl will be seen
      */
-    public SimpleLookBehavior(Agent agent, float viewAngle) {
-        super(agent);
+    public SimpleLookBehavior(float viewAngle) {
+        super();
         listeners = new ArrayList<AIControlSeenListener>();
         this.viewAngle = viewAngle;
         typeOfWatching = TypeOfWatching.WATCH_EVERYTHING;
@@ -130,7 +132,7 @@ public class SimpleLookBehavior extends Behavior {
     }
 
     @Override
-    protected void controlUpdate(float tpf) {
+    public void updateAI(float tpf) {
         List<AIControl> aiControl = look(agent, viewAngle);
         for (int i = 0; i < aiControl.size(); i++) {
             triggerListeners(aiControl.get(i));

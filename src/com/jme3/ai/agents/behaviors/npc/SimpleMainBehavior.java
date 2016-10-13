@@ -38,7 +38,7 @@ import java.util.List;
 
 /**
  * Simple main behavior for NPC. Main behavior contains other Behaviors and if
- * active it will update all behaviors that are enabled. <br> <br>
+ * active it will update all behaviors. <br> <br>
  * You can only add one steer behavior to this container. But you can use
  * CompoundSteeringBehaviour to merge more steer behaviors into one.
  *
@@ -65,22 +65,20 @@ public class SimpleMainBehavior extends Behavior {
     protected MonkeyBrainsAppState aiAppState;
 
     /**
-     * This behavior never have spatial.
-     *
-     * @param agent
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
      */
-    public SimpleMainBehavior(Agent agent) {
+    public SimpleMainBehavior() {
         //Main behavior doesn't have need for spatials.
-        super(agent);
+        super();
         aiAppState = MonkeyBrainsAppState.getInstance();
         behaviors = new LinkedList<Behavior>();
-        enabled = true;
     }
 
     @Override
-    protected void controlUpdate(float tpf) {
+    public void updateAI(float tpf) {
         for (Behavior behaviour : behaviors) {
-            behaviour.update(tpf);
+            behaviour.updateAI(tpf);
         }
     }
 
@@ -98,6 +96,7 @@ public class SimpleMainBehavior extends Behavior {
      */
     public void setBehaviors(List<Behavior> behaviors) {
         this.behaviors = behaviors;
+        setAgent(agent); // Attach them to the new (our) agent
     }
 
     /**
@@ -107,6 +106,7 @@ public class SimpleMainBehavior extends Behavior {
      */
     public void addBehavior(Behavior behavior) {
         behaviors.add(behavior);
+        behavior.setAgent(agent);
     }
 
     /**
@@ -116,5 +116,13 @@ public class SimpleMainBehavior extends Behavior {
      */
     public void removeBehavior(Behavior behavior) {
         behaviors.remove(behavior);
+    }
+
+    @Override
+    public void setAgent(Agent agent) {
+        super.setAgent(agent);
+        
+        for (Behavior behavior: behaviors)
+            behavior.setAgent(agent);
     }
 }

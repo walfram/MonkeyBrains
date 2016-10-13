@@ -87,21 +87,13 @@ public abstract class AbstractStrengthSteeringBehavior extends AbstractSteeringB
     private Plane plane;
 
     /**
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent)
+     * Instantiate a new Behavior. Agent is passed when you add this behavior to
+     * an agent.
      */
-    public AbstractStrengthSteeringBehavior(Agent agent) {
-        super(agent);
+    public AbstractStrengthSteeringBehavior() {
+        super();
     }
 
-    /**
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public AbstractStrengthSteeringBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
-    }
 
     /**
      * If you call this function you will be able to increase or decrease the

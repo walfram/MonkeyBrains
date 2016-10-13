@@ -58,44 +58,20 @@ public class ArriveBehavior extends SeekBehavior {
     /**
      * The slowingDistance is (0.1 * distance betwen agents) by default.
      *
-     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent)
+     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent)
      */
-    public ArriveBehavior(Agent agent, Agent target) {
-        super(agent, target);
+    public ArriveBehavior(Agent target) {
+        super(target);
         this.slowingDistance = agent.distanceTo(target) * 0.25f;
     }
 
     /**
      * The slowingDistance is (0.1 * distance betwen agents) by default.
      *
-     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, com.jme3.scene.Spatial)
+     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent)
      */
-    public ArriveBehavior(Agent agent, Agent target, Spatial spatial) {
-        super(agent, target, spatial);
-        this.slowingDistance = agent.distanceTo(target) * 0.25f;
-    }
-
-    /**
-     * The slowingDistance is (0.1 * distance betwen agents) by default.
-     *
-     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent)
-     */
-    public ArriveBehavior(Agent agent, Vector3f seekingPosition) {
-        super(agent, seekingPosition);
-        this.slowingDistance = agent.getWorldTranslation().subtract(seekingPosition).length() * 0.1f;
-    }
-
-    /**
-     * The slowingDistance is (0.1 * distance betwen agents) by default.
-     *
-     * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, com.jme3.scene.Spatial)
-     */
-    public ArriveBehavior(Agent agent, Vector3f seekingPosition, Spatial spatial) {
-        super(agent, seekingPosition, spatial);
+    public ArriveBehavior(Vector3f seekingPosition) {
+        super(seekingPosition);
         this.slowingDistance = agent.getWorldTranslation().subtract(seekingPosition).length() * 0.1f;
     }
 
@@ -106,21 +82,8 @@ public class ArriveBehavior extends SeekBehavior {
      * @see ArriveBehavior#ArriveBehavior(com.jme3.ai.agents.Agent,
      * com.jme3.ai.agents.Agent)
      */
-    public ArriveBehavior(Agent agent, Agent target, float slowingDistance) {
-        super(agent, target);
-        this.validateSlowingDistance(slowingDistance);
-        this.slowingDistance = slowingDistance;
-    }
-
-    /**
-     * @see ArriveBehavior#ArriveBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, float)
-     * @see
-     * AbstractSteeringBehaviour#AbstractSteeringBehaviour(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public ArriveBehavior(Agent agent, Agent target, float slowingDistance, Spatial spatial) {
-        super(agent, target, spatial);
+    public ArriveBehavior(Agent target, float slowingDistance) {
+        super(target);
         this.validateSlowingDistance(slowingDistance);
         this.slowingDistance = slowingDistance;
     }
@@ -131,20 +94,8 @@ public class ArriveBehavior extends SeekBehavior {
      * @see ArriveBehavior#ArriveBehavior(com.jme3.ai.agents.Agent,
      * com.jme3.math.Vector3f)
      */
-    public ArriveBehavior(Agent agent, Vector3f seekingPosition, float slowingDistance) {
-        super(agent, seekingPosition);
-        this.validateSlowingDistance(slowingDistance);
-        this.slowingDistance = slowingDistance;
-    }
-
-    /**
-     * @see ArriveBehavior#ArriveBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, float)
-     * @see ArriveBehavior#ArriveBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.math.Vector3f, com.jme3.scene.Spatial)
-     */
-    public ArriveBehavior(Agent agent, Vector3f seekingPosition, float slowingDistance, Spatial spatial) {
-        super(agent, seekingPosition, spatial);
+    public ArriveBehavior(Vector3f seekingPosition, float slowingDistance) {
+        super(seekingPosition);
         this.validateSlowingDistance(slowingDistance);
         this.slowingDistance = slowingDistance;
     }

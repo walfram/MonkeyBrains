@@ -64,25 +64,11 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
     private List<AIControl> obstacles;
 
     /**
-     * @param agent To whom behavior belongs.
      * @param initialObstacles Initializes a list with the obstacles from the
      * agent want to be separated
      */
-    public SeparationBehavior(Agent agent, List<AIControl> initialObstacles) {
-        super(agent);
-        this.obstacles = initialObstacles;
-        this.minDistance = Float.POSITIVE_INFINITY;
-    }
-
-    /**
-     * @param spatial active spatial during excecution of behavior
-     * @see SeparationBehavior#SeparationBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List)
-     */
-    public SeparationBehavior(Agent agent, List<AIControl> initialObstacles, Spatial spatial) {
-        super(agent, spatial);
-        this.obstacles = initialObstacles;
-        this.minDistance = Float.POSITIVE_INFINITY;
+    public SeparationBehavior(List<AIControl> initialObstacles) {
+        this(initialObstacles, Float.POSITIVE_INFINITY);
     }
 
     /**
@@ -91,20 +77,8 @@ public class SeparationBehavior extends AbstractStrengthSteeringBehavior {
      * @see SeparationBehavior#SeparationBehavior(com.jme3.ai.agents.Agent,
      * java.util.List)
      */
-    public SeparationBehavior(Agent agent, List<AIControl> initialObstacles, float minDistance) {
-        super(agent);
-        this.validateMinDistance(minDistance);
-        this.obstacles = initialObstacles;
-        this.minDistance = minDistance;
-    }
-
-    /**
-     * @param spatial active spatial during excecution of behaviour
-     * @see SeparationBehavior#SeparationBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List, float)
-     */
-    public SeparationBehavior(Agent agent, List<AIControl> initialObstacles, float minDistance, Spatial spatial) {
-        super(agent, spatial);
+    public SeparationBehavior(List<AIControl> initialObstacles, float minDistance) {
+        super();
         this.validateMinDistance(minDistance);
         this.obstacles = initialObstacles;
         this.minDistance = minDistance;

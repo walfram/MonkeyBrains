@@ -48,19 +48,10 @@ public class MoveBehavior extends AbstractStrengthSteeringBehavior {
 
     /**
      * @see
-     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent)
+     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior()
      */
-    public MoveBehavior(Agent agent) {
-        super(agent);
-    }
-
-    /**
-     * @see
-     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public MoveBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
+    public MoveBehavior() {
+        super();
     }
 
     public Vector3f getMoveDirection() {

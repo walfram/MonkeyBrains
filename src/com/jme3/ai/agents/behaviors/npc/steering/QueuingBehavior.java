@@ -63,24 +63,10 @@ public class QueuingBehavior extends AbstractStrengthSteeringBehavior {
      * than 0
      *
      * @see
-     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent)
+     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior()
      */
-    public QueuingBehavior(Agent agent, List<Agent> neighbours, float minDistance) {
-        super(agent);
-        this.validateMinDistance(minDistance);
-        this.neighbours = neighbours;
-        this.minDistance = minDistance;
-    }
-
-    /**
-     * @see QueuingBehavior#QueuingBehavior(com.jme3.ai.agents.Agent,
-     * java.util.List, float)
-     * @see
-     * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public QueuingBehavior(Agent agent, List<Agent> neighbours, float minDistance, Spatial spatial) {
-        super(agent, spatial);
+    public QueuingBehavior(List<Agent> neighbours, float minDistance) {
+        super();
         this.validateMinDistance(minDistance);
         this.neighbours = neighbours;
         this.minDistance = minDistance;

@@ -60,21 +60,10 @@ public class BalancedCompoundSteeringBehavior extends CompoundSteeringBehavior {
 
     /**
      * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent)
+     * AbstractSteeringBehavior#AbstractSteeringBehavior()
      */
-    public BalancedCompoundSteeringBehavior(Agent agent) {
-        super(agent);
-        this.strengthIsBalanced = true;
-        partialForces = new ArrayList<Vector3f>();
-    }
-
-    /**
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public BalancedCompoundSteeringBehavior(Agent agent, Spatial spatial) {
-        super(agent, spatial);
+    public BalancedCompoundSteeringBehavior() {
+        super();
         this.strengthIsBalanced = true;
         partialForces = new ArrayList<Vector3f>();
     }

@@ -66,24 +66,8 @@ public class HideBehavior extends AbstractStrengthSteeringBehavior {
      * @see
      * AbstractSteeringBehaviour#AbstractSteeringBehaviour(com.jme3.ai.agents.Agent)
      */
-    public HideBehavior(Agent agent, Agent target, List<AIControl> obstacles, float separationFromObstacle) {
-        super(agent);
-        this.validateTarget(target);
-        this.validateSeparationFromObstacle(separationFromObstacle);
-        this.target = target;
-        this.obstacles = obstacles;
-        this.separationFromObstacle = separationFromObstacle;
-    }
-
-    /**
-     * @see HideBehavior#HideBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.ai.agents.Agent, java.util.List, float)
-     * @see
-     * AbstractSteeringBehavior#AbstractSteeringBehavior(com.jme3.ai.agents.Agent,
-     * com.jme3.scene.Spatial)
-     */
-    public HideBehavior(Agent agent, Agent target, List<AIControl> obstacles, float separationFromObstacle, Spatial spatial) {
-        super(agent, spatial);
+    public HideBehavior(Agent target, List<AIControl> obstacles, float separationFromObstacle) {
+        super();
         this.validateTarget(target);
         this.validateSeparationFromObstacle(separationFromObstacle);
         this.target = target;
@@ -129,7 +113,8 @@ public class HideBehavior extends AbstractStrengthSteeringBehavior {
             Vector3f seekPos = this.target.getWorldTranslation().add(targetToObstacleOffset).add(
                     targetToObstacleOffset.normalize().mult(this.separationFromObstacle));
 
-            SeekBehavior seek = new SeekBehavior(this.agent, seekPos);
+            SeekBehavior seek = new SeekBehavior(seekPos);
+            seek.setAgent(agent);
             return seek.calculateRawSteering();
         }
 

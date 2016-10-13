@@ -55,49 +55,24 @@ public class FleeBehavior extends AbstractStrengthSteeringBehavior {
     /**
      * Constructor for flee behavior.
      *
-     * @param agent to whom behavior belongs
      * @param target agent from whom we flee
      */
-    public FleeBehavior(Agent agent, Agent target) {
-        super(agent);
+    public FleeBehavior(Agent target) {
+        super();
         this.target = target;
     }
 
     /**
      * Constructor for flee behavior.
      *
-     * @param agent to whom behavior belongs
-     * @param target agent from whom we flee
-     * @param spatial active spatial during excecution of behavior
-     */
-    public FleeBehavior(Agent agent, Agent target, Spatial spatial) {
-        super(agent, spatial);
-        this.target = target;
-    }
-
-    /**
-     * Constructor for flee behavior.
-     *
-     * @param agent to whom behavior belongs
      * @param fleePosition position from that we flee
      */
-    public FleeBehavior(Agent agent, Vector3f fleePosition) {
-        super(agent);
+    public FleeBehavior(Vector3f fleePosition) {
+        super();
         this.fleePosition = fleePosition;
     }
 
-    /**
-     * Constructor for flee behavior.
-     *
-     * @param agent to whom behavior belongs
-     * @param fleePosition position from that we flee
-     * @param spatial active spatial during excecution of behavior
-     */
-    public FleeBehavior(Agent agent, Vector3f fleePosition, Spatial spatial) {
-        super(agent, spatial);
-        this.fleePosition = fleePosition;
-    }
-
+  
     /**
      * Calculate steering vector.
      *
@@ -110,9 +85,9 @@ public class FleeBehavior extends AbstractStrengthSteeringBehavior {
         Vector3f desiredVelocity;
 
         if (this.target != null) {
-            desiredVelocity = target.getWorldTranslation().subtract(agent.getWorldTranslation());
+            desiredVelocity = agent.vectorTo(target);
         } else if (this.fleePosition != null) {
-            desiredVelocity = this.fleePosition.subtract(agent.getWorldTranslation());
+            desiredVelocity = agent.vectorTo(fleePosition);
         } else {
             return new Vector3f(); //We do not have any target or flee position
         }
