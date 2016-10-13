@@ -1,0 +1,27 @@
+language: java
+sudo: false
+jdk: oraclejdk8
+
+before_cache:
+# - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+   - $HOME/.gradle/caches/
+   - $HOME/.gradle/wrapper/
+   
+install:
+  - ./gradlew assemble
+
+deploy:
+  provider: releases
+  api_key:
+      secure: <enter here>
+      # Use travis setup releases --force (gem install travis) and then anyone with push access can create the token
+  # file_glob: true
+  file:
+   - build/libs/MonkeyBrains.jar
+   - build/libs/MonkeyBrains-javadoc.jar
+   - build/libs/MonkeyBrains-sources.jar
+  skip_cleanup: true
+  on:
+    repo: MeFisto94/MonkeyBrains
