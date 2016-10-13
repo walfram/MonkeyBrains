@@ -33,3 +33,19 @@ dependencies {
     // 'test.useTestNG()' to your build script.
     //testCompile 'junit:junit:4.12'
 }
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives sourcesJar
+	archives javadocJar
+	archives jar
+}
