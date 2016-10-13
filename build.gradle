@@ -34,6 +34,14 @@ dependencies {
     //testCompile 'junit:junit:4.12'
 }
 
+if (JavaVersion.current().isJava8Compatible()) {
+	allprojects {
+	  tasks.withType(Javadoc) {
+		options.addStringOption('Xdoclint:none', '-quiet') // Turn of doclint (error on javadoc failure)
+	  }
+	}
+}
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
 	classifier = 'javadoc'
 	from javadoc.destinationDir
