@@ -10,6 +10,7 @@ cache:
    - $HOME/.gradle/wrapper/
    
 install:
+  - chmod u+x gradlew
   - ./gradlew assemble
 
 deploy:
