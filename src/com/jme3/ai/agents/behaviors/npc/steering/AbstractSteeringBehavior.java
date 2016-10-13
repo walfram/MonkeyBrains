@@ -93,15 +93,18 @@ public abstract class AbstractSteeringBehavior extends Behavior {
     /**
      * Method for calculating new velocity of agent based on steering vector.
      *
+     * @param tpf The time that has passed since the call
      * @see AbstractSteeringBehavior#calculateSteering()
      * @return The new velocity for this agent based on steering vector
      */
-    protected Vector3f calculateNewVelocity() {
+    protected Vector3f calculateNewVelocity(float tpf) {
         agent.setAcceleration(calculateSteering().mult(1 / agent.getMass()));
-        velocity = velocity.add(agent.getAcceleration());
+        velocity = velocity.add(agent.getAcceleration().mult(tpf));
         agent.setVelocity(velocity);
 
-        if (velocity.length() > agent.getMaxMoveSpeed()) {
+        if (velocity.lengthSquared() >
+           (agent.getMaxMoveSpeed() * agent.getMaxMoveSpeed()))
+        {
             velocity = velocity.normalize().mult(agent.getMaxMoveSpeed());
         }
         return velocity;
@@ -163,7 +166,7 @@ public abstract class AbstractSteeringBehavior extends Behavior {
     protected void controlUpdate(float tpf) {
         this.timePerFrame = tpf;
         //calculate new velocity
-        Vector3f vel = calculateNewVelocity().mult(tpf).mult(this.brakingFactor);
+        Vector3f vel = calculateNewVelocity(tpf).mult(this.brakingFactor);
         //translate agent
         agent.setWorldTranslation(agent.getWorldTranslation().add(vel));
         //rotate agent

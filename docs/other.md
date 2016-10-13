@@ -11,3 +11,5 @@ On the other hand, when you have an agent standing on a car, you might want his 
 Renamed the GameEntityException to AIControlException. This is part of a larger refactoring.  
 Also renamed the GameEntitySeenEvent/Listener to AIControlSeenEvent/Listener.  
 Removed Agent Total Mass (since we don't need the Inventory mass and it would be the users custom implementation anyway).  
+
+calculateNewVelocity now uses `tpf`. Before this, the velocity field was wrong (and hence `getPredictedPosition`, ...). Also the velocity limitation was tpf unaware.
