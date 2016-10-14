@@ -98,13 +98,22 @@ public class WanderAreaBehavior extends AbstractWanderBehavior {
     @Override
     protected Vector3f calculateRawSteering() {
         changeTargetPosition(timePerFrame);
-        Vector3f desiredVelocity = targetPosition.subtract(agent.getWorldTranslation()).normalize().mult(agent.getSpeed());
-        desiredVelocity.subtract(velocity);
-        return desiredVelocity;
+
+        Vector3f relativeVector = agent.vectorTo(targetPosition);
+        float thresholdReached = 0.01f;
+        
+        if (relativeVector.lengthSquared() <
+           thresholdReached * thresholdReached) {
+            setBrakingFactor(0f);
+            return Vector3f.ZERO;
+        } else {
+            setBrakingFactor(1f);
+            return agent.vectorTo(targetPosition).normalizeLocal();
+        }
     }
 
     /**
-     * Metod for changing target position.
+     * Method for changing target position.
      *
      * @param tpf time per frame
      */
