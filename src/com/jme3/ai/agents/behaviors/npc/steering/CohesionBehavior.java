@@ -33,7 +33,6 @@ import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.List;
 
 /**
@@ -45,7 +44,7 @@ import java.util.List;
  */
 public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
 
-    private List<AIControl> neighbours;
+    private List<? extends AIControl> neighbours;
     private float maxDistance = Float.POSITIVE_INFINITY;
     private float maxAngle = FastMath.PI / 2;
 
@@ -55,7 +54,7 @@ public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
      * @param neighbours Neighbours, this agent is moving toward the center of
      * this neighbours.
      */
-    public CohesionBehavior(List<AIControl> neighbours) {
+    public CohesionBehavior(List<? extends AIControl> neighbours) {
         super();
         this.neighbours = neighbours;
     }
@@ -72,7 +71,7 @@ public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
      * @see CohesionBehavior#CohesionBehavior(com.jme3.ai.agents.Agent,
      * java.util.List)
      */
-    public CohesionBehavior(List<AIControl> neighbours, float maxDistance, float maxAngle) {
+    public CohesionBehavior(List<? extends AIControl> neighbours, float maxDistance, float maxAngle) {
         super();
         this.validateMaxDistance(maxDistance);
         this.neighbours = neighbours;
@@ -119,7 +118,7 @@ public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
      * @see #getNeighbours()
      * @param neighbours The list of agents
      */
-    public void setNeighbours(List<AIControl> neighbours) {
+    public void setNeighbours(List<? extends AIControl> neighbours) {
         this.neighbours = neighbours;
     }
 
@@ -132,7 +131,7 @@ public class CohesionBehavior extends AbstractStrengthSteeringBehavior {
      * @see #setNeighbours(java.util.List)
      * @return The neighbourhood
      */
-    public List<AIControl> getNeighbours() {
+    public List<? extends AIControl> getNeighbours() {
         return neighbours;
     }
 }
