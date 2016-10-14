@@ -91,14 +91,16 @@ public abstract class AbstractSteeringBehavior extends Behavior {
      */
     protected Vector3f calculateNewVelocity(float tpf) {
         agent.setAcceleration(calculateSteering().mult(1 / agent.getMass()));
-        velocity = velocity.add(agent.getAcceleration().mult(tpf));
-        agent.setVelocity(velocity);
+        velocity.addLocal(agent.getAcceleration().mult(tpf));
 
         if (velocity.lengthSquared() >
            (agent.getMaxMoveSpeed() * agent.getMaxMoveSpeed()))
         {
             velocity = velocity.normalize().mult(agent.getMaxMoveSpeed());
         }
+        
+        agent.setVelocity(velocity);
+        
         return velocity;
     }
 
