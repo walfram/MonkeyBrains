@@ -1,6 +1,5 @@
 package com.jme3.ai.agents;
 
-import com.jme3.ai.agents.behaviors.npc.steering.AbstractSteeringBehavior;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -25,9 +24,9 @@ public class AIControl extends AbstractControl {
     float radius;
     boolean ignoreScenegraph = false;
     
-    float maxMoveSpeed;
-    float mass;
-    Vector3f acceleration; // Why?
+    float maxMoveSpeed = 5f;
+    float mass = 1f;
+    Vector3f acceleration = Vector3f.ZERO.clone(); // Why?
     
     /**
      * The old Position is the position the assigned spatial had after the last
@@ -40,7 +39,7 @@ public class AIControl extends AbstractControl {
      * The Velocity is needed for the next updateAI cycle and is also required
      * to compute the next position
      */
-    Vector3f velocity;
+    Vector3f velocity = Vector3f.ZERO.clone();
     
     /**
      * Instantiate a player, obstacle or whatever. We always assume a circular

@@ -60,7 +60,7 @@ public class Agent<T> extends AIControl {
     /**
      * The speed with which the Agent will turn around corners
      */
-    float rotationSpeed;
+    float rotationSpeed = 1f;
     
     /**
      * Instantiate an Agent without any parameters.
