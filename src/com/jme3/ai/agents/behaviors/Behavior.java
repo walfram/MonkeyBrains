@@ -57,10 +57,14 @@ public abstract class Behavior {
      * an agent's behavior field.<br>
      * That way you don't have to specify the agent for a behavior and it's 
      * agent field is never null.
-     * @param agent 
+     * @param agent The Agent to set
      */
     public void setAgent(Agent agent) {
         this.agent = agent;
+    }
+    
+    public Agent getAgent() {
+        return agent;
     }
     
     /**
