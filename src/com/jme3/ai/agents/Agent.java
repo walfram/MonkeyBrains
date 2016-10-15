@@ -55,19 +55,12 @@ public class Agent<T> extends AIControl {
      */
     private Behavior mainBehavior;
 
-    
     /**
      * The speed with which the Agent will turn around corners
      */
     float rotationSpeed = 1f;
     
     ApplyType applyType = ApplyType.Spatial;
-    
-    /**
-     * The Placeholder for the tpf coming out of updateAI.<br>
-     * This is so we don't have to pass it everywhere.
-     */
-    float timePerFrame = 1f;
     
     /**
      * Instantiate an Agent without any parameters.
@@ -163,15 +156,6 @@ public class Agent<T> extends AIControl {
     public void setApplyType(ApplyType applyType) {
         this.applyType = applyType;
     }
-
-    /**
-     * Returns the tpf value of the last updateAI call.<br>
-     * This is a convenience method so we don't have to pass tpf all the time.
-     * @return the time per frame
-     */
-    public float getTimePerFrame() {
-        return timePerFrame;
-    }
     
     /**
      * @return model of agent
@@ -192,23 +176,9 @@ public class Agent<T> extends AIControl {
         if (!enabled)
             return;
         
-        timePerFrame = tpf;
-        
         if (mainBehavior != null) {
             mainBehavior.updateAI(tpf);
         }
-    }
-    
-    /**
-     * Calculate the predicted position for this 'frame'<br>
-     * Note: You have to call updateAI before (or let the SceneGraph do it)<br>
-     * Note: This is in World Space.
-     * 
-     * @see AIControl#getPredictedPosition(float) 
-     * @return The predicted position.
-     */
-    public Vector3f getPredictedPosition() {
-        return super.getPredictedPosition(timePerFrame);
     }
     
     /**
