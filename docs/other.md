@@ -23,7 +23,11 @@ Removed `getAcceleration` from the AIControl since multiple Behaviors would alwa
 If that wasn't the case, the velocity would be zero anyway.  
 Removed `Agent`'s `start`/`stop` since there already is `AbstractControl`s `setEnabled`.  
 Bugfix: Made Position Prediction tpf aware (s = v * t; v = a * t; so essentially s = a * t^2 [Note: we're doing numerical integration/explicit euler here, hence we don't have 1/2 as correction factor, we sum it up].
-For this to work  we simply use `AbstractSteeringBehavior`s getTimePerFrame. It has already been implemented by the original authors
+For this to work  we simply use `AbstractSteeringBehavior`s getTimePerFrame. It has already been implemented by the original authors  
+
+Made Rotation working by fixing the way the interpolation value is calculated. Now the rotationSpeed is in radians per second and also is correct (as in depends on the way to be done and
+can reach the target velocity after a short time (where as the old one never seem'd to manage that). For this we introduced `getWorldRotation`, `setWorldRotation` and a Quaternion `worldToLocal`.
+We now have a static method `AIControl.angleBetween(Quat1, Quat2)` and some `calculateNewRotation` in AbstractSteeringBehavior to set the `getPredictedRotation`.  
 
 ##Big Refactoring:
 Essentially I renamed GameEntity to AIControl, since a) it's really a control and b) it should neither be mixed nor confused with an real ES. I then changed the implementation of some things.
@@ -31,11 +35,6 @@ I also removed unnecessary things (Hitpoints and such) from the Entity.
 The code does compile now, but I still have to add some methods to have it work as expected and then overhaul the behaviors.  
 
 ##TODO:
-Change Rotation Speed so it depends on the actual way that has to be done. Currently, the character rotates like 50% no matter how much that is.
-On the other hand, if you do it realisticly, it might take longer and currently I have no idea on how to measure the angle between two quaternions only on around the Y axis
-(Or say it's a bit more complex).  
-I might have to test how irrealisticly this would look
-
 Regarding the world rotation: getForwardVector currently returns the "facing", which is only a visual thing actually. When we would return the normalized velocity we'd have the direction the unit is walking.
 That way we aren't prone to that "rotate by 90 degree to fix model" errors and it's up to the user where the agent is looking.
 At least we should rename getForwardVector to "getFacing", but then the forwardVector is actually the facing, so how would one call the "WalkDirection"?  

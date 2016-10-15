@@ -33,6 +33,7 @@ import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions.IllegalIntervalException;
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import java.util.LinkedList;
@@ -66,12 +67,18 @@ public abstract class AbstractSteeringBehavior extends Behavior {
     protected float timePerFrame;
 
     /**
+     * Needed for calculatgeNewRotation. Don't use that for other things!
+     */
+    private final Quaternion targetRotation;
+    
+    /**
      * Instantiate a new Behavior. Agent is passed when you add this behavior to
      * an agent.
      */
     public AbstractSteeringBehavior() {
         super();
         velocity = new Vector3f();
+        targetRotation = new Quaternion();
     }
 
     /**
@@ -84,7 +91,7 @@ public abstract class AbstractSteeringBehavior extends Behavior {
     /**
      * Method for calculating new velocity of agent based on steering vector.
      *
-     * @param tpf The time that has passed since the call
+     * @param tpf The time that has passed since the last call
      * @see AbstractSteeringBehavior#calculateSteering()
      * @return The new velocity for this agent based on steering vector
      */
@@ -101,16 +108,47 @@ public abstract class AbstractSteeringBehavior extends Behavior {
         agent.setVelocity(velocity);
         return velocity;
     }
-
+    
     /**
-     * Method for rotating agent in direction of velocity of agent.
-     *
-     * @param tpf time per frame
+     * Method to calculate the new rotation of the agent based on the velocity.<br>
+     * This means that you have to call {@link #calculateNewVelocity(float) }
+     * before this method!<br>
+     * <br>
+     * @param tpf The time that has passed since the last call
+     * @see #calculateNewVelocity(float) 
+     * @return {@link AIControl#getPredictedRotation() } as convenience.
      */
-    protected void rotateAgent(float tpf) {
-        Quaternion q = new Quaternion();
-        q.lookAt(velocity, new Vector3f(0, 1, 0));
-        agent.getSpatial().getLocalRotation().slerp(q, agent.getRotationSpeed() * tpf);
+    protected Quaternion calculateNewRotation(float tpf) {
+        targetRotation.lookAt(velocity, Vector3f.UNIT_Y);
+        
+        float angle = AIControl.angleBetween(targetRotation,
+            agent.getWorldRotation());
+        
+        // The order of the following to if's is important (think angle = 360)
+        if (angle > FastMath.PI) {
+            // It's shorter to rotate into the other direction
+            angle -= FastMath.TWO_PI;
+            
+            // But our calculation only needs to know the angle "length"
+            // so remove that directional info to not crash the interpolation
+            angle = FastMath.abs(angle);
+        }
+        
+        if (angle == 0) { // Prevent Division By Zero
+            agent.getPredictedRotation().set(targetRotation);
+            return agent.getPredictedRotation();
+        }
+        
+        float t_fullRotation = angle / agent.getRotationSpeed();
+        float interpolationValue = tpf / t_fullRotation;
+        interpolationValue = Math.min(interpolationValue, 1f); // clamp to 1f
+        
+        agent.getPredictedRotation().slerp(
+                agent.getWorldRotation(),
+                targetRotation,
+                interpolationValue);
+        
+        return agent.getPredictedRotation();
     }
 
     /**
@@ -164,11 +202,14 @@ public abstract class AbstractSteeringBehavior extends Behavior {
         // Apply Braking Force
         velocity.multLocal(this.brakingFactor);
         
+       // Calculate Rotation
+        calculateNewRotation(tpf);
+        
         switch (agent.getApplyType())
         {
             case Spatial:
                 agent.setWorldTranslation(agent.getPredictedPosition(tpf));
-                rotateAgent(tpf);
+                agent.setWorldRotation(agent.getPredictedRotation());
                 break;
                 
             case BetterCharacterControl:

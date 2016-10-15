@@ -1,5 +1,7 @@
 package com.jme3.ai.agents;
 
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -30,17 +32,22 @@ public class AIControl extends AbstractControl {
     //Vector3f acceleration = Vector3f.ZERO.clone();
     
     /**
-     * The old Position is the position the assigned spatial had after the last
-     * update call. It is used to calculate the Velocity and the new position
-     
-    Vector3f oldPosition;
-    */
+     * The predicted Rotation is similar to the predicted Position.<br>
+     * Use {@link #getPredictedRotation() } to access it.<br>
+     * It is the Rotation the Unit should have after AI Calculations
+     * 
+     * @see #getPredictedPosition(float) 
+     * @see #getPredictedRotation() 
+     * @see #setPredictedRotation(com.jme3.math.Quaternion) 
+     */ 
+    Quaternion predictedRotation;
+    
     
     /**
      * The Velocity is needed for the next updateAI cycle and is also required
      * to compute the next position
      */
-    Vector3f velocity = Vector3f.ZERO.clone();
+    Vector3f velocity;
     
     /**
      * Instantiate a player, obstacle or whatever. We always assume a circular
@@ -54,6 +61,8 @@ public class AIControl extends AbstractControl {
      */
     public AIControl(float radius) {
         this.radius = radius;
+        predictedRotation = new Quaternion();
+        velocity = Vector3f.ZERO.clone();
     }
     
     /**
@@ -114,6 +123,31 @@ public class AIControl extends AbstractControl {
     public void setIgnoreScenegraph(boolean ignoreScenegraph) {
         this.ignoreScenegraph = ignoreScenegraph;
     }
+
+    /**
+     * The predicted is the rotation that the unit should have after applying
+     * the AI Calculations.<br> It might be different from the spatials actual
+     * rotation (e.g. when the physics change something).<br>
+     * <br>
+     * Note: This is the World-Space Rotation<br>
+     * <br>
+     * @return The predicted rotation
+     */
+    public Quaternion getPredictedRotation() {
+        return predictedRotation;
+    }
+
+    /**
+     * <b>For Internal use only.</b> This sets the predicted rotation so it will
+     * be called from the behaviors.<br>
+     * <br>
+     * Note: This is the World-Space Rotation<br>
+     * <br>
+     * @param rotation The rotation to set
+     */
+    public void setPredictedRotation(Quaternion rotation) {
+        this.predictedRotation = rotation;
+    }
    
     /**
      * Gets the Velocity of this Object. If you're in manual mode, you have to
@@ -172,6 +206,10 @@ public class AIControl extends AbstractControl {
     /**
      * Sets the mass of this agent.<br>The mass is relevant for the
      * acceleration (how fast a behavior changes it's way)<br>
+     * <br>
+     * Don't think of it as kilograms but forces (g, gravity):<br>
+     * A mass of 1/9.81 will lead to 1g pulling the character.<br>
+     * A mass of 2/9.81 is 0.5g...
      * 
      * @see #getMass() 
      * @param mass The mass in kilogramms
@@ -211,8 +249,6 @@ public class AIControl extends AbstractControl {
     
     /**
      * Returns the Position of this Unit <b>in the world</b>.<br>
-     * Currently there is no matching setter, since it differs from what your
-     * spatial represents. That's why I shift this job off to usercode.<br>
      * 
      * @return The Position of this unit in the world
      */
@@ -232,10 +268,36 @@ public class AIControl extends AbstractControl {
      * position for that.
      * @param translation The Position in world space where this unit's spatial
      * should be placed.
+     * @see #setWorldRotation(com.jme3.math.Quaternion) 
      */
     public void setWorldTranslation(Vector3f translation)
     {
         spatial.setLocalTranslation(worldToLocal(translation));
+    }
+    
+    /**
+     * Returns the Rotation of this Unit <b>in the world</b>.<br>
+     * 
+     * @return The Rotation of this unit in the world
+     */
+    public Quaternion getWorldRotation()
+    {
+        return spatial.getWorldRotation();
+    }
+    
+    /**
+     * Rotates this unit in the correct world space.<br>
+     * This is mainly for internal use<br>
+     * <br>
+     * <i><b>Note:</b></i> You can use
+     * {@link #worldToLocal(com.jme3.math.Quaternion) } if you need a local
+     * space rotation.
+     * @param rotation The Rotation in world space
+     * @see #setWorldTranslation(com.jme3.math.Vector3f) 
+     */
+    public void setWorldRotation(Quaternion rotation)
+    {
+        spatial.setLocalRotation(worldToLocal(rotation));
     }
     
     /**
@@ -245,6 +307,7 @@ public class AIControl extends AbstractControl {
      * 
      * @param translation The World Space Translation
      * @return The Local Space Translation
+     * @see #worldToLocal(com.jme3.math.Quaternion) 
      */
     public Vector3f worldToLocal(Vector3f translation)
     {
@@ -255,6 +318,32 @@ public class AIControl extends AbstractControl {
         else
         {
             return translation.subtract(spatial.getParent().getWorldTranslation());
+        }
+    }
+    
+    /**
+     * Translates a Quaternion from World Space to Local Space. This is useful 
+     * since MonkeyBrains operates in world space but most objects are only 
+     * modifiable in local space.
+     * 
+     * @param rotation The World Space Rotation
+     * @return The Local Space Rotation
+     * @see #worldToLocal(com.jme3.math.Quaternion) 
+     */
+    public Quaternion worldToLocal(Quaternion rotation)
+    {
+        if (spatial.getParent() == null)
+        {
+            return rotation;
+        }
+        else
+        {
+            /* First rotate the object against the parents rotation so 
+             * we essentially have zero rotation again, then "apply" the
+             * desired rotation.
+             */
+            return spatial.getParent().getWorldRotation().inverse().
+                    multLocal(rotation);
         }
     }
 
@@ -423,5 +512,12 @@ public class AIControl extends AbstractControl {
     @Override
     public String toString() {
         return "AIControl{" + "radius=" + radius + ", ignoreScenegraph=" + ignoreScenegraph + '}';
+    }
+    
+    public static float angleBetween(Quaternion q1, Quaternion q2)
+    {
+        // this is some magic I found on the internetz.
+        // see http://www.gamedev.net/topic/613685-find-angle-between-quaternion-a-and-b/
+        return FastMath.acos(q2.mult(q1.inverse()).getW()) * 2.0f;
     }
 }

@@ -56,9 +56,9 @@ public class Agent<T> extends AIControl {
     private Behavior mainBehavior;
 
     /**
-     * The speed with which the Agent will turn around corners
+     * The speed with which the Agent will look into the new direction.
      */
-    float rotationSpeed = 1f;
+    float rotationSpeed = FastMath.TWO_PI;
     
     ApplyType applyType = ApplyType.Spatial;
     
@@ -119,6 +119,7 @@ public class Agent<T> extends AIControl {
     /**
      * Returns the RotationSpeed (how fast the Agent will turn itself == looking
      * into the movement direction). This is essentially the "yaw" velocity.<br>
+     * The Unit is "Radians per Second", so 2Pi -> Full turnaround in 1 sec<br>
      * <br>
      * @see #setRotationSpeed(float) 
      * @return The Rotational Yaw Speed
@@ -131,7 +132,8 @@ public class Agent<T> extends AIControl {
      * Sets the RotationSpeed (how fast the agent will turn around).<br>
      * This is essentially the "yaw" velocity<br>
      * <br>
-     * @param rotationSpeed The Rotational Speed in "turns per second"
+     * @param rotationSpeed The Rotational Speed in "radians per second"
+     * @see #getRotationSpeed() 
      */
     public void setRotationSpeed(float rotationSpeed) {
         this.rotationSpeed = rotationSpeed;
