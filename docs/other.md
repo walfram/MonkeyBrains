@@ -31,6 +31,7 @@ We now have a static method `AIControl.angleBetween(Quat1, Quat2)` and some `cal
 
 Bugfix: PathFollowBehavior doesn't need an ArrayList. It shouldn't care about the way the data is stored actually.  
 PathFollowBehavior now features `setPathDoneRunable` to react to a finished path with a callback.  
+Added a fast ACos Implementation since FastMath.acos was calling Math.acos which is butt slow.
 
 ##Big Refactoring:
 Essentially I renamed GameEntity to AIControl, since a) it's really a control and b) it should neither be mixed nor confused with an real ES. I then changed the implementation of some things.

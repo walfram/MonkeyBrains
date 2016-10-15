@@ -518,6 +518,51 @@ public class AIControl extends AbstractControl {
     {
         // this is some magic I found on the internetz.
         // see http://www.gamedev.net/topic/613685-find-angle-between-quaternion-a-and-b/
-        return FastMath.acos(q2.mult(q1.inverse()).getW()) * 2.0f;
+        return fastAcos(q2.mult(q1.inverse()).getW()) * 2f;
+    }
+    
+    /**
+     * Really fast acos approximation. <br>
+     * Reducing much of the cpu load which was caused by angleBetween or 
+     * {@link FastMath#acos(float) } which in turn only called
+     * {@link Math#acos(double) } and hence operated on doubles. <br>
+     * <br>
+     * Note: NVidia claims an error of 6.7e-5 and for my test values I only 
+     * saw deviations in the 8th decimal (so ~3e-8) compared to FastMath.<br>
+     * <br>
+     * Taken from <a href="http://http.developer.nvidia.com/Cg/acos.html">
+     * http://http.developer.nvidia.com/Cg/acos.html</a><br>
+     * <br>
+     * 
+     * @param x the value (which is clamped to [-1, 1])
+     * @return the acos of x
+     */
+    public static float fastAcos(float x)
+    {
+        // Some clamping due to floating point errors (1.0000001)
+        if (x > 1)
+            x = 1;
+        else if (x < -1)
+            x = -1;
+            
+        // http://http.developer.nvidia.com/Cg/acos.html
+        // Handbook of Mathematical Functions
+        // M. Abramowitz and I.A. Stegun, Ed.
+
+        // Absolute error <= 6.7e-5
+        float negate = (x < 0) ? 1f : 0f;
+        
+        x = FastMath.abs(x);
+        
+        float ret = -0.0187293f;
+        ret = ret * x;
+        ret = ret + 0.0742610f;
+        ret = ret * x;
+        ret = ret - 0.2121144f;
+        ret = ret * x;
+        ret = ret + 1.5707288f;
+        ret = ret * FastMath.sqrt(1.0f - x);
+        ret = ret - 2 * negate * ret;
+        return negate * 3.14159265358979f + ret;
     }
 }
