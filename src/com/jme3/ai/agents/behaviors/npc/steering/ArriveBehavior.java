@@ -31,7 +31,6 @@ package com.jme3.ai.agents.behaviors.npc.steering;
 
 import com.jme3.ai.agents.Agent;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 
 /**
  * Arrival behavior is identical to seek while the character is far from its
@@ -50,19 +49,21 @@ public class ArriveBehavior extends SeekBehavior {
      * Distance of targetPosition that is acceptable.
      */
     private static final float ERROR_FACTOR = 0.001f;
+    
     /**
-     * Rate of negative acceleration.
+     * The distance inside which the Behavior starts to slow down in order to
+     * stop inside of the target.
      */
     private float slowingDistance;
 
     /**
-     * The slowingDistance is (0.1 * distance betwen agents) by default.
+     * The slowingDistance is (0.1 * distance between agents) by default.
      *
      * @see SeekBehavior#SeekBehavior(com.jme3.ai.agents.Agent)
      */
     public ArriveBehavior(Agent target) {
         super(target);
-        this.slowingDistance = agent.distanceTo(target) * 0.25f;
+        this.slowingDistance = agent.distanceTo(target) * 0.1f;
     }
 
     /**
@@ -117,17 +118,17 @@ public class ArriveBehavior extends SeekBehavior {
     @Override
     protected Vector3f calculateRawSteering() {
         float distanceToTarget;
-        float radious = 0;
+        float radius = 0;
 
         if (this.getTarget() != null) {
-            distanceToTarget = this.agent.distanceTo(this.getTarget());
-            radious = this.getTarget().getRadius();
+            distanceToTarget = agent.distanceTo(this.getTarget());
+            radius = this.getTarget().getRadius();
         } else if (this.getSeekingPosition() != null) {
-            distanceToTarget = this.agent.getWorldTranslation().subtract(this.getSeekingPosition()).length();
+            distanceToTarget = agent.vectorTo(getSeekingPosition()).length();
         } else {
             return new Vector3f(); //We dont have any target or location to arrive 
         }
-        if (distanceToTarget < radious + ArriveBehavior.ERROR_FACTOR) {
+        if (distanceToTarget < radius + ArriveBehavior.ERROR_FACTOR) {
             this.setBrakingFactor(0);
         } else if (distanceToTarget < this.slowingDistance) {
             this.setBrakingFactor(distanceToTarget / this.slowingDistance);

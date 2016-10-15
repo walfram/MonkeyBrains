@@ -96,6 +96,8 @@ public abstract class AbstractSteeringBehavior extends Behavior {
      * @return The new velocity for this agent based on steering vector
      */
     protected Vector3f calculateNewVelocity(float tpf) {
+        velocity.set(agent.getVelocity());
+        
         velocity.addLocal(
                 calculateSteering().mult(1 / agent.getMass()).multLocal(tpf)
         );
@@ -105,7 +107,7 @@ public abstract class AbstractSteeringBehavior extends Behavior {
             velocity = velocity.normalize().mult(agent.getMaxMoveSpeed());
         }
         
-        agent.setVelocity(velocity);
+        agent.getVelocity().set(velocity);
         return velocity;
     }
     
@@ -200,7 +202,9 @@ public abstract class AbstractSteeringBehavior extends Behavior {
         calculateNewVelocity(tpf);
         
         // Apply Braking Force
-        velocity.multLocal(this.brakingFactor);
+        // This had to be extracted to agent, so ApplyType.DontApply takes care
+        // of the Brake Type
+        agent.setBrakingFactor(this.brakingFactor);
         
        // Calculate Rotation
         calculateNewRotation(tpf);

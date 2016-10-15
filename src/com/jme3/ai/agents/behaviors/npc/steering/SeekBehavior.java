@@ -88,22 +88,28 @@ public class SeekBehavior extends AbstractStrengthSteeringBehavior {
      */
     @Override
     protected Vector3f calculateRawSteering() {
-        Vector3f desiredVelocity;
+        Vector3f desiredVelocity; // the velocity we want to have
 
         if (this.target != null) {
-            desiredVelocity = target.getWorldTranslation().subtract(agent.getWorldTranslation());
+            desiredVelocity = agent.vectorTo(target).normalizeLocal().multLocal(agent.getMaxMoveSpeed());
         } else if (this.seekingPosition != null) {
-            desiredVelocity = this.seekingPosition.subtract(agent.getWorldTranslation()).normalize();
+            desiredVelocity = agent.vectorTo(seekingPosition).normalizeLocal().multLocal(agent.getMaxMoveSpeed());
         } else {
             return new Vector3f(); //We do not have a target or position to seek
         }
-        Vector3f aVelocity = this.agent.getVelocity();
+        Vector3f aVelocity = agent.getVelocity();
 
         if (aVelocity == null) {
             aVelocity = new Vector3f();
         }
+        
+        /* For this, we had to multiply desiredVelocity with MaxMoveSpeed.
+         * If we would normalize anything, we wouldn't accelerate once we head 
+         * into the right direction. That way the steering only becomes zero,
+         * if we head full throttle into the right direction
+         */
 
-        return desiredVelocity.subtract(aVelocity);
+        return desiredVelocity.subtractLocal(aVelocity).normalizeLocal();
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.jme3.ai.agents;
 
+import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -48,6 +49,13 @@ public class AIControl extends AbstractControl {
      * to compute the next position
      */
     Vector3f velocity;
+    
+    /**
+     * The Braking Factor is the scalar multiplicator for the velocity.<br>
+     * It cannot be applied on velocity or else it would've been applied 
+     * thousands of times.
+     */
+    float brakingFactor;
     
     /**
      * Instantiate a player, obstacle or whatever. We always assume a circular
@@ -151,11 +159,13 @@ public class AIControl extends AbstractControl {
    
     /**
      * Gets the Velocity of this Object. If you're in manual mode, you have to
-     * move the object by this amount.<br>
+     * move the object by this amount multiplicated with tpf multiplicated with
+     * the braking factor<br>
      * <br>
      * If you want the actual movement speed of this object, see
      * {@link #getSpeed() }
      * 
+     * @see #getBrakingFactor() 
      * @see #getSpeed() 
      * @return The Velocity of this Object.
      */
@@ -471,7 +481,32 @@ public class AIControl extends AbstractControl {
      * @return The Movement Speed of this Unit
      */
     public float getSpeed() {
-        return velocity.length();
+        return velocity.length() * brakingFactor;
+    }
+    
+    
+    /**
+     * Defines the scalar multiplicator for the velocity. That way the agent can slow down.
+     * 
+     * @param brakingFactor 0 means the Agent will stand still and 1 wont effect him.
+     * @throws SteeringExceptions.IllegalIntervalException If the braking factor is not contained
+     * in the [0,1] interval
+     */
+    public final void setBrakingFactor(float brakingFactor) {
+        if (brakingFactor < 0 || brakingFactor > 1) {
+            throw new SteeringExceptions.IllegalIntervalException("braking", brakingFactor);
+        }
+        this.brakingFactor = brakingFactor;
+    }
+
+    /**
+     * Returns the scalar multiplicator for the velocity. That way you know how
+     * much an agent is slowed down.<br>
+     * <br>
+     * @return The scalar multiplicator
+     */
+    public final float getBrakingFactor() {
+        return this.brakingFactor;
     }
     
     /**
@@ -487,7 +522,8 @@ public class AIControl extends AbstractControl {
         if (velocity == null) {
             return spatial.getWorldTranslation();
         } else {
-            return spatial.getWorldTranslation().add(velocity.mult(tpf));
+            return spatial.getWorldTranslation().add(
+                    velocity.mult(tpf).multLocal(brakingFactor));
         }
     }
     
