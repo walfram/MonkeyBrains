@@ -385,15 +385,16 @@ public class AIControl extends AbstractControl {
     
     /**
      * Calculate the predicted position for this 'frame'<br>
-     * Note: You have to call updateAI before (or let the SceneGraph do it)
+     * Note: You have to call updateAI before (or let the SceneGraph do it)<br>
+     * Note: This is in World Space.
      * 
      * @return The predicted position.
      */
     public Vector3f getPredictedPosition() {
         if (velocity == null) {
-            return spatial.getLocalTranslation();
+            return spatial.getWorldTranslation();
         } else {
-            return spatial.getLocalTranslation().add(velocity);
+            return spatial.getWorldTranslation().add(velocity);
         }
     }
     
