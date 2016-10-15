@@ -160,29 +160,6 @@ public class Agent<T> extends AIControl {
     }
     
 
-    
-    /**
-     * Method for starting agent.
-     *
-     * @see Agent#enabled
-     */
-    public void start() {
-        enabled = true;
-        if (mainBehavior == null) {
-            throw new NullBehaviorException("Agent " + getName() + " does not have set main behavior.");
-        }
-    }
-
-    /**
-     * Method for stoping agent. Note: It will not remove spatial, it will just
-     * stop agent from acting.
-     *
-     * @see Agent#enabled
-     */
-    public void stop() {
-        enabled = false;
-    }
-
     /**
      * @return model of agent
      */

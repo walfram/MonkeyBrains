@@ -92,7 +92,7 @@ public class MonkeyBrainsAppState extends AbstractAppState {
         agents.add(agent);
         //agent.setId(setIdCounterToAgent());
         if (inProgress) {
-            agent.start();
+            agent.setEnabled(true);
         }
         //rootNode.attachChild(agent.getSpatial());
     }
@@ -109,7 +109,7 @@ public class MonkeyBrainsAppState extends AbstractAppState {
         agents.add(agent);
         //agent.setId(setIdCounterToAgent());
         if (inProgress) {
-            agent.start();
+            agent.setEnabled(true);
         }
 //        rootNode.attachChild(agent.getSpatial());
     }
@@ -128,7 +128,7 @@ public class MonkeyBrainsAppState extends AbstractAppState {
         agents.add(agent);
         //agent.setId(setIdCounterToAgent());
         if (inProgress) {
-            agent.start();
+            agent.setEnabled(true);
         }
 //        rootNode.attachChild(agent.getSpatial());
     }
@@ -142,7 +142,7 @@ public class MonkeyBrainsAppState extends AbstractAppState {
     public void removeAgent(Agent agent) {
         for (int i = 0; i < agents.size(); i++) {
             if (agents.get(i).equals(agent)) {
-                agents.get(i).stop();
+                agents.get(i).setEnabled(false);
                 agents.get(i).getSpatial().removeFromParent();
                 agents.remove(i);
                 break;
@@ -158,7 +158,7 @@ public class MonkeyBrainsAppState extends AbstractAppState {
     public void disableAgent(Agent agent) {
         for (int i = 0; i < agents.size(); i++) {
             if (agents.get(i).equals(agent)) {
-                agents.get(i).stop();
+                agents.get(i).setEnabled(false);
                 break;
             }
         }
@@ -230,14 +230,14 @@ public class MonkeyBrainsAppState extends AbstractAppState {
     public void start() {
         inProgress = true;
         for (Agent agent : agents) {
-            agent.start();
+            agent.setEnabled(true);
         }
     }
 
     public void stop() {
         inProgress = false;
         for (Agent agent : agents) {
-            agent.stop();
+            agent.setEnabled(false);
         }
     }
 

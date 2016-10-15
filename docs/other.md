@@ -11,16 +11,17 @@ On the other hand, when you have an agent standing on a car, you might want his 
 Renamed the GameEntityException to AIControlException. This is part of a larger refactoring.  
 Also renamed the GameEntitySeenEvent/Listener to AIControlSeenEvent/Listener.  
 Removed Agent Total Mass (since we don't need the Inventory mass and it would be the users custom implementation anyway).  
-
-calculateNewVelocity now uses `tpf`. Before this, the velocity field was wrong (and hence `getPredictedPosition`, ...). Also the velocity limitation was tpf unaware.
-`distanceToGameEntityRelative` is now called `distanceTo` and `offset` is now called `vectorTo`
+  
+calculateNewVelocity now uses `tpf`. Before this, the velocity field was wrong (and hence `getPredictedPosition`, ...). Also the velocity limitation was tpf unaware.  
+`distanceToGameEntityRelative` is now called `distanceTo` and `offset` is now called `vectorTo`.  
 `getMovementSpeed` is now called `getSpeed` since it returns the length of the velocity. But you still have `setMovementSpeed` and `setMaxMovementSpeed`
-`fordwardVector` is now called `getForwardVector`, but might change to `getFacing`.
-`Behavior`s are no longer Controls and don't require an Agent in the Constructor. This is automatically propagated when the behavior is added to the Agent.
-
-Added `ApplyType` for more Control on how the AI Changes are applied. TODO: Physics related modes and something like `getPredictedRotation`
-Removed `getAcceleration` from the AIControl since multiple Behaviors would always overwrite it. That way you could only use it to find out if an behavior had steered ever.
-If that wasn't the case, the velocity would be zero anyway.
+`fordwardVector` is now called `getForwardVector`, but might change to `getFacing`.  
+`Behavior`s are no longer Controls and don't require an Agent in the Constructor. This is automatically propagated when the behavior is added to the Agent.  
+  
+Added `ApplyType` for more Control on how the AI Changes are applied. TODO: Physics related modes and something like `getPredictedRotation`  
+Removed `getAcceleration` from the AIControl since multiple Behaviors would always overwrite it. That way you could only use it to find out if an behavior had steered ever.  
+If that wasn't the case, the velocity would be zero anyway.  
+Removed `Agent`'s `start`/`stop` since there already is `AbstractControl`s `setEnabled`.  
 
 ##Big Refactoring:
 Essentially I renamed GameEntity to AIControl, since a) it's really a control and b) it should neither be mixed nor confused with an real ES. I then changed the implementation of some things.
