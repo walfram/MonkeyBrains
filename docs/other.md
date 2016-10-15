@@ -34,6 +34,8 @@ PathFollowBehavior now features `setPathDoneRunable` to react to a finished path
 Added a fast ACos Implementation since FastMath.acos was calling Math.acos which is butt slow.
 Made `brakingFactor` available to AIControl. Only that way I could fix the braking bug (we were applying the Factor once per frame which zeroed our velocity) whilst still allowing different ApplyTypes.
 This means `getPredictedPosition` is taking care of the brakingFactor.  
+Normalized SeekBehaviors Steer Force.  
+
 
 ##Big Refactoring:
 Essentially I renamed GameEntity to AIControl, since a) it's really a control and b) it should neither be mixed nor confused with an real ES. I then changed the implementation of some things.
