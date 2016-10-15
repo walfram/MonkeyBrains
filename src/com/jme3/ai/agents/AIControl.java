@@ -415,7 +415,7 @@ public class AIControl extends AbstractControl {
      */
     public Vector3f vectorTo(AIControl other)
     {
-        return AIControl.this.vectorTo(other.getWorldTranslation());
+        return vectorTo(other.getWorldTranslation());
     }
     
     /**

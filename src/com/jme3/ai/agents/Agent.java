@@ -218,7 +218,9 @@ public class Agent<T> extends AIControl {
         if (this == neighbour) {
             isInBoidNeighborhood = false;
         } else {
-            float distanceSquared = vectorTo(neighbour).lengthSquared();
+            Vector3f vecToNeighbour = vectorTo(neighbour);
+            
+            float distanceSquared = vecToNeighbour.lengthSquared();
             // definitely in neighborhood if inside minDistance sphere
             if (distanceSquared < (minDistance * minDistance)) {
                 isInBoidNeighborhood = true;
@@ -227,7 +229,7 @@ public class Agent<T> extends AIControl {
                 isInBoidNeighborhood = false;
             } // otherwise, test angular vectorTo from forward axis.
             else {
-                    Vector3f unitOffset = this.vectorTo(neighbour).divide(distanceSquared);
+                    Vector3f unitOffset = vecToNeighbour.divide(distanceSquared);
                     float forwardness = this.forwardness(unitOffset);
                     isInBoidNeighborhood = forwardness > FastMath.cos(maxAngle);
             }
