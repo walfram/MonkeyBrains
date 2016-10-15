@@ -29,13 +29,11 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
-import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions.PathFollowInsufficientPointsException;
 import com.jme3.math.Plane;
 import com.jme3.math.Plane.Side;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * "Path following behavior enables a character to steer along a predetermined
@@ -73,7 +71,7 @@ import java.util.ArrayList;
  */
 public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
 
-    private ArrayList<Vector3f> orderedPointsList;
+    private List<Vector3f> orderedPointsList;
     private float pathRadius;
     private float cohesionStrength = 1;
     private int nextSpineJoint = -1;
@@ -93,7 +91,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
      * @see
      * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent)
      */
-    public PathFollowBehavior(ArrayList<Vector3f> orderedPointsList, float pathRadius) {
+    public PathFollowBehavior(List<Vector3f> orderedPointsList, float pathRadius) {
         this(orderedPointsList, pathRadius, 1f);
     }
 
@@ -104,7 +102,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
      * @see PathFollowBehavior#PathFollowBehavior(com.jme3.ai.agents.Agent,
      * java.util.ArrayList, float)
      */
-    public PathFollowBehavior(ArrayList<Vector3f> orderedPointsList, float pathRadius, float cohesionStrength) {
+    public PathFollowBehavior(List<Vector3f> orderedPointsList, float pathRadius, float cohesionStrength) {
         super();
         PathFollowBehavior.validateConstruction(orderedPointsList, pathRadius, cohesionStrength);
         this.orderedPointsList = orderedPointsList;
@@ -112,7 +110,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
         this.cohesionStrength = cohesionStrength;
     }
 
-     private static void validateConstruction(ArrayList<Vector3f> orderedPointsList, float pathRadius, float cohesionStrength) {
+     private static void validateConstruction(List<Vector3f> orderedPointsList, float pathRadius, float cohesionStrength) {
         if (orderedPointsList.size() < 2) {
             throw new PathFollowInsufficientPointsException("To create the path it is needed at least two points.", orderedPointsList.size());
         } else if (pathRadius < 0) {
@@ -161,7 +159,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
 
                 Vector3f posProjection = this.nextExit.getClosestPoint(this.agent.getWorldTranslation());
                 float distanceToCenter = posProjection.subtract(this.orderedPointsList.get(this.nextSpineJoint)).length();
-                //chaeck if the agent is outside the path
+                //check if the agent is outside the path
                 if (distanceToCenter > this.pathRadius) {
                     //Move to the next spine and inside the path
                     Vector3f moveToSpine = this.agent.vectorTo(this.orderedPointsList.get(this.nextSpineJoint)).normalize();
