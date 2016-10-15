@@ -167,7 +167,7 @@ public abstract class AbstractSteeringBehavior extends Behavior {
         switch (agent.getApplyType())
         {
             case Spatial:
-                agent.setWorldTranslation(agent.getPredictedPosition());
+                agent.setWorldTranslation(agent.getPredictedPosition(tpf));
                 rotateAgent(tpf);
                 break;
                 

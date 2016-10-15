@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
+import com.jme3.scene.control.Control;
 
 /**
  * The AIControl is the core of the Agents and Steering Behaviors.<br>
@@ -389,13 +390,15 @@ public class AIControl extends AbstractControl {
      * Note: You have to call updateAI before (or let the SceneGraph do it)<br>
      * Note: This is in World Space.
      * 
+     * @param tpf The Time since the last frame,
+     * see {@link Control#update(float) }
      * @return The predicted position.
      */
-    public Vector3f getPredictedPosition() {
+    public Vector3f getPredictedPosition(float tpf) {
         if (velocity == null) {
             return spatial.getWorldTranslation();
         } else {
-            return spatial.getWorldTranslation().add(velocity);
+            return spatial.getWorldTranslation().add(velocity.mult(tpf));
         }
     }
     

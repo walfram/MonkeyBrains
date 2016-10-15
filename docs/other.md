@@ -22,6 +22,9 @@ Added `ApplyType` for more Control on how the AI Changes are applied. TODO: Phys
 Removed `getAcceleration` from the AIControl since multiple Behaviors would always overwrite it. That way you could only use it to find out if an behavior had steered ever.  
 If that wasn't the case, the velocity would be zero anyway.  
 Removed `Agent`'s `start`/`stop` since there already is `AbstractControl`s `setEnabled`.  
+Bugfix: Made Position Prediction tpf aware (s = v * t; v = a * t; so essentially s = a * t^2 [Note: we're doing numerical integration/explicit euler here, hence we don't have 1/2 as correction factor, we sum it up].
+For this to work I added `getTimePerFrame` to agent. When it's updateAI is called this value is set. If we wouldn't do it that way, we would have to refactor the whole steering system to pass tpf everywhere.
+This is stupid, since the behaviors are attached to exactly one agent with exactly one tpf anyway.  
 
 ##Big Refactoring:
 Essentially I renamed GameEntity to AIControl, since a) it's really a control and b) it should neither be mixed nor confused with an real ES. I then changed the implementation of some things.
