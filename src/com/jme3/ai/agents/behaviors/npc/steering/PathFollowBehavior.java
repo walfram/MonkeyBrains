@@ -171,7 +171,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
                     //Move through the path
                     Vector3f moveThroughPathSteer = exitNormal.normalize();
 
-                    Vector3f predictedPos = this.agent.getPredictedPosition();
+                    Vector3f predictedPos = agent.getPredictedPosition(timePerFrame);
                     Vector3f predictedOffsetFromNextCenter = predictedPos.subtract(this.orderedPointsList.get(this.nextSpineJoint));
                     Vector3f projectionIntoSpine = this.orderedPointsList.get(this.nextSpineJoint).add(
                             exitNormal.mult(predictedOffsetFromNextCenter.dot(exitNormal) / exitNormal.lengthSquared()));

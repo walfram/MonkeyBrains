@@ -96,7 +96,7 @@ public class ContainmentBehavior extends AbstractStrengthSteeringBehavior {
     @Override
     protected Vector3f calculateRawSteering() {
         Vector3f steer = new Vector3f();
-        Vector3f predictedPos = this.agent.getPredictedPosition();
+        Vector3f predictedPos = this.agent.getPredictedPosition(timePerFrame);
 
         //Check if the agent is outside the area
         if (!this.containmentArea.getWorldBound().contains(this.agent.getWorldTranslation())) {

@@ -65,7 +65,7 @@ public class PursuitBehavior extends SeekBehavior {
     @Override
     protected Vector3f calculateRawSteering() {
         //See how far ahead we need to leed
-        Vector3f projectedLocation = this.getTarget().getPredictedPosition();
+        Vector3f projectedLocation = getTarget().getPredictedPosition(timePerFrame);
 
         //Seek behaviour
         Vector3f desierdVel = projectedLocation.subtract(this.agent.getWorldTranslation());

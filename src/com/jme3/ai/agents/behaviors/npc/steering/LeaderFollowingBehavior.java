@@ -126,7 +126,7 @@ public class LeaderFollowingBehavior extends SeekBehavior {
         float distanceBetween = this.agent.distanceTo(this.getTarget());
 
         //See how far ahead we need to leed
-        Vector3f fullProjectedLocation = this.getTarget().getPredictedPosition();
+        Vector3f fullProjectedLocation = getTarget().getPredictedPosition(timePerFrame);
         Vector3f predictedPositionDiff = fullProjectedLocation.subtract(this.getTarget().getWorldTranslation());
         Vector3f projectedLocation = this.getTarget().getWorldTranslation().add(predictedPositionDiff.mult(this.calculateFocusFactor(distanceBetween)));
 
