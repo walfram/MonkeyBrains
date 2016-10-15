@@ -107,12 +107,13 @@ public class AIControl extends AbstractControl {
      * </code> some code. Look it up!</i>
      * 
      * @see #updateAI(float) 
+     * @see Agent#setApplyType(com.jme3.ai.agents.ApplyType) 
      * @param ignoreScenegraph When set to true, we ignore the SceneGraph.
      */
     public void setIgnoreScenegraph(boolean ignoreScenegraph) {
         this.ignoreScenegraph = ignoreScenegraph;
     }
-
+   
     /**
      * Gets the Velocity of this Object. If you're in manual mode, you have to
      * move the object by this amount.<br>

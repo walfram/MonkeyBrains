@@ -62,6 +62,8 @@ public class Agent<T> extends AIControl {
      */
     float rotationSpeed = 1f;
     
+    ApplyType applyType = ApplyType.Spatial;
+    
     /**
      * Instantiate an Agent without any parameters.
      * @deprecated Use the constructors specifing a radius or some behaviors
@@ -136,6 +138,27 @@ public class Agent<T> extends AIControl {
     public void setRotationSpeed(float rotationSpeed) {
         this.rotationSpeed = rotationSpeed;
     }
+    
+     /**
+     * Return how this Agent's AI calculations are applied.
+     * 
+     * @see ApplyType
+     * @return The way calculations are applied
+     */
+    public ApplyType getApplyType() {
+        return applyType;
+    }
+
+    /**
+     * Define how this Agent's AI calculations are applied.
+     * 
+     * @param applyType The way calculations are applied
+     * @see ApplyType
+     */
+    public void setApplyType(ApplyType applyType) {
+        this.applyType = applyType;
+    }
+    
 
     
     /**

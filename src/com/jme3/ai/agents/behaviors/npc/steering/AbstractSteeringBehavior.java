@@ -35,7 +35,6 @@ import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions.IllegalIntervalException;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -159,12 +158,28 @@ public abstract class AbstractSteeringBehavior extends Behavior {
     @Override
     public void updateAI(float tpf) {
         this.timePerFrame = tpf;
-        //calculate new velocity
-        Vector3f vel = calculateNewVelocity(tpf).mult(this.brakingFactor);
-        //translate agent
-        agent.setWorldTranslation(agent.getWorldTranslation().add(vel));
-        //rotate agent
-        rotateAgent(tpf);
+        
+        // Calculate Velocity
+        calculateNewVelocity(tpf);
+        
+        // Apply Braking Force
+        velocity.multLocal(this.brakingFactor);
+        
+        switch (agent.getApplyType())
+        {
+            case Spatial:
+                agent.setWorldTranslation(agent.getPredictedPosition());
+                rotateAgent(tpf);
+                break;
+                
+            case BetterCharacterControl:
+            case RigidBody:
+                throw new RuntimeException("The ApplyType " +
+                        agent.getApplyType() + " isn't supported yet, sorry.");
+                
+            case DontApply:
+                break;
+        }
     }
 
     public float getTimePerFrame() {

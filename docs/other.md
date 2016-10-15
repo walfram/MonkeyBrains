@@ -18,6 +18,8 @@ calculateNewVelocity now uses `tpf`. Before this, the velocity field was wrong (
 `fordwardVector` is now called `getForwardVector`, but might change to `getFacing`.
 `Behavior`s are no longer Controls and don't require an Agent in the Constructor. This is automatically propagated when the behavior is added to the Agent.
 
+Added `ApplyType` for more Control on how the AI Changes are applied. TODO: Physics related modes and something like `getPredictedRotation`
+
 ##Big Refactoring:
 Essentially I renamed GameEntity to AIControl, since a) it's really a control and b) it should neither be mixed nor confused with an real ES. I then changed the implementation of some things.
 I also removed unnecessary things (Hitpoints and such) from the Entity.
