@@ -77,6 +77,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
     private int nextSpineJoint = -1;
     private Plane nextExit = null;
     private boolean active = true;
+    private Runnable pathDoneRunnable;
 
     /**
      * @param orderedPointsList Ordered points that will set the path spine and
@@ -135,7 +136,7 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
      */
     @Override
     protected Vector3f calculateRawSteering() {
-        Vector3f steer = new Vector3f();
+        Vector3f steer = new Vector3f(0f, 0f, 0f);
 
         if (active) {
             //Start to follow from the beginning
@@ -191,6 +192,9 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
             } else {
                 //The path has ended
                 this.active = false;
+                if (pathDoneRunnable != null) {
+                    pathDoneRunnable.run();
+                }
             }
         }
 
@@ -203,5 +207,18 @@ public class PathFollowBehavior extends AbstractStrengthSteeringBehavior {
 
     public boolean isActive() {
         return this.active;
+    }
+
+    /**
+     * Sets the Runnable which is executed when this Behavior has walked the
+     * full path (reached the end).<br>
+     * Note that this not necessarly run on jme's main thread and also shouldn't
+     * contain a long code since it blocks all other behaviors from executing.
+     * <br>
+     * <br>
+     * @param pathDoneRunnable The Runnable
+     */
+    public void setPathDoneRunnable(Runnable pathDoneRunnable) {
+        this.pathDoneRunnable = pathDoneRunnable;
     }
 }

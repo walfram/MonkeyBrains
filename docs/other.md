@@ -29,7 +29,8 @@ Made Rotation working by fixing the way the interpolation value is calculated. N
 can reach the target velocity after a short time (where as the old one never seem'd to manage that). For this we introduced `getWorldRotation`, `setWorldRotation` and a Quaternion `worldToLocal`.
 We now have a static method `AIControl.angleBetween(Quat1, Quat2)` and some `calculateNewRotation` in AbstractSteeringBehavior to set the `getPredictedRotation`.  
 
-Bugfix: PathFollowBehavior doesn't need an ArrayList. It shouldn't care about the way the data is stored actually
+Bugfix: PathFollowBehavior doesn't need an ArrayList. It shouldn't care about the way the data is stored actually.  
+PathFollowBehavior now features `setPathDoneRunable` to react to a finished path with a callback.  
 
 ##Big Refactoring:
 Essentially I renamed GameEntity to AIControl, since a) it's really a control and b) it should neither be mixed nor confused with an real ES. I then changed the implementation of some things.
