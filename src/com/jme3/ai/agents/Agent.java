@@ -214,7 +214,7 @@ public class Agent<T> extends AIControl {
      * If the distance is lower than minDistance It is definitely considered in
      * the same neighborhood. <br> <br>
      *
-     * If the distance is higher than maxDistance It is defenitely not
+     * If the distance is higher than maxDistance It is definitely not
      * considered in the same neighborhood. <br> <br>
      *
      * If the distance is inside [minDistance. maxDistance] It is considered in
@@ -251,13 +251,9 @@ public class Agent<T> extends AIControl {
                 isInBoidNeighborhood = false;
             } // otherwise, test angular vectorTo from forward axis.
             else {
-                if (this.getAcceleration() != null) {
                     Vector3f unitOffset = this.vectorTo(neighbour).divide(distanceSquared);
                     float forwardness = this.forwardness(unitOffset);
                     isInBoidNeighborhood = forwardness > FastMath.cos(maxAngle);
-                } else {
-                    isInBoidNeighborhood = false;
-                }
             }
         }
 

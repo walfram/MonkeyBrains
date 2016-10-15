@@ -26,7 +26,7 @@ public class AIControl extends AbstractControl {
     
     float maxMoveSpeed = 5f;
     float mass = 1f;
-    Vector3f acceleration = Vector3f.ZERO.clone(); // Why?
+    //Vector3f acceleration = Vector3f.ZERO.clone();
     
     /**
      * The old Position is the position the assigned spatial had after the last
@@ -189,9 +189,9 @@ public class AIControl extends AbstractControl {
      * @see #setMass(float) 
      * @return The Acceleration of the unit
      */
-    public Vector3f getAcceleration() {
+    /*public Vector3f getAcceleration() {
         return acceleration;
-    }
+    }*/
 
     /**
      * Sets the Acceleration of the unit.<br>
@@ -200,9 +200,9 @@ public class AIControl extends AbstractControl {
      * <br>
      * @param acceleration The Acceleration which happens to the unit.
      */
-    public void setAcceleration(Vector3f acceleration) {
+    /*public void setAcceleration(Vector3f acceleration) {
         this.acceleration = acceleration;
-    }
+    }*/
     
     /**
      * Some covenience/wrapper methods
