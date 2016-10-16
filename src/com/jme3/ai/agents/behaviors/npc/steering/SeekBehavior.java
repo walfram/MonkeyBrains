@@ -89,14 +89,22 @@ public class SeekBehavior extends AbstractStrengthSteeringBehavior {
     @Override
     protected Vector3f calculateRawSteering() {
         Vector3f desiredVelocity; // the velocity we want to have
-
+        float len = 0f;
+        
         if (this.target != null) {
             desiredVelocity = agent.vectorTo(target).normalizeLocal().multLocal(agent.getMaxMoveSpeed());
+            len = agent.vectorTo(target).lengthSquared();
         } else if (this.seekingPosition != null) {
             desiredVelocity = agent.vectorTo(seekingPosition).normalizeLocal().multLocal(agent.getMaxMoveSpeed());
+            len = agent.vectorTo(seekingPosition).lengthSquared();
         } else {
             return new Vector3f(); //We do not have a target or position to seek
         }
+        
+        if (len < ArriveBehavior.ERROR_FACTOR * ArriveBehavior.ERROR_FACTOR) {
+            return Vector3f.ZERO.clone();
+        }
+        
         Vector3f aVelocity = agent.getVelocity();
 
         if (aVelocity == null) {

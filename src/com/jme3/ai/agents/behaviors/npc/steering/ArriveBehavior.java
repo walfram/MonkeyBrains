@@ -48,7 +48,7 @@ public class ArriveBehavior extends SeekBehavior {
     /**
      * Distance of targetPosition that is acceptable.
      */
-    private static final float ERROR_FACTOR = 0.001f;
+    public static final float ERROR_FACTOR = 0.001f;
     
     /**
      * The distance inside which the Behavior starts to slow down in order to

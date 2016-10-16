@@ -36,6 +36,7 @@ Made `brakingFactor` available to AIControl. Only that way I could fix the braki
 This means `getPredictedPosition` is taking care of the brakingFactor.  
 Normalized SeekBehaviors Steer Force.  
 
+Arrive and Seek Behaviors now return Vector3f.ZERO when they are close enough to the target.  
 
 ##Big Refactoring:
 Essentially I renamed GameEntity to AIControl, since a) it's really a control and b) it should neither be mixed nor confused with an real ES. I then changed the implementation of some things.
