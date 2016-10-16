@@ -33,8 +33,8 @@ public enum ApplyType {
     
     /**
      * This is the mode for manual application. When using this mode, you can 
-     * simply grab {@link AIControl#getPredictedPosition() } and set it in any
-     * way you desire.
+     * simply grab {@link AIControl#getPredictedPosition(float) ) } and 
+     * {@link AIControl#getPredictedRotation() } to set it in any way you desire
      */
     DontApply
 };
