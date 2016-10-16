@@ -31,7 +31,6 @@ package com.jme3.ai.agents.behaviors.npc.steering;
 
 import com.jme3.ai.agents.Agent;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
 
 /**
  * Purpose of seek behavior is to steer agent towards a specified position or
