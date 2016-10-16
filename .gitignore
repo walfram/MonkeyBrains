@@ -215,3 +215,5 @@ pip-log.txt
 .mr.developer.cfg
 
 .gradle/
+/demos/MBTestMultiThreading/nbproject/private/
+demos/MBTestMultiThreading/*.dll

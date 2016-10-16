@@ -19,6 +19,25 @@ On the other hand I saw, there is no pre-merge version available it seems.
 I've done pretty much already and for now I am mostly done with it. I might change stuff I find or users report but in general we now reached a level of good useability (see Getting Started for that).  
 This fork fixed a few bugs (Framerate dependant movements, incorrect rotations, useful rotation speed) and also implemented some features (multitasking, automatic updating using the scenegraph, manual use of agents, controlling rigidbodies and BetterCharacterControls).  
 
+## Getting Started
+Because we did some major changes, the Demos are only partially valid. Luckily we simplified the design in our fork so it's easy for you to use:  
+The following snippet is somplete enough for an easy AI behavior. Note that it would actually be a three-liner if there weren't so many parameters to set (since the default values differ much per usecase)  
+
+```
+Agent agent = new Agent(0.1f); // Radius 0.1m
+agent.setMass(1f); // Actually the default, 1kg
+agent.setMaxMoveSpeed(0.5f);
+agent.setMainBehavior(new ArriveBehavior(Vector3f.ZERO.clone()));
+agent.setRotationSpeed(FastMath.TWO_PI);
+
+Spatial agentSpatial = new Node("AgentSpatial");
+agentSpatial.addControl(agent);
+agentSpatial.setLocalTranslation(((float)Math.random() * 2f) - 1f, 0f, ((float)Math.random() * 2f) - 1f);
+```
+
+For more advanced topics see the `demos` folder. It actually consists of a "DemoSingleThread" Application which is Single Threaded and a Multi Threaded Application.  
+Actually having Monkey Brains Multithreaded is really easy, but stuff like the input Listener and all make it a bit more verbose.
+
 ##Documentation for MonkeyBrains:
 User guides, documentation for MonkeyBrains have been made and you can see it at wiki pages
 

@@ -38,6 +38,7 @@ Normalized SeekBehaviors Steer Force.
 
 Arrive and Seek Behaviors now return Vector3f.ZERO when they are close enough to the target.  
 BetterCharacterControl and RigidBodyControl are now supported as ApplyTypes. For some reason, the BetterCharacterControl doesn't look/work so nicely. I'll investigate that in a full blown project sooner or later.  
+Added DebugTool `com.jme3.ai.agents.debugtools.ShowVelocityControl`
 
 ##Big Refactoring:
 Essentially I renamed GameEntity to AIControl, since a) it's really a control and b) it should neither be mixed nor confused with an real ES. I then changed the implementation of some things.
