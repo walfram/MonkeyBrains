@@ -8,12 +8,16 @@ The goals for this fork are relatively simple, I want to decouple the Agents fro
 What I call "Framework" Parts is something like the `Inventory`, the `Weapon` System and the `Hitpoints`.  
 In addition to that I want to redesign the `MonkeyBrainsAppState` or maybe even dropping it partially (since it essentially only updates the `Agent`).  
 For this I will base the fork on the Version `1.0.0` so before the changes made by the User `Pesegato`, just because I think it would disturb to base your fork on something like another fork.
-
-**Why??**
+  
+**Why??**  
 This is really simple: For a FPS project I essentially have my own definitions of `Weapons`, `Inventory` and more important:  
 I don't want to have some AppState changing the Translations of my objects (which wouldn't work anyway because of the Physics Engine fighting this).  
 What I noticed as I wrote this, essentially, I want to extract the Steering Behaviors [jmesteer](http://jmesteer.bdevel.org) from MonkeyBrains again.
 On the other hand I saw, there is no pre-merge version available it seems.
+
+## Fork Status:
+I've done pretty much already and for now I am mostly done with it. I might change stuff I find or users report but in general we now reached a level of good useability (see Getting Started for that).  
+This fork fixed a few bugs (Framerate dependant movements, incorrect rotations, useful rotation speed) and also implemented some features (multitasking, automatic updating using the scenegraph, manual use of agents, controlling rigidbodies and BetterCharacterControls).  
 
 ##Documentation for MonkeyBrains:
 User guides, documentation for MonkeyBrains have been made and you can see it at wiki pages

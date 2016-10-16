@@ -33,6 +33,8 @@ import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions.IllegalIntervalException;
+import com.jme3.bullet.control.BetterCharacterControl;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -217,9 +219,33 @@ public abstract class AbstractSteeringBehavior extends Behavior {
                 break;
                 
             case BetterCharacterControl:
+                BetterCharacterControl bcc = agent.getSpatial().getControl(BetterCharacterControl.class);
+                if (bcc == null) {
+                    throw new RuntimeException("The ApplyType "
+                        + "BetterCharacterControl requires said Control attached"
+                        + "to the Spatial before the first updateAI call");
+                }
+                
+                bcc.setViewDirection(agent.getPredictedRotation().mult(Vector3f.UNIT_Z));
+                bcc.setWalkDirection(velocity.multLocal(brakingFactor));
+                break;
+                
             case RigidBody:
-                throw new RuntimeException("The ApplyType " +
-                        agent.getApplyType() + " isn't supported yet, sorry.");
+                RigidBodyControl rbc = agent.getSpatial().getControl(RigidBodyControl.class);
+                if (rbc == null) {
+                    throw new RuntimeException("The ApplyType "
+                        + "RigidBodyControl requires said Control attached "
+                        + "to the Spatial before the first updateAI call");
+                }
+                
+                if (rbc.getMotionState().isApplyPhysicsLocal()) {
+                    rbc.setPhysicsRotation(agent.worldToLocal(agent.getPredictedRotation()));
+                    rbc.setPhysicsLocation(agent.worldToLocal(agent.getPredictedPosition(tpf)));
+                } else {
+                    rbc.setPhysicsRotation(agent.getPredictedRotation());
+                    rbc.setPhysicsLocation(agent.getPredictedPosition(tpf));
+                }
+                break;
                 
             case DontApply:
                 break;
