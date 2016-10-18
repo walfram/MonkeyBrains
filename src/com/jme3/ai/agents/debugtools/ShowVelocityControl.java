@@ -32,12 +32,19 @@ public class ShowVelocityControl extends AbstractControl
     Application app;
     Agent agent;
     Quaternion velocityRotation;
+    float arrowLength;
     
-    public ShowVelocityControl(Application app)
+    public ShowVelocityControl(Application app, float arrowLength)
     {
         super();
         this.app = app;
         velocityRotation = new Quaternion();
+        this.arrowLength = arrowLength;
+    }
+    
+    public ShowVelocityControl(Application app)
+    {
+        this(app, 0.15f);
     }
 
     @Override
@@ -100,7 +107,7 @@ public class ShowVelocityControl extends AbstractControl
     public Geometry generateVelocityArrow()
     {
         Geometry geomArrowVelocity = new Geometry("ArrowVelocity",
-                new Arrow(Vector3f.UNIT_Z.mult(0.15f)));
+                new Arrow(Vector3f.UNIT_Z.mult(arrowLength)));
         Material matMagenta = new Material(app.getAssetManager(),
                 "Common/MatDefs/Misc/Unshaded.j3md");
         matMagenta.setColor("Color", ColorRGBA.Magenta);
@@ -112,7 +119,7 @@ public class ShowVelocityControl extends AbstractControl
     public Geometry generateDirectionalArrow()
     {
         Geometry geomArrowDirection = new Geometry("ArrowDirection", 
-                new Arrow(Vector3f.UNIT_Z.mult(0.15f)));
+                new Arrow(Vector3f.UNIT_Z.mult(arrowLength)));
         Material matBlue = new Material(app.getAssetManager(),
                 "Common/MatDefs/Misc/Unshaded.j3md");
         matBlue.setColor("Color", ColorRGBA.Blue);
