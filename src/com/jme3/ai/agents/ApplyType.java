@@ -32,6 +32,12 @@ public enum ApplyType {
     BetterCharacterControl,
     
     /**
+     * Just like BetterCharacterControl but with a Zeroed Y Component. <br>
+     * This prevents the Character from suddenly starting to fly.<br>
+     */
+    BetterCharacterControlNoY,
+    
+    /**
      * This is the mode for manual application. When using this mode, you can 
      * simply grab {@link AIControl#getPredictedPosition(float) ) } and 
      * {@link AIControl#getPredictedRotation() } to set it in any way you desire

@@ -227,6 +227,18 @@ public abstract class AbstractSteeringBehavior extends Behavior {
                 }
                 
                 bcc.setViewDirection(agent.getPredictedRotation().mult(Vector3f.UNIT_Z));
+                bcc.setWalkDirection(velocity.mult(brakingFactor));
+                break;
+                
+            case BetterCharacterControlNoY:
+                bcc = agent.getSpatial().getControl(BetterCharacterControl.class);
+                if (bcc == null) {
+                    throw new RuntimeException("The ApplyType "
+                        + "BetterCharacterControl requires said Control attached"
+                        + "to the Spatial before the first updateAI call");
+                }
+                
+                bcc.setViewDirection(agent.getPredictedRotation().mult(Vector3f.UNIT_Z));
                 bcc.setWalkDirection(velocity.clone().setY(0f).multLocal(brakingFactor));
                 break;
                 
