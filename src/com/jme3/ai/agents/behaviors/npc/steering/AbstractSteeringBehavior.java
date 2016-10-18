@@ -227,7 +227,7 @@ public abstract class AbstractSteeringBehavior extends Behavior {
                 }
                 
                 bcc.setViewDirection(agent.getPredictedRotation().mult(Vector3f.UNIT_Z));
-                bcc.setWalkDirection(velocity.multLocal(brakingFactor));
+                bcc.setWalkDirection(velocity.clone().setY(0f).multLocal(brakingFactor));
                 break;
                 
             case RigidBody:
