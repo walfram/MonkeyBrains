@@ -65,14 +65,18 @@ public class ShowVelocityControl extends AbstractControl
 
     @Override
     public void setSpatial(Spatial spatial) {
+        super.setSpatial(spatial);
+        
+        if (spatial == null) {
+            return; // We're being removed
+        }
+        
         if (this.spatial != null) {
            if (arrowDirection != null)
                arrowDirection.removeFromParent();
            if (arrowVelocity != null)
                arrowVelocity.removeFromParent();
         }
-        
-        super.setSpatial(spatial);
         
         if (!(spatial instanceof Node)) {
             throw new RuntimeException
