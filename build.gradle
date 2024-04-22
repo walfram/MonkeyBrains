@@ -1,61 +1,17 @@
-// Apply the java plugin to add support for Java
+plugins {
+    id 'java'
+}
+
 apply plugin: 'java'
-apply plugin: 'maven'
 
-// In this section you declare where to find the dependencies of your project
 repositories {
-    // Use 'jcenter' for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+    mavenCentral()
 }
 
-ext.jmeVersion = "[3.1,)"
-compileJava.options.encoding = 'UTF-8'
-javadoc.options.encoding = 'UTF-8'
-
-sourceSets {
-    main {
-        java {
-            srcDir 'src'
-        }
-        resources {
-            srcDir 'resources'
-        }
-    }
-}
-
-// In this section you declare the dependencies for your production and test code
 dependencies {
-	compile "org.jmonkeyengine:jme3-core:$jmeVersion"
-	compile "org.jmonkeyengine:jme3-bullet:$jmeVersion"
+    implementation 'org.jmonkeyengine:jme3-core:3.6.1-stable'
+    implementation 'org.jmonkeyengine:jme3-desktop:3.6.1-stable'
+    implementation 'org.jmonkeyengine:jme3-lwjgl3:3.6.1-stable'
 
-    // Declare the dependency for your favourite test framework you want to use in your tests.
-    // TestNG is also supported by the Gradle Test task. Just change the
-    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
-    // 'test.useTestNG()' to your build script.
-    //testCompile 'junit:junit:4.12'
-}
-
-if (JavaVersion.current().isJava8Compatible()) {
-	allprojects {
-	  tasks.withType(Javadoc) {
-		options.addStringOption('Xdoclint:none', '-quiet') // Turn of doclint (error on javadoc failure)
-	  }
-	}
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-	classifier = 'javadoc'
-	from javadoc.destinationDir
-}
-
-task sourcesJar(type: Jar) {
-	classifier = 'sources'
-	from sourceSets.main.allSource
-}
-
-artifacts {
-	archives sourcesJar
-	archives javadocJar
-	archives jar
+    implementation 'com.github.stephengold:Minie:8.0.0'
 }

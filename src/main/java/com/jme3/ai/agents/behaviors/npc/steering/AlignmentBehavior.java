@@ -41,9 +41,9 @@ import java.util.List;
  * ability to align itself with (that is, head in the same direction as) other
  * nearby characters. Steering for alignment can be computed by finding all
  * characters in the local neighborhood, averaging the unit forward vector of
- * the nearby characters. This average is the “desired velocity,” and so the
+ * the nearby characters. This average is the "desired velocity" and so the
  * steering vector is the difference between the average and our character’s
- * forward vector. This steering will tend to turn our character so it is
+ * forward vector. This steering will tend to turn our character, so it is
  * aligned with its neighbors."
  *
  * @author Jesús Martín Berlanga

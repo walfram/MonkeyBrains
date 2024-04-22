@@ -217,3 +217,10 @@ pip-log.txt
 .gradle/
 /demos/MBTestMultiThreading/nbproject/private/
 demos/MBTestMultiThreading/*.dll
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+/.idea/
+/bulletjme.dll
