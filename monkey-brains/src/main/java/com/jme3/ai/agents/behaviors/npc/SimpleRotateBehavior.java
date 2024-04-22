@@ -29,7 +29,6 @@
  */
 package com.jme3.ai.agents.behaviors.npc;
 
-import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.math.Quaternion;
 import com.jme3.scene.Spatial;

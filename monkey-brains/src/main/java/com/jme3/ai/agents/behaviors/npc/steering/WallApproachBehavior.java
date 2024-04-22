@@ -29,7 +29,6 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
-import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions.WallApproachWithoutWallException;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;

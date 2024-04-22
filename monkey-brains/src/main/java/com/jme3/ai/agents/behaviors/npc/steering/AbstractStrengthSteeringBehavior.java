@@ -29,7 +29,6 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
-import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions.NegativeValueException;
 
 import com.jme3.math.Plane;

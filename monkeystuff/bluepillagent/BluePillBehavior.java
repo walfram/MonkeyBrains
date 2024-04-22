@@ -29,7 +29,6 @@
  */
 package monkeystuff.bluepillagent;
 
-import com.jme3.ai.agents.behaviors.*;
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.BehaviorExceptions.AgentNotIncludedException;
 import com.jme3.renderer.RenderManager;
