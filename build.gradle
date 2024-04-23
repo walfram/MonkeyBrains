@@ -15,11 +15,20 @@ subprojects {
         implementation 'org.jmonkeyengine:jme3-core:3.6.1-stable'
         implementation 'org.jmonkeyengine:jme3-desktop:3.6.1-stable'
         implementation 'org.jmonkeyengine:jme3-lwjgl3:3.6.1-stable'
+        implementation 'org.jmonkeyengine:jme3-plugins:3.6.1-stable'
 
         implementation 'com.github.stephengold:Minie:8.0.0'
+
+        implementation 'ch.qos.logback:logback-classic:1.4.14'
     }
 
     test {
         useJUnitPlatform()
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
 }

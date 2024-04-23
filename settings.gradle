@@ -13,4 +13,5 @@ plugins {
 rootProject.name = 'monkey-brains-2'
 include 'monkey-brains'
 include 'demos-multi-threading'
+include 'demos-steering-behaviors'
 

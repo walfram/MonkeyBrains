@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+}
+
+group = 'monkey.brains'
+
+dependencies {
+    implementation project(':monkey-brains')
+}
+

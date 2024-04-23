@@ -29,6 +29,7 @@
  */
 package com.jme3.ai.agents.util.control;
 
+import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.input.FlyByCamera;
@@ -78,5 +79,5 @@ public interface GameControl {
      * @param gameEntity entity that should be created
      * @param area where entity will be created
      */
-    public void spawn(GameEntity gameEntity, Vector3f... area);
+    public void spawn(AIControl gameEntity, Vector3f... area);
 }
