@@ -25,6 +25,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.debug.Arrow;
 import com.jme3.scene.shape.Box;
+import com.jme3.system.AppSettings;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,7 +45,13 @@ public class DemoSingleThread extends SimpleApplication implements ActionListene
     BehaviorEnum currentBehaviorType;
     
     public static void main(String[] args) {
+        AppSettings settings = new AppSettings(true);
+        settings.setResolution(1600, 800);
+        
         DemoSingleThread app = new DemoSingleThread();
+        app.setSettings(settings);
+        app.setShowSettings(false);
+        
         app.start();
     }
 
@@ -63,7 +70,7 @@ public class DemoSingleThread extends SimpleApplication implements ActionListene
     public void setupKeys() {
         inputManager.addListener(this, "clear", "add", "switch");
         inputManager.addMapping("clear", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addMapping("add", new KeyTrigger(KeyInput.KEY_ADD));
+        inputManager.addMapping("add", new KeyTrigger(KeyInput.KEY_0));
         inputManager.addMapping("switch", new KeyTrigger(KeyInput.KEY_RETURN));
     }
     
@@ -80,7 +87,7 @@ public class DemoSingleThread extends SimpleApplication implements ActionListene
         guiNode.attachChild(textBehaviorName);
         
         textControls.setText
-        ("SPACE => Clear\n + (NUM) => Add Agent\n ENTER => Change Behavior");
+        ("SPACE => Clear\n + (0) => Add Agent\n ENTER => Change Behavior");
         
         textControls.setLocalTranslation(
             new Vector3f(
