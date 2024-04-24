@@ -78,6 +78,11 @@ public class SeekBehavior extends AbstractStrengthSteeringBehavior {
         this.seekingPosition = seekingPosition;
     }
 
+    public SeekBehavior(Agent agent, Agent target) {
+        this(target);
+        setAgent(agent);
+    }
+
     /**
      * Calculate steering vector.
      *

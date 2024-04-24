@@ -82,6 +82,7 @@ public abstract class BasicDemo extends SimpleApplication {
     Material mat = new Material(assetManager, BasicDemo.BOID_MATERIAL_NAME);
     mat.setColor("Color", color);
     spatial.setMaterial(mat);
+    
     Agent agent = new Agent(size);
     spatial.addControl(agent);
     return agent;

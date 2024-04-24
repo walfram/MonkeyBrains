@@ -101,6 +101,12 @@ public class ArriveBehavior extends SeekBehavior {
         this.slowingDistance = slowingDistance;
     }
 
+    // FIXME refactor constructors
+    public ArriveBehavior(Agent agent, Agent target) {
+        super(agent, target);
+        this.slowingDistance = agent.distanceTo(target) * 0.1f;
+    }
+
     private void validateSlowingDistance(float slowingDistance) {
         if (slowingDistance < 0) {
             throw new SteeringExceptions.NegativeValueException("The slowing distance value can not be negative.", slowingDistance);
