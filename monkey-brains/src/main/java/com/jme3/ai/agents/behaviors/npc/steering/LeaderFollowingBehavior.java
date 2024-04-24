@@ -96,9 +96,26 @@ public class LeaderFollowingBehavior extends SeekBehavior {
         evadeBehavior.setAgent(agent);
         arriveBehavior = new ArriveBehavior(target);
         arriveBehavior.setAgent(agent);
-
     }
-    
+
+    // FIXME better constructor calls
+    public LeaderFollowingBehavior(Agent agent, Agent target, float distanceToEvade, float distanceToChangeFocus, float minimumAngle) {
+        super(agent, target);
+
+        this.validateTarget(target);
+        this.validateDistanceToEvade(distanceToEvade);
+        this.validateDistanceToChangeFocus(distanceToChangeFocus);
+
+        this.distanceToEvade = distanceToEvade;
+        this.distanceToChangeFocus = distanceToChangeFocus;
+        this.minimumAngle = minimumAngle;
+
+        evadeBehavior = new EvadeBehavior(target);
+        evadeBehavior.setAgent(agent);
+        arriveBehavior = new ArriveBehavior(agent, target);
+//        arriveBehavior.setAgent(agent);
+    }
+
     private void validateDistanceToEvade(float distanceToEvade) {
         if (distanceToEvade < 0) {
             throw new SteeringExceptions.NegativeValueException("The distance to evade can not be negative.", distanceToEvade);
