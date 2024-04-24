@@ -134,9 +134,9 @@ public class CustomSteerControl implements GameControl {
         if (area == null) {
             //Random location
             aiControl.getSpatial().setLocalTranslation(
-                    ((float) ((FastMath.nextRandomFloat() * 2) - 1)) * this.aleatoryFactorX,
-                    ((float) ((FastMath.nextRandomFloat() * 2) - 1)) * this.aleatoryFactorY,
-                    ((float) ((FastMath.nextRandomFloat() * 2) - 1)) * this.aleatoryFactorZ);
+                    ((FastMath.nextRandomFloat() * 2) - 1) * this.aleatoryFactorX,
+                    ((FastMath.nextRandomFloat() * 2) - 1) * this.aleatoryFactorY,
+                    ((FastMath.nextRandomFloat() * 2) - 1) * this.aleatoryFactorZ);
         } else if (area.length == 1) {
             //Spawn in a point
             aiControl.getSpatial().setLocalTranslation(area[0]);
