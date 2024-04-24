@@ -23,32 +23,33 @@ package demos;
 
 import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.behaviors.npc.steering.SeparationBehavior;
 import com.jme3.ai.agents.behaviors.npc.SimpleMainBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.AlignmentBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.CohesionBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.CompoundSteeringBehavior;
+import com.jme3.ai.agents.behaviors.npc.steering.SeparationBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.WanderAreaBehavior;
-import com.jme3.math.Vector3f;
 import com.jme3.math.FastMath;
+import com.jme3.math.Plane;
+import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
-import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * Cohesion and alignment behavior demo
+ * Cohesion and alignment behavior demo - 2D Version
  *
  * @author Jesús Martín Berlanga
- * @version 2.0.1
+ * @version 2.0.0
  */
-public class CohesionAndAlignmentDemo extends BasicDemo {
+public class CohesionAndAlignmentDemo2D extends BasicDemo {
 
   public static void main(String[] args) {
     AppSettings settings = new AppSettings(true);
     settings.setResolution(1600, 800);
-
-    CohesionAndAlignmentDemo app = new CohesionAndAlignmentDemo();
+    
+    CohesionAndAlignmentDemo2D app = new CohesionAndAlignmentDemo2D();
     app.setSettings(settings);
     app.setShowSettings(false);
     app.start();
@@ -57,7 +58,7 @@ public class CohesionAndAlignmentDemo extends BasicDemo {
   @Override
   public void simpleInitApp() {
 
-    this.steerControl = new CustomSteerControl(25, 30);
+    this.steerControl = new CustomSteerControl(25, 30, 0, 30);
     this.steerControl.setCameraSettings(getCamera());
     this.steerControl.setFlyCameraSettings(getFlyByCamera());
 
@@ -66,13 +67,13 @@ public class CohesionAndAlignmentDemo extends BasicDemo {
     brainsAppState.setGameControl(this.steerControl);
 
     this.numberNeighbours = 150;
+
     Vector3f[] spawnArea = null;
     Agent[] boids = new Agent[this.numberNeighbours];
 
     for (int i = 0; i < this.numberNeighbours; i++) {
       boids[i] = this.createBoid("boid " + i, this.neighboursColor, 0.1f);
-      //Add the neighbours to the brainsAppState
-      brainsAppState.addAgent(boids[i]);
+      brainsAppState.addAgent(boids[i]); //Add the neighbours to the brainsAppState
       rootNode.attachChild(boids[i].getSpatial());
       this.setStats(boids[i], this.neighboursMoveSpeed,
           this.neighboursRotationSpeed, this.neighboursMass,
@@ -91,11 +92,12 @@ public class CohesionAndAlignmentDemo extends BasicDemo {
 
     for (int i = 0; i < boids.length; i++) {
       neighboursMainBehavior[i] = new SimpleMainBehavior();
+
       separation[i] = new SeparationBehavior(obstacles);
       cohesion[i] = new CohesionBehavior(obstacles, 5f, FastMath.PI / 4);
       alignment[i] = new AlignmentBehavior(obstacles, 5f, FastMath.PI / 4.2f);
       wander[i] = new WanderAreaBehavior();
-      wander[i].setArea(Vector3f.ZERO, 37.5f, 37.5f, 37.5f);
+      wander[i].setArea(Vector3f.ZERO, new Vector3f(75, 75, 75));
 
       separation[i].setupStrengthControl(0.85f);
       cohesion[i].setupStrengthControl(2.15f);
@@ -108,6 +110,7 @@ public class CohesionAndAlignmentDemo extends BasicDemo {
       steer.addSteerBehavior(alignment[i]);
       steer.addSteerBehavior(separation[i]);
       steer.addSteerBehavior(wander[i]);
+      steer.setupStrengthControl(new Plane(new Vector3f(0, 1, 0), 0));
       neighboursMainBehavior[i].addBehavior(steer);
 
       boids[i].setMainBehavior(neighboursMainBehavior[i]);
