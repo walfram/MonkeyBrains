@@ -29,6 +29,7 @@
  */
 package com.jme3.ai.agents.behaviors.npc.steering;
 
+import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.npc.steering.SteeringExceptions.WallApproachWithoutWallException;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
@@ -103,7 +104,8 @@ public class WallApproachBehavior extends AbstractStrengthSteeringBehavior {
      * @see
      * AbstractStrengthSteeringBehavior#AbstractStrengthSteeringBehavior(com.jme3.ai.agents.Agent)
      */
-    public WallApproachBehavior(Node wall, float offsetToMaintain) {
+    // FIXME ad-hoc agent in constructor
+    public WallApproachBehavior(Agent agent, Node wall, float offsetToMaintain) {
         super();
         WallApproachBehavior.validateConstruction(wall, offsetToMaintain);
         this.wall = wall;
