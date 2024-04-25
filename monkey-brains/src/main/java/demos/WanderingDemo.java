@@ -2,7 +2,6 @@ package demos;
 
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.npc.steering.WanderAreaBehavior;
-import com.jme3.ai.agents.util.control.MonkeyBrainsAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
@@ -41,8 +40,6 @@ public class WanderingDemo extends SimpleApplication {
     cam.setLocation(new Vector3f(41.23289f, 35.46229f, 99.323906f));
     cam.setRotation(new Quaternion(-0.027147464f, 0.97173107f, -0.14046256f, -0.18780848f));
     
-    stateManager.attach(MonkeyBrainsAppState.getInstance());
-    
     Agent<Void> agent = new Agent<>(1f);
     WanderAreaBehavior mainBehavior = new WanderAreaBehavior();
     Vector3f area = new Vector3f(32, 16, 32);
@@ -59,8 +56,6 @@ public class WanderingDemo extends SimpleApplication {
     Material material = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
     geometry.setMaterial(material);
     geometry.addControl(agent);
-    
-    stateManager.getState(MonkeyBrainsAppState.class).addAgent(agent, new Vector3f());
     
     rootNode.attachChild(geometry);
   }
