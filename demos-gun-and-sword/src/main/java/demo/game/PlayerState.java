@@ -22,30 +22,16 @@ public class PlayerState extends BaseAppState {
 
   @Override
   protected void initialize(Application app) {
-    Spatial playerSpatial = app.getAssetManager().loadModel("Models/Demo_01/characters/character_01/character_01.j3o");
+    Spatial player = app.getAssetManager().loadModel("Models/Demo_01/characters/character_01/character_01.j3o");
     // TODO check method setGraphicModel
-    scene.attachChild(playerSpatial);
+    scene.attachChild(player);
 
-    Spatial armature = ((Node) playerSpatial).getChild("Armature");
-    logger.debug("armature controls = {}", armature.getNumControls());
-    
-    Spatial characterMan = ((Node) armature).getChild("characterMan");
-    logger.debug("characterMan controls = {}", characterMan.getNumControls());
-
-    Spatial characterManEntity = ((Node) characterMan).getChild("characterMan-entity");
-    logger.debug("characterManEntity controls = {}", characterManEntity.getNumControls());
-
-    Spatial characterManOgreMesh = ((Node) characterManEntity).getChild("characterMan-ogremesh");
-    logger.debug("characterManOgreMesh controls = {}", characterManOgreMesh.getNumControls());
-
-    AnimMigrationUtils.migrate(characterManOgreMesh);
-    
-    AnimComposer composer = characterManOgreMesh.getControl(AnimComposer.class);
-    Set<String> animClipsNames = composer.getAnimClipsNames();
-    logger.debug("anim clip names = {}", animClipsNames);
-    // strike_sword, base_stand, run_01, shoot
-    
-    composer.setCurrentAction("base_stand");
+    Node armature = (Node) ((Node) player).getChild("Armature");
+    Node characterMan = (Node) armature.getChild("characterMan");
+    Node characterManEntity = (Node) characterMan.getChild("characterMan-entity");
+    Node entity = (Node) characterManEntity.getChild("characterMan-ogremesh");
+    AnimMigrationUtils.migrate(entity);
+    entity.getControl(AnimComposer.class).setCurrentAction("base_stand");
   }
 
   @Override
