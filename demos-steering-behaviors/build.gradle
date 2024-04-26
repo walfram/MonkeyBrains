@@ -5,6 +5,6 @@ plugins {
 group = 'monkey.brains'
 
 dependencies {
-    implementation project(':monkey-brains')
+    implementation project(":monkey-brains")
 }
 
