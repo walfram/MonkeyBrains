@@ -64,7 +64,7 @@ public class SceneState extends BaseAppState {
         Node characterManEntity = (Node) characterMan.getChild("characterMan-entity");
         Node entity = (Node) characterManEntity.getChild("characterMan-ogremesh");
         AnimMigrationUtils.migrate(entity);
-        entity.getControl(AnimComposer.class).setCurrentAction("base_stand");
+        entity.getControl(AnimComposer.class).setCurrentAction("base_stand"); // run_01
         ((Node) child).detachAllChildren();
         ((Node) child).attachChild(npc);
         
@@ -72,7 +72,7 @@ public class SceneState extends BaseAppState {
         Agent<Model> agent = new Agent<>(1f);
         agent.setModel(new Model());
         agent.setMaxMoveSpeed(1f);
-        agent.setRotationSpeed(FastMath.DEG_TO_RAD * 10f);
+        agent.setRotationSpeed(FastMath.DEG_TO_RAD * 90f);
         
         WanderAreaBehavior wander = new WanderAreaBehavior();
         wander.setArea(npc.getWorldTranslation(), new Vector3f(2, 0, 2));
