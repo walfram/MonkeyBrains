@@ -1,6 +1,7 @@
 package demo.game;
 
 import com.jme3.ai.agents.Agent;
+import com.jme3.ai.agents.behaviors.npc.steering.WanderAreaBehavior;
 import com.jme3.anim.AnimComposer;
 import com.jme3.anim.util.AnimMigrationUtils;
 import com.jme3.app.Application;
@@ -8,9 +9,12 @@ import com.jme3.app.state.BaseAppState;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import demo.model.Model;
+import jme3utilities.debug.BoundsVisualizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,11 +69,23 @@ public class SceneState extends BaseAppState {
         ((Node) child).attachChild(npc);
         
         // FIXME use npc radius
-        Agent<Model> agent = new Agent<>(0.5f);
+        Agent<Model> agent = new Agent<>(1f);
         agent.setModel(new Model());
-//        AIMainBehavior mainBehavior = new AIMainBehavior();
-//        agent.setMainBehavior(mainBehavior);
-        npc.addControl(agent);
+        agent.setMaxMoveSpeed(1f);
+        agent.setRotationSpeed(FastMath.DEG_TO_RAD * 10f);
+        
+        WanderAreaBehavior wander = new WanderAreaBehavior();
+        wander.setArea(npc.getWorldTranslation(), new Vector3f(2, 0, 2));
+        agent.setMainBehavior(wander);
+
+        child.addControl(agent);
+
+        logger.debug("agent = {}", agent);
+
+        BoundsVisualizer boundsVisualizer = new BoundsVisualizer(app.getAssetManager());
+        boundsVisualizer.setSubject(child);
+        scene.getParent().addControl(boundsVisualizer);
+        boundsVisualizer.setEnabled(true);
       } else {
         logger.debug("child = {}", child);
         // TODO make wall and floor physics objects
