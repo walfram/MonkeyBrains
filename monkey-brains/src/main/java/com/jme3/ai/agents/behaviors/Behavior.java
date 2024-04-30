@@ -43,7 +43,7 @@ public abstract class Behavior {
     /**
      * Agent to whom behavior belongs.
      */
-    protected Agent agent;
+    protected Agent<?> agent;
 
     /**
      * Instantiate a new Behavior. Agent is passed when you add this behavior to
@@ -59,12 +59,13 @@ public abstract class Behavior {
      * agent field is never null.
      * @param agent The Agent to set
      */
-    public void setAgent(Agent agent) {
+    public <T> void setAgent(Agent<T> agent) {
         this.agent = agent;
     }
     
-    public Agent getAgent() {
-        return agent;
+    @SuppressWarnings("unchecked")
+    public <T> Agent<T> getAgent() {
+        return (Agent<T>) agent;
     }
     
     /**

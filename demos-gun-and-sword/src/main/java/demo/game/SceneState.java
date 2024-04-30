@@ -1,5 +1,6 @@
 package demo.game;
 
+import com.jme3.ai.agents.Agent;
 import com.jme3.anim.AnimComposer;
 import com.jme3.anim.util.AnimMigrationUtils;
 import com.jme3.app.Application;
@@ -12,6 +13,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.Spatial.DFSMode;
+import demo.ai.AIMainBehavior;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +55,8 @@ public class SceneState extends BaseAppState {
       if (child.getName().contains("characterMan")) {
 //        Vector3f direction = child.getLocalRotation().mult(Vector3f.UNIT_Z);
         Spatial npc = app.getAssetManager().loadModel("Models/Demo_01/characters/character_01/character_01.j3o");
+        logger.debug("npc at {}", npc.getWorldTranslation());
+        // TODO get npc radius
         Node armature = (Node) ((Node) npc).getChild("Armature");
         Node characterMan = (Node) armature.getChild("characterMan");
         Node characterManEntity = (Node) characterMan.getChild("characterMan-entity");
@@ -61,6 +65,13 @@ public class SceneState extends BaseAppState {
         entity.getControl(AnimComposer.class).setCurrentAction("base_stand");
         ((Node) child).detachAllChildren();
         ((Node) child).attachChild(npc);
+        
+        // FIXME use npc radius
+        // FIXME use Npc/Inventory/etc as generic arg and agent model type
+        Agent agent = new Agent(0.5f);
+        AIMainBehavior mainBehavior = new AIMainBehavior();
+        agent.setMainBehavior(mainBehavior);
+        npc.addControl(agent);
       } else {
         logger.debug("child = {}", child);
         // TODO make wall and floor physics objects
