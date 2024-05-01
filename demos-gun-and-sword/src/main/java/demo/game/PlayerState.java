@@ -28,15 +28,8 @@ public class PlayerState extends BaseAppState {
 
   @Override
   protected void initialize(Application app) {
-    player = app.getAssetManager().loadModel("Models/Demo_01/characters/character_01/character_01.j3o");
+    player = getState(ResourcesState.class).characterSpatial();
     scene.attachChild(player);
-
-    Node armature = (Node) ((Node) player).getChild("Armature");
-    Node characterMan = (Node) armature.getChild("characterMan");
-    Node characterManEntity = (Node) characterMan.getChild("characterMan-entity");
-    Node entity = (Node) characterManEntity.getChild("characterMan-ogremesh");
-    AnimMigrationUtils.migrate(entity);
-    entity.getControl(AnimComposer.class).setCurrentAction("base_stand");
 
     getState(CameraState.class).chase(player);
   }

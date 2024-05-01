@@ -57,16 +57,9 @@ public class SceneState extends BaseAppState {
     for (Spatial child : ((Node) baseScene).getChildren()) {
       if (child.getName().contains("characterMan")) {
 //        Vector3f direction = child.getLocalRotation().mult(Vector3f.UNIT_Z);
-        Spatial npc = app.getAssetManager().loadModel("Models/Demo_01/characters/character_01/character_01.j3o");
-        logger.debug("npc at {}", npc.getWorldTranslation());
-        logger.debug("npc bound = {}", npc.getWorldBound());
-        // TODO get npc radius
-        Node armature = (Node) ((Node) npc).getChild("Armature");
-        Node characterMan = (Node) armature.getChild("characterMan");
-        Node characterManEntity = (Node) characterMan.getChild("characterMan-entity");
-        Node entity = (Node) characterManEntity.getChild("characterMan-ogremesh");
-        AnimMigrationUtils.migrate(entity);
-        entity.getControl(AnimComposer.class).setCurrentAction("base_stand"); // run_01
+        
+        Spatial npc = getState(ResourcesState.class).characterSpatial();
+        
         ((Node) child).detachAllChildren();
         ((Node) child).attachChild(npc);
         
