@@ -8,6 +8,8 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.simsilica.lemur.GuiGlobals;
+import com.simsilica.lemur.style.BaseStyles;
 import jme3utilities.debug.AxesVisualizer;
 
 public class InitState extends BaseAppState {
@@ -33,6 +35,10 @@ public class InitState extends BaseAppState {
     AxesVisualizer axesVisualizer = new AxesVisualizer(app.getAssetManager(), 128, 1);
     rootNode.addControl(axesVisualizer);
     axesVisualizer.setEnabled(true);
+
+    GuiGlobals.initialize(app);
+    BaseStyles.loadGlassStyle();
+    GuiGlobals.getInstance().getStyles().setDefaultStyle(BaseStyles.GLASS);
   }
 
   @Override

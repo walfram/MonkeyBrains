@@ -19,6 +19,9 @@ subprojects {
 
         implementation 'com.github.stephengold:Minie:8.0.0'
 
+        implementation 'org.codehaus.groovy:groovy-all:3.0.20'
+        implementation 'com.simsilica:lemur:1.16.0'
+
         implementation 'ch.qos.logback:logback-classic:1.4.14'
     }
 

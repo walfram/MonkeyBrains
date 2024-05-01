@@ -21,7 +21,12 @@ public class GunAndSwordDemo extends SimpleApplication {
     assetManager.registerLoader(BlenderLoader.class, "blend");
     
     stateManager.attach(new InitState(rootNode));
+
+    stateManager.attach(new CameraState());
+    
     stateManager.attach(new SceneState(rootNode));
     stateManager.attach(new PlayerState(rootNode));
+    
+    stateManager.attach(new InputState());
   }
 }

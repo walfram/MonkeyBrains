@@ -1,6 +1,8 @@
 package demo.game;
 
 import com.jme3.ai.agents.Agent;
+import com.jme3.ai.agents.behaviors.npc.SimpleMainBehavior;
+import com.jme3.ai.agents.behaviors.npc.steering.SeekBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.WanderAreaBehavior;
 import com.jme3.anim.AnimComposer;
 import com.jme3.anim.util.AnimMigrationUtils;
@@ -73,10 +75,16 @@ public class SceneState extends BaseAppState {
         agent.setModel(new Model());
         agent.setMaxMoveSpeed(1f);
         agent.setRotationSpeed(FastMath.DEG_TO_RAD * 90f);
+
+        SimpleMainBehavior main = new SimpleMainBehavior();
         
         WanderAreaBehavior wander = new WanderAreaBehavior();
         wander.setArea(npc.getWorldTranslation(), new Vector3f(2, 0, 2));
-        agent.setMainBehavior(wander);
+        main.addBehavior(wander);
+
+//        SeekBehavior seek = new SeekBehavior(agent)
+        
+        agent.setMainBehavior(main);
 
         child.addControl(agent);
 
