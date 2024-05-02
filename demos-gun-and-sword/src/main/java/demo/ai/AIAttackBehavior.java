@@ -26,6 +26,8 @@ import com.jme3.ai.agents.events.AIControlSeenEvent;
 import demo.model.Model;
 import demo.model.Weapons;
 import java.util.Random;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Behavior for attacking opponent if opponent is seen.
@@ -35,7 +37,9 @@ import java.util.Random;
  */
 public class AIAttackBehavior extends SimpleAttackBehaviour {
 
-  private Weapons weapons;
+  private static final Logger logger = LoggerFactory.getLogger(AIAttackBehavior.class);
+  
+  private final Weapons weapons;
   /**
    * Bigger value means easier game, if it is 1, then agent will never miss. Must be greater or equal to 1.
    */
@@ -45,14 +49,15 @@ public class AIAttackBehavior extends SimpleAttackBehaviour {
    */
   private final Random random;
 
-  public AIAttackBehavior() {
+  public AIAttackBehavior(Weapons weapons) {
     random = new Random();
+    this.weapons = weapons;
   }
 
   @Override
   public <T> void setAgent(Agent<T> agent) {
     super.setAgent(agent);
-    weapons = ((Model) agent.getModel()).weapons();
+//    weapons = ((Model) agent.getModel()).weapons();
   }
 
   @Override
@@ -89,6 +94,8 @@ public class AIAttackBehavior extends SimpleAttackBehaviour {
       if (model.isSameTeam(targetAgent)) {
         return;
       }
+      
+      logger.debug("{}: setting target {}", agent, targetAgent);
 
       targetedObject = targetAgent;
       missOrNot(targetAgent);

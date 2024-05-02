@@ -1,6 +1,8 @@
 package demo.game;
 
+import com.jme3.ai.agents.util.control.MonkeyBrainsAppState;
 import com.jme3.app.SimpleApplication;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.scene.plugins.blender.BlenderLoader;
 import com.jme3.system.AppSettings;
 
@@ -21,7 +23,11 @@ public class GunAndSwordDemo extends SimpleApplication {
     assetManager.registerLoader(BlenderLoader.class, "blend");
     
     stateManager.attach(new InitState(rootNode));
-
+    
+    stateManager.attach(MonkeyBrainsAppState.getInstance());
+    MonkeyBrainsAppState.getInstance().setApp(this);
+    stateManager.attach(new BulletAppState());
+    
     stateManager.attach(new ResourcesState());
     stateManager.attach(new CameraState());
     

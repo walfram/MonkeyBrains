@@ -1,9 +1,7 @@
 package demo.game;
 
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.ai.agents.behaviors.npc.SimpleMainBehavior;
-import com.jme3.ai.agents.behaviors.npc.steering.SeekBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.WanderAreaBehavior;
 import com.jme3.ai.agents.util.control.MonkeyBrainsAppState;
 import com.jme3.app.Application;
@@ -65,9 +63,9 @@ public class AgentContextState extends BaseAppState {
     look.addListener(seek);
     main.addBehavior(seek);
 
-    AIAttackBehavior attack = new AIAttackBehavior();
-    main.addBehavior(attack);
+    AIAttackBehavior attack = new AIAttackBehavior(agent.getModel().weapons());
     look.addListener(attack);
+    main.addBehavior(attack);
     
     agent.setMainBehavior(main);
     spatial.addControl(agent);

@@ -32,7 +32,6 @@ package demo.ai;
 import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.behaviors.npc.SimpleLookBehavior;
-import com.jme3.ai.agents.util.GameEntity;
 import com.jme3.ai.agents.util.control.MonkeyBrainsAppState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
@@ -40,7 +39,6 @@ import com.jme3.bullet.collision.PhysicsRayTestResult;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
