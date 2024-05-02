@@ -1,18 +1,11 @@
 package demo.game;
 
 import com.jme3.ai.agents.Agent;
-import com.jme3.ai.agents.behaviors.npc.SimpleMainBehavior;
-import com.jme3.ai.agents.behaviors.npc.steering.SeekBehavior;
-import com.jme3.ai.agents.behaviors.npc.steering.WanderAreaBehavior;
-import com.jme3.anim.AnimComposer;
-import com.jme3.anim.util.AnimMigrationUtils;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import demo.model.Model;
@@ -56,33 +49,13 @@ public class SceneState extends BaseAppState {
 
     for (Spatial child : ((Node) baseScene).getChildren()) {
       if (child.getName().contains("characterMan")) {
-//        Vector3f direction = child.getLocalRotation().mult(Vector3f.UNIT_Z);
-        
-        Spatial npc = getState(ResourcesState.class).characterSpatial();
-        
+        getState(GameState.class).createNpcAgent(child);
+
+        Spatial characterSpatial = getState(ResourcesState.class).characterSpatial();
         ((Node) child).detachAllChildren();
-        ((Node) child).attachChild(npc);
-        
-        // FIXME use npc radius
-        Agent<Model> agent = new Agent<>(1f);
-        agent.setModel(new Model());
-        agent.setMaxMoveSpeed(1f);
-        agent.setRotationSpeed(FastMath.DEG_TO_RAD * 90f);
+        ((Node) child).attachChild(characterSpatial);
 
-        SimpleMainBehavior main = new SimpleMainBehavior();
-        
-        WanderAreaBehavior wander = new WanderAreaBehavior();
-        wander.setArea(npc.getWorldTranslation(), new Vector3f(2, 0, 2));
-        main.addBehavior(wander);
-
-//        SeekBehavior seek = new SeekBehavior(agent)
-        
-        agent.setMainBehavior(main);
-
-        child.addControl(agent);
-
-        logger.debug("agent = {}", agent);
-
+        // debug bounds
         BoundsVisualizer boundsVisualizer = new BoundsVisualizer(app.getAssetManager());
         boundsVisualizer.setSubject(child);
         scene.getParent().addControl(boundsVisualizer);

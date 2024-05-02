@@ -6,13 +6,18 @@ import com.jme3.input.KeyInput;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.input.FunctionId;
 import com.simsilica.lemur.input.InputMapper;
+import com.simsilica.lemur.input.InputState;
 
-public class InputState extends BaseAppState {
+public class ControlState extends BaseAppState {
 
   private static final FunctionId FUNC_MOVE_LEFT = new FunctionId("move-left");
   private static final FunctionId FUNC_MOVE_RIGHT = new FunctionId("move-right");
   private static final FunctionId FUNC_MOVE_FORWARD = new FunctionId("move-forward");
   private static final FunctionId FUNC_MOVE_BACKWARD = new FunctionId("move-backward");
+  
+  private static final FunctionId[] MOVE_FUNCTIONS = {
+      FUNC_MOVE_LEFT, FUNC_MOVE_RIGHT, FUNC_MOVE_BACKWARD, FUNC_MOVE_FORWARD
+  };
   
   @Override
   protected void initialize(Application app) {
@@ -25,6 +30,13 @@ public class InputState extends BaseAppState {
     inputMapper.map(FUNC_MOVE_FORWARD, KeyInput.KEY_W);
     inputMapper.map(FUNC_MOVE_BACKWARD, KeyInput.KEY_S);
     inputMapper.addAnalogListener(this::move, FUNC_MOVE_FORWARD, FUNC_MOVE_BACKWARD);
+    
+    inputMapper.addStateListener(this::toggleWalk, MOVE_FUNCTIONS);
+  }
+
+  private void toggleWalk(FunctionId functionId, InputState inputState, double tpf) {
+    boolean walking = inputState != InputState.Off;
+    getState(PlayerState.class).walking(walking);
   }
 
   private void move(FunctionId func, double value, double tpf) {
