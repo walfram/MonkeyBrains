@@ -5,6 +5,7 @@ import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.ai.agents.behaviors.npc.SimpleMainBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.SeekBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.WanderAreaBehavior;
+import com.jme3.ai.agents.util.control.MonkeyBrainsAppState;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
@@ -12,6 +13,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import demo.ai.AIAttackBehavior;
 import demo.ai.AILookBehavior;
+import demo.ai.AISeekBehavior;
 import demo.model.Model;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,7 +61,8 @@ public class AgentContextState extends BaseAppState {
     look.setVisibilityRange(300f);
     main.addBehavior(look);
     
-    SeekBehavior seek = new SeekBehavior();
+    AISeekBehavior seek = new AISeekBehavior();
+    look.addListener(seek);
     main.addBehavior(seek);
 
     AIAttackBehavior attack = new AIAttackBehavior();
@@ -72,6 +75,9 @@ public class AgentContextState extends BaseAppState {
     logger.debug("agent = {}", agent);
 
     agents.add(agent);
+
+    // so that look behavior can now work
+    MonkeyBrainsAppState.getInstance().addAgent(agent);
   }
 
   public void createPlayerAgent(Spatial player) {
@@ -93,5 +99,6 @@ public class AgentContextState extends BaseAppState {
       }
     }
 
+    MonkeyBrainsAppState.getInstance().addAgent(agent);
   }
 }
