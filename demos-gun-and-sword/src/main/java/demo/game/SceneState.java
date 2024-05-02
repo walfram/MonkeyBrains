@@ -1,6 +1,5 @@
 package demo.game;
 
-import com.jme3.ai.agents.Agent;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.material.Material;
@@ -8,7 +7,6 @@ import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import demo.model.Model;
 import jme3utilities.debug.BoundsVisualizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +47,7 @@ public class SceneState extends BaseAppState {
 
     for (Spatial child : ((Node) baseScene).getChildren()) {
       if (child.getName().contains("characterMan")) {
-        getState(GameState.class).createNpcAgent(child);
+        getState(AgentContextState.class).createNpcAgent(child);
 
         Spatial characterSpatial = getState(ResourcesState.class).characterSpatial();
         ((Node) child).detachAllChildren();

@@ -28,7 +28,7 @@ public class PlayerState extends BaseAppState {
     player = getState(ResourcesState.class).characterSpatial();
     scene.attachChild(player);
 
-    getState(GameState.class).createPlayerAgent(player);
+    getState(AgentContextState.class).createPlayerAgent(player);
 
     getState(CameraState.class).chase(player);
   }

@@ -25,7 +25,7 @@ public class GunAndSwordDemo extends SimpleApplication {
     stateManager.attach(new ResourcesState());
     stateManager.attach(new CameraState());
     
-    stateManager.attach(new GameState());
+    stateManager.attach(new AgentContextState());
     
     stateManager.attach(new SceneState(rootNode));
     stateManager.attach(new PlayerState(rootNode));

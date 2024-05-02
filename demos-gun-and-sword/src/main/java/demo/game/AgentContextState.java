@@ -12,9 +12,9 @@ import demo.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GameState extends BaseAppState {
+public class AgentContextState extends BaseAppState {
 
-  private static final Logger logger = LoggerFactory.getLogger(GameState.class);
+  private static final Logger logger = LoggerFactory.getLogger(AgentContextState.class);
 
   private final float maxMoveSpeed = 5f;
   private final float rotationSpeed = FastMath.DEG_TO_RAD * 90f;
