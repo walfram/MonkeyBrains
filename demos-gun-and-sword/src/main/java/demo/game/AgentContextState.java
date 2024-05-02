@@ -10,6 +10,8 @@ import com.jme3.app.state.BaseAppState;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import demo.ai.AIAttackBehavior;
+import demo.ai.AILookBehavior;
 import demo.model.Model;
 import java.util.HashSet;
 import java.util.Set;
@@ -53,8 +55,16 @@ public class AgentContextState extends BaseAppState {
     wander.setArea(spatial.getWorldTranslation(), new Vector3f(2, 0, 2));
     main.addBehavior(wander);
 
+    AILookBehavior look = new AILookBehavior();
+    look.setVisibilityRange(300f);
+    main.addBehavior(look);
+    
     SeekBehavior seek = new SeekBehavior();
     main.addBehavior(seek);
+
+    AIAttackBehavior attack = new AIAttackBehavior();
+    main.addBehavior(attack);
+    look.addListener(attack);
     
     agent.setMainBehavior(main);
     spatial.addControl(agent);
@@ -74,7 +84,6 @@ public class AgentContextState extends BaseAppState {
 
     player.addControl(agent);
 
-    // TODO notify npc agents about player
     for (Agent<?> a : agents) {
       SimpleMainBehavior main = (SimpleMainBehavior) a.getMainBehavior();
       for (Behavior behavior : main.getBehaviors()) {
@@ -82,7 +91,6 @@ public class AgentContextState extends BaseAppState {
           seek.setTarget(agent);
         }
       }
-
     }
 
   }
