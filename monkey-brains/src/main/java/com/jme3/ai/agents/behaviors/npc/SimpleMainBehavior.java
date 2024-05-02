@@ -98,6 +98,10 @@ public class SimpleMainBehavior extends Behavior {
         this.behaviors = behaviors;
         setAgent(agent); // Attach them to the new (our) agent
     }
+    
+    public List<Behavior> getBehaviors() {
+        return behaviors;
+    }
 
     /**
      * Add behavior to this main behavior.

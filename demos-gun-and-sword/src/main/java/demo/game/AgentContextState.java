@@ -1,7 +1,9 @@
 package demo.game;
 
 import com.jme3.ai.agents.Agent;
+import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.ai.agents.behaviors.npc.SimpleMainBehavior;
+import com.jme3.ai.agents.behaviors.npc.steering.SeekBehavior;
 import com.jme3.ai.agents.behaviors.npc.steering.WanderAreaBehavior;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -9,6 +11,8 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import demo.model.Model;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +22,9 @@ public class AgentContextState extends BaseAppState {
 
   private final float maxMoveSpeed = 5f;
   private final float rotationSpeed = FastMath.DEG_TO_RAD * 90f;
-  
+
+  private final Set<Agent<?>> agents = new HashSet<>(128);
+
   @Override
   protected void initialize(Application app) {
   }
@@ -47,12 +53,15 @@ public class AgentContextState extends BaseAppState {
     wander.setArea(spatial.getWorldTranslation(), new Vector3f(2, 0, 2));
     main.addBehavior(wander);
 
-//        SeekBehavior seek = new SeekBehavior(agent)
-
+    SeekBehavior seek = new SeekBehavior();
+    main.addBehavior(seek);
+    
     agent.setMainBehavior(main);
     spatial.addControl(agent);
-    
+
     logger.debug("agent = {}", agent);
+
+    agents.add(agent);
   }
 
   public void createPlayerAgent(Spatial player) {
@@ -60,11 +69,21 @@ public class AgentContextState extends BaseAppState {
     agent.setModel(new Model());
     agent.setMaxMoveSpeed(maxMoveSpeed);
     agent.setRotationSpeed(rotationSpeed);
-    
+
     // TODO add some behavior to player agent
-    
+
     player.addControl(agent);
-    
+
     // TODO notify npc agents about player
+    for (Agent<?> a : agents) {
+      SimpleMainBehavior main = (SimpleMainBehavior) a.getMainBehavior();
+      for (Behavior behavior : main.getBehaviors()) {
+        if (behavior instanceof SeekBehavior seek) {
+          seek.setTarget(agent);
+        }
+      }
+
+    }
+
   }
 }
