@@ -16,6 +16,9 @@ public class GameState extends BaseAppState {
 
   private static final Logger logger = LoggerFactory.getLogger(GameState.class);
 
+  private final float maxMoveSpeed = 5f;
+  private final float rotationSpeed = FastMath.DEG_TO_RAD * 90f;
+  
   @Override
   protected void initialize(Application app) {
   }
@@ -35,8 +38,8 @@ public class GameState extends BaseAppState {
   public void createNpcAgent(Spatial spatial) {
     Agent<Model> agent = new Agent<>(1f);
     agent.setModel(new Model());
-    agent.setMaxMoveSpeed(1f);
-    agent.setRotationSpeed(FastMath.DEG_TO_RAD * 90f);
+    agent.setMaxMoveSpeed(maxMoveSpeed);
+    agent.setRotationSpeed(rotationSpeed);
 
     SimpleMainBehavior main = new SimpleMainBehavior();
 
@@ -50,5 +53,18 @@ public class GameState extends BaseAppState {
     spatial.addControl(agent);
     
     logger.debug("agent = {}", agent);
+  }
+
+  public void createPlayerAgent(Spatial player) {
+    Agent<Model> agent = new Agent<>(1f);
+    agent.setModel(new Model());
+    agent.setMaxMoveSpeed(maxMoveSpeed);
+    agent.setRotationSpeed(rotationSpeed);
+    
+    // TODO add some behavior to player agent
+    
+    player.addControl(agent);
+    
+    // TODO notify npc agents about player
   }
 }
