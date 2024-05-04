@@ -1,6 +1,9 @@
 package demo.game;
 
 import com.jme3.anim.AnimComposer;
+import com.jme3.anim.tween.Tween;
+import com.jme3.anim.tween.Tweens;
+import com.jme3.anim.tween.action.Action;
 import jme3utilities.SimpleControl;
 
 public class AnimationControl extends SimpleControl {
@@ -12,7 +15,6 @@ public class AnimationControl extends SimpleControl {
   }
 
   // "base_stand", "run_01", "shoot", "strike_sword"
-  
   public void stand() {
     animComposer.setCurrentAction("base_stand");
   }
@@ -22,11 +24,17 @@ public class AnimationControl extends SimpleControl {
   }
   
   public void shoot() {
-    animComposer.setCurrentAction("shoot");
+    Action shoot = animComposer.action("shoot");
+    Tween standTween = Tweens.callMethod(this, "stand");
+    animComposer.actionSequence("shootOnce", shoot, standTween);
+    animComposer.setCurrentAction("shootOnce");
   }
   
   public void strike() {
-    animComposer.setCurrentAction("strike_sword");
+    Action strike = animComposer.action("strike_sword");
+    Tween standTween = Tweens.callMethod(this, "stand");
+    animComposer.actionSequence("strikeOnce", strike, standTween);
+    animComposer.setCurrentAction("strikeOnce");
   }
-  
+
 }
