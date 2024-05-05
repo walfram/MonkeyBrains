@@ -2,6 +2,9 @@ package check;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.math.FastMath;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import demo.game.AnimationControl;
@@ -9,11 +12,12 @@ import demo.game.ResourcesState;
 import java.util.List;
 
 public class CharState extends BaseAppState {
-  
+
   private final Node scene = new Node("char-scene");
 
   private Spatial character;
-  
+  private ParticleEmitter shotTraceEmitter;
+
   public CharState(Node rootNode) {
     rootNode.attachChild(scene);
   }
@@ -21,7 +25,13 @@ public class CharState extends BaseAppState {
   @Override
   protected void initialize(Application app) {
     character = getState(ResourcesState.class).characterSpatial();
+    character.rotate(0, FastMath.QUARTER_PI, 0);
+    character.move(-2, 0, -4);
     scene.attachChild(character);
+
+    ShotTrace shotTrace = new ShotTrace(app.getAssetManager());
+    shotTraceEmitter = shotTrace.emitter();
+    scene.attachChild(shotTraceEmitter);
   }
 
   @Override
@@ -53,6 +63,12 @@ public class CharState extends BaseAppState {
 
   public void shoot() {
     character.getControl(AnimationControl.class).shoot();
-    // create shoot particles
+
+    shotTraceEmitter.setLocalRotation(character.getLocalRotation().clone());
+    shotTraceEmitter.setLocalTranslation(character.getLocalTranslation().clone());
+    shotTraceEmitter.move(0.5f, 1.5f, 1);
+
+    shotTraceEmitter.setEnabled(true);
+    shotTraceEmitter.emitAllParticles();
   }
 }
