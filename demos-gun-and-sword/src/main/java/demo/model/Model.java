@@ -7,9 +7,9 @@ public class Model {
 
   private Weapons weapons = new Weapons();
 
-  public enum Team {RED, BLUE}
+  public enum Team {NPC, PLAYER}
 
-  private Team team = Team.RED;
+  private Team team = Team.NPC;
 
   public void assignTeam(Team team) {
     this.team = team;

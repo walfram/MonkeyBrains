@@ -89,9 +89,9 @@ public class AIAttackBehavior extends SimpleAttackBehaviour {
   @Override
   public void handleAIControlSeenEvent(AIControlSeenEvent event) {
     if (event.getAIControlSeen() instanceof Agent targetAgent) {
-      Model model = (Model) targetAgent.getModel();
+      Model targetModel = (Model) targetAgent.getModel();
 
-      if (model.isSameTeam(targetAgent)) {
+      if (targetModel.isSameTeam(agent)) {
         return;
       }
       

@@ -13,6 +13,7 @@ import demo.ai.AIAttackBehavior;
 import demo.ai.AILookBehavior;
 import demo.ai.AISeekBehavior;
 import demo.model.Model;
+import demo.model.Model.Team;
 import java.util.HashSet;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -70,7 +71,7 @@ public class AgentContextState extends BaseAppState {
     agent.setMainBehavior(main);
     spatial.addControl(agent);
 
-    logger.debug("agent = {}", agent);
+    logger.debug("npc agent = {}", agent);
 
     agents.add(agent);
 
@@ -80,13 +81,18 @@ public class AgentContextState extends BaseAppState {
 
   public void createPlayerAgent(Spatial player) {
     Agent<Model> agent = new Agent<>(1f);
-    agent.setModel(new Model());
+    Model model = new Model();
+    model.assignTeam(Team.PLAYER);
+    agent.setModel(model);
     agent.setMaxMoveSpeed(maxMoveSpeed);
     agent.setRotationSpeed(rotationSpeed);
 
     // TODO add some behavior to player agent
 
     player.addControl(agent);
+    agents.add(agent);
+    
+    logger.debug("player agent = {}", agent);
 
 //    for (Agent<?> a : agents) {
 //      SimpleMainBehavior main = (SimpleMainBehavior) a.getMainBehavior();
