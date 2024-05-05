@@ -1,13 +1,20 @@
 package demo.game;
 
+import com.jme3.ai.agents.AIControl;
+import com.jme3.ai.agents.Agent;
+import com.jme3.ai.agents.behaviors.Behavior;
+import com.jme3.ai.agents.behaviors.npc.SimpleMainBehavior;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import demo.ai.AILookBehavior;
 import jme3utilities.debug.BoundsVisualizer;
+import jme3utilities.mesh.LoopMesh;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,10 +61,23 @@ public class SceneState extends BaseAppState {
         ((Node) child).attachChild(characterSpatial);
 
         // debug bounds
-        BoundsVisualizer boundsVisualizer = new BoundsVisualizer(app.getAssetManager());
-        boundsVisualizer.setSubject(child);
-        scene.getParent().addControl(boundsVisualizer);
-        boundsVisualizer.setEnabled(true);
+//        BoundsVisualizer boundsVisualizer = new BoundsVisualizer(app.getAssetManager());
+//        boundsVisualizer.setSubject(child);
+//        scene.getParent().addControl(boundsVisualizer);
+//        boundsVisualizer.setEnabled(true);
+        
+        // debug visibilisty
+        Agent a = child.getControl(Agent.class);
+        SimpleMainBehavior mb = (SimpleMainBehavior) a.getMainBehavior();
+        AILookBehavior lookBehavior = (AILookBehavior) mb.getBehaviors()
+            .stream().filter(b -> b instanceof AILookBehavior).findFirst().orElseThrow();
+        float visibilityRange = lookBehavior.getVisibilityRange();
+        Geometry visibility = new Geometry("visibility-%s".formatted(a.getName()), new LoopMesh(24, visibilityRange));
+        Material material = new Material(app.getAssetManager(), Materials.UNSHADED);
+        material.setColor("Color", ColorRGBA.Blue);
+        material.getAdditionalRenderState().setDepthTest(false);
+        visibility.setMaterial(material);
+        ((Node) child).attachChild(visibility);
       } else {
         logger.debug("child = {}", child);
         // TODO make wall and floor physics objects

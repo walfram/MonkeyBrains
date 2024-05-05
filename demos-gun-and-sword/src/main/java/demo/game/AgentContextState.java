@@ -57,7 +57,7 @@ public class AgentContextState extends BaseAppState {
     main.addBehavior(wander);
 
     AILookBehavior look = new AILookBehavior();
-    look.setVisibilityRange(300f);
+    look.setVisibilityRange(10f);
     main.addBehavior(look);
     
     AISeekBehavior seek = new AISeekBehavior();
