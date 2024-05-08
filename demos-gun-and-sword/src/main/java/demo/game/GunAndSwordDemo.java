@@ -5,10 +5,14 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.scene.plugins.blender.BlenderLoader;
 import com.jme3.system.AppSettings;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 public class GunAndSwordDemo extends SimpleApplication {
 
   public static void main(String[] args) {
+    SLF4JBridgeHandler.removeHandlersForRootLogger();
+    SLF4JBridgeHandler.install();
+    
     AppSettings settings = new AppSettings(true);
     settings.setResolution(1600, 800);
     
@@ -30,6 +34,8 @@ public class GunAndSwordDemo extends SimpleApplication {
     
     stateManager.attach(new ResourcesState());
     stateManager.attach(new CameraState());
+
+    stateManager.attach(new ProjectilesState(rootNode));
     
     stateManager.attach(new AgentContextState());
     

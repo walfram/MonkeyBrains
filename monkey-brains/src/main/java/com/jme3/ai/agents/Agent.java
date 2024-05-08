@@ -166,9 +166,14 @@ public class Agent<T> extends AIControl {
 
   @Override
   public void updateAI(float tpf) {
-      if (!enabled) {
-          return;
-      }
+    if (!enabled) {
+        return;
+    }
+    
+    
+    if (model != null && model instanceof Updatable u) {
+      u.update(tpf);
+    }
 
     if (mainBehavior != null) {
       mainBehavior.updateAI(tpf);

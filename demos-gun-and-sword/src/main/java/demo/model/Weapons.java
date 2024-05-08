@@ -6,8 +6,8 @@ import com.jme3.math.Vector3f;
 
 public class Weapons {
   
-  private final Weapon sword = new Weapon();
-  private final Weapon gun = new Weapon();
+  private final Weapon sword = new Weapon(1f);
+  private final Weapon gun = new Weapon(100f);
 
   public Weapon gun() {
     return gun;
@@ -27,5 +27,18 @@ public class Weapons {
 
   public boolean isInRange(Agent targetAgent) {
     return false;
+  }
+
+  public boolean isCoolDown() {
+    return gun.isCoolDown();
+  }
+
+  public void startCoolDown() {
+    gun.startCoolDown();
+  }
+
+  public void update(float tpf) {
+    gun.update(tpf);
+    sword.update(tpf);
   }
 }

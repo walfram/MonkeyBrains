@@ -21,11 +21,15 @@
  */
 package demo.ai;
 
+import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
 import com.jme3.ai.agents.events.AIControlSeenEvent;
 import demo.model.Model;
 import demo.model.Weapons;
 import java.util.Random;
+import java.util.function.Consumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Behavior for attacking opponent if opponent is seen.
@@ -35,21 +39,33 @@ import java.util.Random;
  */
 public class AIAttackBehavior extends SimpleAttackBehaviour {
 
+  private static final Logger logger = LoggerFactory.getLogger(AIAttackBehavior.class);
+  
   private final Weapons weapons;
   /**
    * Bigger value means easier game, if it is 1, then agent will never miss. Must be greater or equal to 1.
    */
-  private final int simplicity = 60;
+  private final int simplicity;
   /**
    * To add some randomness to game.
    */
   private final Random random;
+  private Consumer<AIControl> callback;
 
-  public AIAttackBehavior(Weapons weapons) {
-    random = new Random();
+  public AIAttackBehavior(Weapons weapons, int simplicity) {
+    this.random = new Random();
     this.weapons = weapons;
+    this.simplicity = simplicity;
+  }
+  
+  public AIAttackBehavior(Weapons weapons) {
+    this(weapons, 60);
   }
 
+  public void useAttackCallback(Consumer<AIControl> callback) {
+    this.callback = callback;
+  }
+  
   @Override
   public <T> void setAgent(Agent<T> agent) {
     super.setAgent(agent);
@@ -59,7 +75,9 @@ public class AIAttackBehavior extends SimpleAttackBehaviour {
   @Override
   public void updateAI(float tpf) {
     if (targetPosition != null) {
+      logger.debug("{}: attacking with gun target pos = {}, obj = {}", agent.getName(), targetPosition, targetedObject);
       weapons.gun().attack(targetedObject, tpf);
+      callback.accept(targetedObject);
       targetedObject = null;
       //is he supossed to miss next time
       missOrNot((Agent) targetedObject);
@@ -68,12 +86,14 @@ public class AIAttackBehavior extends SimpleAttackBehaviour {
       if (targetedObject != null && targetedObject.isEnabled()) {
         //attack with all weapon at disposal
 
-        //if target is in range of sword strike, strike him
-        if (weapons.sword().isInRange(targetedObject)) {
+        //if target is in range of sword strike, strike target
+        if (weapons.sword().isInRange(agent, targetedObject)) {
+          logger.debug("{}: attacking with sword target obj = {}", agent.getName(), targetedObject);
           weapons.sword().attack(targetedObject, tpf);
         }
-        //if target is in range of gun, fire him
-        if (weapons.gun().isInRange(targetedObject)) {
+        //if target is in range of gun, fire at target
+        if (weapons.gun().isInRange(agent, targetedObject)) {
+          logger.debug("{}: attacking with gun target obj = {}", agent.getName(), targetedObject);
           weapons.gun().attack(targetedObject, tpf);
         }
         //is he supossed to miss next time

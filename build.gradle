@@ -24,6 +24,7 @@ subprojects {
         implementation 'com.simsilica:lemur:1.16.0'
 
         implementation 'ch.qos.logback:logback-classic:1.4.14'
+        implementation 'org.slf4j:jul-to-slf4j:2.0.12'
     }
 
     test {

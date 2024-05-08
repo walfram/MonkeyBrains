@@ -13,17 +13,17 @@ public class SimpleAttackBehaviour extends Behavior implements AIControlSeenList
   protected AIControl targetedObject;
   protected Vector3f targetPosition;
 
-  public void setTarget(AIControl target) {
-    this.targetedObject = target;
-  }
-  
-  public void setTarget(Vector3f target) {
-    this.targetPosition = target;
-  }
-
-  public boolean isTargetSet() {
-    return this.targetedObject != null;
-  }
+//  public void setTarget(AIControl target) {
+//    this.targetedObject = target;
+//  }
+//  
+//  public void setTarget(Vector3f target) {
+//    this.targetPosition = target;
+//  }
+//
+//  public boolean isTargetSet() {
+//    return this.targetedObject != null;
+//  }
 
   @Override
   public void updateAI(float tpf) {

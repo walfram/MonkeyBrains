@@ -1,11 +1,17 @@
 package demo.model;
 
 import com.jme3.ai.agents.Agent;
+import com.jme3.ai.agents.Updatable;
 
 // TODO better name 
-public class Model {
+public class Model implements Updatable {
 
-  private Weapons weapons = new Weapons();
+  private final Weapons weapons = new Weapons();
+
+  @Override
+  public void update(float tpf) {
+    weapons.update(tpf);
+  }
 
   public enum Team {NPC, PLAYER}
 

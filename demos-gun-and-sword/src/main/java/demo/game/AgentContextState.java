@@ -46,7 +46,8 @@ public class AgentContextState extends BaseAppState {
 
   public void createNpcAgent(Spatial spatial) {
     Agent<Model> agent = new Agent<>(1f);
-    agent.setModel(new Model());
+    Model model = new Model();
+    agent.setModel(model);
     agent.setMaxMoveSpeed(maxMoveSpeed);
     agent.setRotationSpeed(rotationSpeed);
 
@@ -65,6 +66,9 @@ public class AgentContextState extends BaseAppState {
     main.addBehavior(seek);
 
     AIAttackBehavior attack = new AIAttackBehavior(agent.getModel().weapons());
+    attack.useAttackCallback(target -> {
+      getState(ProjectilesState.class).spawn(agent, target);
+    });
     look.addListener(attack);
     main.addBehavior(attack);
     
