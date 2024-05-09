@@ -75,7 +75,6 @@ public class AIAttackBehavior extends SimpleAttackBehaviour {
   @Override
   public void updateAI(float tpf) {
     if (targetPosition != null) {
-      logger.debug("{}: attacking with gun target pos = {}, obj = {}", agent.getName(), targetPosition, targetedObject);
       weapons.gun().attack(targetedObject, tpf);
       callback.accept(targetedObject);
       targetedObject = null;
@@ -88,15 +87,15 @@ public class AIAttackBehavior extends SimpleAttackBehaviour {
 
         //if target is in range of sword strike, strike target
         if (weapons.sword().isInRange(agent, targetedObject)) {
-          logger.debug("{}: attacking with sword target obj = {}", agent.getName(), targetedObject);
           weapons.sword().attack(targetedObject, tpf);
+          callback.accept(targetedObject);
         }
         //if target is in range of gun, fire at target
         if (weapons.gun().isInRange(agent, targetedObject)) {
-          logger.debug("{}: attacking with gun target obj = {}", agent.getName(), targetedObject);
           weapons.gun().attack(targetedObject, tpf);
+          callback.accept(targetedObject);
         }
-        //is he supossed to miss next time
+        //is he supposed to miss next time
         missOrNot((Agent) targetedObject);
       }
     }
