@@ -30,7 +30,9 @@ public class GunAndSwordDemo extends SimpleApplication {
     
     stateManager.attach(MonkeyBrainsAppState.getInstance());
     MonkeyBrainsAppState.getInstance().setApp(this);
+    
     stateManager.attach(new BulletAppState());
+    stateManager.getState(BulletAppState.class).setDebugEnabled(true);
     
     stateManager.attach(new ResourcesState());
     stateManager.attach(new CameraState());

@@ -98,15 +98,6 @@ public class AgentContextState extends BaseAppState {
     
     logger.debug("player agent = {}", agent);
 
-//    for (Agent<?> a : agents) {
-//      SimpleMainBehavior main = (SimpleMainBehavior) a.getMainBehavior();
-//      for (Behavior behavior : main.getBehaviors()) {
-//        if (behavior instanceof SeekBehavior seek) {
-//          seek.setTarget(agent);
-//        }
-//      }
-//    }
-
     MonkeyBrainsAppState.getInstance().addAgent(agent);
   }
 }

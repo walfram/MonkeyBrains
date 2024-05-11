@@ -6,6 +6,9 @@ import com.jme3.ai.agents.behaviors.Behavior;
 import com.jme3.ai.agents.behaviors.npc.SimpleMainBehavior;
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.util.CollisionShapeFactory;
 import com.jme3.material.Material;
 import com.jme3.material.Materials;
 import com.jme3.math.ColorRGBA;
@@ -13,6 +16,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import demo.ai.AILookBehavior;
+import demo.ai.AIStaticObjectControl;
+import demo.ai.AIStaticObjectType;
 import jme3utilities.debug.BoundsVisualizer;
 import jme3utilities.mesh.LoopMesh;
 import org.slf4j.Logger;
@@ -53,6 +58,7 @@ public class SceneState extends BaseAppState {
     floor.setMaterial(floorMaterial);
 
     for (Spatial child : ((Node) baseScene).getChildren()) {
+      logger.debug("adding to scene = {}", child);
       if (child.getName().contains("characterMan")) {
         getState(AgentContextState.class).createNpcAgent(child);
 
@@ -79,8 +85,17 @@ public class SceneState extends BaseAppState {
         visibility.setMaterial(material);
         ((Node) child).attachChild(visibility);
       } else {
-        logger.debug("child = {}", child);
-        // TODO make wall and floor physics objects
+        CollisionShape cShape = CollisionShapeFactory.createMeshShape(child);
+        AIStaticObjectType objType;
+        if (child.getName().equals("floor")) {
+          objType = AIStaticObjectType.Floor;
+        } else {
+          objType = AIStaticObjectType.Obstacle;
+        }
+        AIStaticObjectControl rg = new AIStaticObjectControl(objType, cShape, 0f);
+        child.addControl(rg);
+        app.getStateManager().getState(BulletAppState.class).getPhysicsSpace().add(rg);
+//        scene.attachChild(child);
       }
     }
 
