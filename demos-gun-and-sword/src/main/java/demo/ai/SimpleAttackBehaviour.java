@@ -55,6 +55,7 @@ public class SimpleAttackBehaviour extends Behavior implements AIControlSeenList
       }
     }
 
-    this.targetedObject = event.getAIControlSeen();
+    // FIXME what if list is empty?
+    this.targetedObject = event.getAIControlSeen().get(0);
   }
 }

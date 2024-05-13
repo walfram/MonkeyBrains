@@ -122,9 +122,9 @@ public class SimpleLookBehavior extends Behavior {
      *
      * @param aiControlSeen Agent that have been seen
      */
-    protected void triggerListeners(AIControl aiControlSeen) {
+    protected void triggerListeners(List<AIControl> seen) {
         //create AIControlSeenEvent
-        AIControlSeenEvent event = new AIControlSeenEvent(agent, aiControlSeen);
+        AIControlSeenEvent event = new AIControlSeenEvent(agent, seen);
         //forward it to all listeners
         for (AIControlSeenListener listener : listeners) {
             listener.handleAIControlSeenEvent(event);
@@ -133,14 +133,15 @@ public class SimpleLookBehavior extends Behavior {
 
     @Override
     public void updateAI(float tpf) {
-        List<AIControl> aiControl = look(agent, viewAngle);
-        for (int i = 0; i < aiControl.size(); i++) {
-            triggerListeners(aiControl.get(i));
-        }
+        List<AIControl> seen = look(agent, viewAngle);
+        triggerListeners(seen);
+//        for (int i = 0; i < aiControl.size(); i++) {
+//            triggerListeners(aiControl.get(i));
+//        }
         //if nothing is seen
         //used for deactivating all behaviours activated with this behaviour
-        if (aiControl.isEmpty()) {
-            triggerListeners(null);
+        if (seen.isEmpty()) {
+            triggerListeners(List.of());
         }
     }
 
@@ -152,6 +153,7 @@ public class SimpleLookBehavior extends Behavior {
      * @param viewAngle - viewing angle
      * @return list of all game entities that can be seen by agent
      */
+    // FIXME viewAngle is not used here
     protected List<AIControl> look(Agent agent, float viewAngle) {
         List<AIControl> temp = new LinkedList<AIControl>();
         //are there seen agents
