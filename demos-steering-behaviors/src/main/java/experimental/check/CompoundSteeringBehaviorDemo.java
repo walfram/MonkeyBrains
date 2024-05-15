@@ -1,4 +1,4 @@
-package check;
+package experimental.check;
 
 import com.jme3.ai.agents.AIControl;
 import com.jme3.ai.agents.Agent;
