@@ -29,6 +29,7 @@ public class PlanAction implements Action<NpcMoveContext> {
     
     logger.debug("planning to move from {} to {}", currentWaypoint, picked);
     nextWaypoint = picked;
+    context.updateCurrentWaypoint(picked);
   }
 
   @Override
