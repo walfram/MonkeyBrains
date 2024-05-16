@@ -28,6 +28,8 @@ public class MoveAction implements Action<NpcMoveContext> {
     
     subject.getLocalRotation().slerp(q, FastMath.HALF_PI * tpf);
 
+    // TODO sometimes subject is circling around waypoint - needs fix
+    
     final float speed = 5f;
     if (v.length() >= 0.1f) {
       Vector3f forward = subject.getLocalRotation().mult(Vector3f.UNIT_Z);
